@@ -10,5 +10,5 @@ public class AppointmentSchedulerApplication {
 		SpringApplication.run(AppointmentSchedulerApplication.class, args);
 	}
 	//check thử
-
+	//Dou check
 }
