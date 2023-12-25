@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
-
+ // phuong thuc getCustomerById duoc thuc hien neu id cua customer duoc truyen vao = id hien tai va user co role la admin
     @Override
     @PreAuthorize("#customerId == principal.id or hasRole('ADMIN')")
     public Customer getCustomerById(int customerId) {

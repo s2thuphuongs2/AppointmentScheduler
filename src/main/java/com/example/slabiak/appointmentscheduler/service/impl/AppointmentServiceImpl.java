@@ -71,6 +71,11 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointmentRepository.deleteById(id);
     }
 
+ /**
+   * phuong thuc getAppointmentByCustomerId()
+   * // va getAppointmentByProviderId()
+   * // duoc thuc hien boi nguoi dung co id tuong ung voi id hien tai
+  */
     @Override
     @PreAuthorize("#customerId == principal.id")
     public List<Appointment> getAppointmentByCustomerId(int customerId) {
