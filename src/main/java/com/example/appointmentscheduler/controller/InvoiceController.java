@@ -30,25 +30,44 @@ public class InvoiceController {
     public InvoiceController(InvoiceService invoiceService) {
         this.invoiceService = invoiceService;
     }
-
+    /**
+     * Shows all invoices.
+     * @param model
+     * @return list of all invoices
+     */
     @GetMapping("/all")
     public String showAllInvoices(Model model) {
         model.addAttribute("invoices", invoiceService.getAllInvoices());
         return "invoices/listInvoices";
     }
-
+    /**
+     * Changes invoice status to paid.
+     * @param invoiceId id of the invoice to be changed
+     * @return redirect to the list of all invoices
+     */
     @PostMapping("/paid/{invoiceId}")
     public String changeStatusToPaid(@PathVariable("invoiceId") int invoiceId) {
         invoiceService.changeInvoiceStatusToPaid(invoiceId);
         return "redirect:/invoices/all";
     }
 
+    /**
+     * Issues invoices for all confirmed appointments.
+     * @param model
+     * @return redirect to the list of all invoices
+     */
     @GetMapping("/issue")
     public String issueInvoicesManually(Model model) {
         invoiceService.issueInvoicesForConfirmedAppointments();
         return "redirect:/invoices/all";
     }
 
+    /**
+     * Checks if the user is allowed to download the invoice and if so, generates pdf for the invoice and returns it as a response.
+     * @param invoiceId id of the invoice to be downloaded
+     * @param currentUser currently logged in user
+     * @return response with pdf file as a body
+     */
     @GetMapping("/download/{invoiceId}")
     public ResponseEntity<InputStreamResource> downloadInvoice(@PathVariable("invoiceId") int invoiceId, @AuthenticationPrincipal CustomUserDetails currentUser) {
         try {

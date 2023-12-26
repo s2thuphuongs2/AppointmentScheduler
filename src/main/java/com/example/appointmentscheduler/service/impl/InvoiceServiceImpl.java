@@ -39,6 +39,11 @@ public class InvoiceServiceImpl implements InvoiceService {
         this.notificationService = notificationService;
     }
 
+    /**
+     * Generates invoice number in the format: FV/YYYY/MM/NNN
+     * where YYYY is the current year, MM is the current month and NNN is the number of invoices issued in the current month.
+     * @return invoice number
+     */
     @Override
     public String generateInvoiceNumber() {
         List<Invoice> invoices = invoiceRepository.findAllIssuedInCurrentMonth(LocalDate.now().with(TemporalAdjusters.firstDayOfMonth()).atStartOfDay());
@@ -46,53 +51,88 @@ public class InvoiceServiceImpl implements InvoiceService {
         LocalDateTime today = LocalDateTime.now();
         return "FV/" + today.getYear() + "/" + today.getMonthValue() + "/" + nextInvoiceNumber;
     }
-
+    /**
+     * Creates new invoice and saves it to the database.
+     * @param invoice invoice to be saved
+     */
     @Override
     public void createNewInvoice(Invoice invoice) {
         invoiceRepository.save(invoice);
     }
-
+    /**
+     * Returns invoice by appointment id.
+     * @param appointmentId appointment id
+     * @return invoice
+     */
     @Override
     public Invoice getInvoiceByAppointmentId(int appointmentId) {
         return invoiceRepository.findByAppointmentId(appointmentId);
     }
-
+    /**
+     * Returns invoice by invoice id.
+     * @param invoiceId invoice id
+     * @return invoice
+     */
     @Override
     public Invoice getInvoiceById(int invoiceId) {
         return invoiceRepository.findById(invoiceId)
                 .orElseThrow(RuntimeException::new);
     }
-
+    /**
+     * Returns all invoices (just user has role admin can see all invoices).
+     * @return list of invoices
+     */
     @Override
     @PreAuthorize("hasRole('ADMIN')")
     public List<Invoice> getAllInvoices() {
         return invoiceRepository.findAll();
     }
 
+    /**
+     * Generates PDF document for invoice.
+     * @param invoiceId invoice id
+     * @return PDF document
+     */
     @Override
     public File generatePdfForInvoice(int invoiceId) {
+        // Lấy thông tin người dùng hiện tại từ Spring Security Context
         CustomUserDetails currentUser = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        // Lấy hóa đơn từ kho lưu trữ dựa trên ID
         Invoice invoice = invoiceRepository.getOne(invoiceId);
+        // Kiểm tra xem người dùng có quyền tải xuống hóa đơn hay không
         if (!isUserAllowedToDownloadInvoice(currentUser, invoice)) {
             throw new org.springframework.security.access.AccessDeniedException("Unauthorized");
         }
+        // Tạo và trả về tệp PDF từ hóa đơn sử dụng utiliy pdfGeneratorUtil
         return pdfGeneratorUtil.generatePdfFromInvoice(invoice);
     }
-
+    /**
+     * Checks if user is allowed to download invoice.
+     * @param user user
+     * @param invoice invoice
+     * @return true if user is allowed to download invoice, false otherwise
+     */
     @Override
     public boolean isUserAllowedToDownloadInvoice(CustomUserDetails user, Invoice invoice) {
         int userId = user.getId();
+        // Nếu người dùng có vai trò ADMIN, cho phép tải xuống mà không kiểm tra tiếp
         if (user.hasRole("ROLE_ADMIN")) {
             return true;
         }
+        // Kiểm tra từng cuộc hẹn trong hóa đơn
         for (Appointment a : invoice.getAppointments()) {
+            // Nếu người dùng là nhà cung cấp hoặc khách hàng trong bất kỳ cuộc hẹn nào, cho phép tải xuống
             if (a.getProvider().getId() == userId || a.getCustomer().getId() == userId) {
                 return true;
             }
         }
+        // Nếu không phải là ADMIN và không liên quan đến bất kỳ cuộc hẹn nào, không cho phép tải xuống
         return false;
     }
-
+    /**
+     * Changes invoice status to paid.
+     * @param invoiceId invoice id
+     */
     @Override
     @PreAuthorize("hasRole('ADMIN')")
     public void changeInvoiceStatusToPaid(int invoiceId) {
@@ -100,15 +140,22 @@ public class InvoiceServiceImpl implements InvoiceService {
         invoice.setStatus("paid");
         invoiceRepository.save(invoice);
     }
-
+    /**
+     * Issues invoices for confirmed appointments.
+     */
     @Transactional
     @Override
     public void issueInvoicesForConfirmedAppointments() {
+        //Note: this method is transactional, so if something goes wrong, no invoices will be issued
         List<Customer> customers = userService.getAllCustomers();
         for (Customer customer : customers) {
+            //get all confirmed appointments for customer
             List<Appointment> appointmentsToIssueInvoice = appointmentService.getConfirmedAppointmentsByCustomerId(customer.getId());
-            if (!appointmentsToIssueInvoice.isEmpty()) {
+            if (!appointmentsToIssueInvoice.isEmpty()) { //if there are any confirmed appointments
+                //change status of all appointments to invoiced
                 for (Appointment a : appointmentsToIssueInvoice) {
+                    //TODO: maybe change this to batch update
+                    //set appointment status to invoiced
                     a.setStatus(AppointmentStatus.INVOICED);
                     appointmentService.updateAppointment(a);
                 }

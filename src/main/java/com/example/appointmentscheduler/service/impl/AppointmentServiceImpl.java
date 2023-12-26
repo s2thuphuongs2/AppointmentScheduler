@@ -252,7 +252,12 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     }
 
-
+    /**
+     * this method is used to check if customer is allowed to reject appointment
+     * @param userId
+     * @param appointmentId
+     * @return true if customer is allowed to reject appointment, false otherwise
+     */
     @Override
     public boolean isCustomerAllowedToRejectAppointment(int userId, int appointmentId) {
         User user = userService.getUserById(userId);
@@ -261,21 +266,37 @@ public class AppointmentServiceImpl implements AppointmentService {
         return appointment.getCustomer().equals(user) && appointment.getStatus().equals(AppointmentStatus.FINISHED) && !LocalDateTime.now().isAfter(appointment.getEnd().plusDays(1));
     }
 
+    /**
+     * this method is used to request appointment rejection by customer
+     * @param appointmentId
+     * @param customerId
+     * @return true if request was successful, false otherwise
+     */
     @Override
     public boolean requestAppointmentRejection(int appointmentId, int customerId) {
+        // check if customer is allowed to reject appointment
         if (isCustomerAllowedToRejectAppointment(customerId, appointmentId)) {
+            // get appointment by id
             Appointment appointment = getAppointmentByIdWithAuthorization(appointmentId);
+            // set status of appointment to rejection requested
             appointment.setStatus(AppointmentStatus.REJECTION_REQUESTED);
+            // notify provider about rejection request
             notificationService.newAppointmentRejectionRequestedNotification(appointment, true);
+            // update appointment
             updateAppointment(appointment);
             return true;
         } else {
+            // if customer is not allowed to reject appointment, return false
             return false;
         }
 
     }
 
-
+    /**
+     * this method use token to get appointment id and customer id
+     * @param token
+     * @return true if request was successful, false otherwise
+     */
     @Override
     public boolean requestAppointmentRejection(String token) {
         if (jwtTokenService.validateToken(token)) {
@@ -286,7 +307,12 @@ public class AppointmentServiceImpl implements AppointmentService {
         return false;
     }
 
-
+    /**
+     * this method is used to check if provider is allowed to accept appointment rejection
+     * @param providerId
+     * @param appointmentId
+     * @return true if provider is allowed to accept appointment rejection, false otherwise
+     */
     @Override
     public boolean isProviderAllowedToAcceptRejection(int providerId, int appointmentId) {
         User user = userService.getUserById(providerId);
@@ -294,7 +320,12 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         return appointment.getProvider().equals(user) && appointment.getStatus().equals(AppointmentStatus.REJECTION_REQUESTED);
     }
-
+    /**
+     * this method is used to accept appointment rejection by provider
+     * @param appointmentId
+     * @param customerId
+     * @return true if request was successful, false otherwise
+     */
     @Override
     public boolean acceptRejection(int appointmentId, int customerId) {
         if (isProviderAllowedToAcceptRejection(customerId, appointmentId)) {
@@ -308,6 +339,11 @@ public class AppointmentServiceImpl implements AppointmentService {
         }
     }
 
+    /**
+     * this method use token to get appointment id and provider id
+     * @param token
+     * @return true if request was successful, false otherwise
+     */
     @Override
     public boolean acceptRejection(String token) {
         if (jwtTokenService.validateToken(token)) {

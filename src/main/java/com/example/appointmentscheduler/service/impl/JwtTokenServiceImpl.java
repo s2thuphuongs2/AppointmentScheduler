@@ -26,6 +26,11 @@ public class JwtTokenServiceImpl implements JwtTokenService {
         this.jwtSecret = jwtSecret;
     }
 
+    /**
+     * Generates token for appointment rejection.
+     * @param appointment appointment to be rejected
+     * @return token
+     */
     @Override
     public String generateAppointmentRejectionToken(Appointment appointment) {
         Date expiryDate = convertLocalDateTimeToDate(appointment.getEnd().plusDays(1));
@@ -36,7 +41,11 @@ public class JwtTokenServiceImpl implements JwtTokenService {
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }
-
+    /**
+     * Generates token for appointment acceptance.
+     * @param appointment appointment to be accepted
+     * @return token
+     */
     @Override
     public String generateAcceptRejectionToken(Appointment appointment) {
         return Jwts.builder()
