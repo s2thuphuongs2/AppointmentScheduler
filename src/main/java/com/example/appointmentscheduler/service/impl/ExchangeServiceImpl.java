@@ -38,42 +38,69 @@ public class ExchangeServiceImpl implements ExchangeService {
         Appointment appointmentToExchange = appointmentRepository.getOne(appointmentId);
         return appointmentRepository.getEligibleAppointmentsForExchange(LocalDateTime.now().plusHours(24), appointmentToExchange.getCustomer().getId(), appointmentToExchange.getProvider().getId(), appointmentToExchange.getWork().getId());
     }
-
+    /**
+     * Kiểm tra xem trao đổi có thể thực hiện được không
+     * @param oldAppointmentId id of the appointment to be exchanged
+     * @param newAppointmentId id of the appointment to be exchanged for
+     * @param userId id of the user
+     * @return true if exchange is possible
+     */
     @Override
     public boolean checkIfExchangeIsPossible(int oldAppointmentId, int newAppointmentId, int userId) {
+        // Lấy thông tin cuộc hẹn cũ và cuộc hẹn mới từ cơ sở dữ liệu
         Appointment oldAppointment = appointmentRepository.getOne(oldAppointmentId);
         Appointment newAppointment = appointmentRepository.getOne(newAppointmentId);
+        // check if old appointment is scheduled and is within 24 hours of now
         if (oldAppointment.getCustomer().getId() == userId) {
-            return oldAppointment.getWork().getId().equals(newAppointment.getWork().getId())
-                    && oldAppointment.getProvider().getId().equals(newAppointment.getProvider().getId())
-                    && oldAppointment.getStart().minusHours(24).isAfter(LocalDateTime.now())
-                    && newAppointment.getStart().minusHours(24).isAfter(LocalDateTime.now());
+            return oldAppointment.getWork().getId().equals(newAppointment.getWork().getId()) // Kiểm tra xem cuộc hẹn cũ và cuộc hẹn mới có cùng công việc không
+                    && oldAppointment.getProvider().getId().equals(newAppointment.getProvider().getId()) // Kiểm tra xem cuộc hẹn cũ và cuộc hẹn mới có cùng nhà cung cấp không
+                    && oldAppointment.getStart().minusHours(24).isAfter(LocalDateTime.now())// Kiểm tra xem cuộc hẹn cũ có trong vòng 24 giờ không
+                    && newAppointment.getStart().minusHours(24).isAfter(LocalDateTime.now());// Kiểm tra xem cuộc hẹn mới có trong vòng 24 giờ không
         } else {
+            // Nếu người dùng không có quyền truy cập cuộc hẹn cũ, ném một ngoại lệ Unauthorized
             throw new org.springframework.security.access.AccessDeniedException("Unauthorized");
         }
 
     }
-
+    /**
+     * Chấp nhận yêu cầu trao đổi
+     * @param exchangeId id of the exchange request
+     * @param userId id of the user
+     * @return true if successful
+     */
     @Override
     public boolean acceptExchange(int exchangeId, int userId) {
+        // get exchange request by id
         ExchangeRequest exchangeRequest = exchangeRequestRepository.getOne(exchangeId);
+        // get requestor appointment and set status to scheduled
         Appointment requestor = exchangeRequest.getRequestor();
         Appointment requested = exchangeRequest.getRequested();
+        // swap customers
         Customer tempCustomer = requestor.getCustomer();
+        // set status of old appointment to scheduled
         requestor.setStatus(AppointmentStatus.SCHEDULED);
         exchangeRequest.setStatus(ExchangeStatus.ACCEPTED);
+        // swap customers
         requestor.setCustomer(requested.getCustomer());
         requested.setCustomer(tempCustomer);
         exchangeRequestRepository.save(exchangeRequest);
         appointmentRepository.save(requested);
         appointmentRepository.save(requestor);
+        // send notification to requestor
         notificationService.newExchangeAcceptedNotification(exchangeRequest, true);
         return true;
     }
-
+    /**
+     * Từ chối yêu cầu trao đổi
+     * @param exchangeId id of the exchange request
+     * @param userId id of the user
+     * @return true if successful
+     */
     @Override
     public boolean rejectExchange(int exchangeId, int userId) {
+        // get exchange request by id
         ExchangeRequest exchangeRequest = exchangeRequestRepository.getOne(exchangeId);
+        // get requestor appointment and set status to scheduled
         Appointment requestor = exchangeRequest.getRequestor();
         exchangeRequest.setStatus(ExchangeStatus.REJECTED);
         requestor.setStatus(AppointmentStatus.SCHEDULED);
@@ -82,16 +109,25 @@ public class ExchangeServiceImpl implements ExchangeService {
         notificationService.newExchangeRejectedNotification(exchangeRequest, true);
         return true;
     }
-
+    /**
+     * Yêu cầu trao đổi
+     * @param oldAppointmentId id of the appointment to be exchanged
+     * @param newAppointmentId id of the appointment to be exchanged for
+     * @param userId id of the user
+     * @return true if successful
+     */
     @Override
     public boolean requestExchange(int oldAppointmentId, int newAppointmentId, int userId) {
         if (checkIfExchangeIsPossible(oldAppointmentId, newAppointmentId, userId)) {
             Appointment oldAppointment = appointmentRepository.getOne(oldAppointmentId);
             Appointment newAppointment = appointmentRepository.getOne(newAppointmentId);
+            // set status of old appointment to exchange requested
             oldAppointment.setStatus(AppointmentStatus.EXCHANGE_REQUESTED);
             appointmentRepository.save(oldAppointment);
             ExchangeRequest exchangeRequest = new ExchangeRequest(oldAppointment, newAppointment, ExchangeStatus.PENDING);
+            // save exchange request
             exchangeRequestRepository.save(exchangeRequest);
+            // send notification to provider
             notificationService.newExchangeRequestedNotification(oldAppointment, newAppointment, true);
             return true;
         }
