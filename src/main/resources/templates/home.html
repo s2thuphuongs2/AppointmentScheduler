@@ -1,45 +1,55 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'home','Home')}"
->
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'home','Home')}">
+<!-- Đoạn mã HTML sử dụng Thymeleaf, thay thế nội dung của trang bằng template "layout" với các tham số -->
 
 <body>
 <div class="row mt-3">
-    <div class="col">
-
-    </div>
+    <!-- Một hàng chứa các cột, có thể là một phần của hệ thống grid (ví dụ: Bootstrap) -->
+    <div class="col"></div>
+    <!-- Cột trống -->
     <div class="col-10">
+        <!-- Cột chiếm 10/12 của hàng, chứa một div với id là 'calendar' -->
         <div id='calendar'></div>
+        <!-- Đây là nơi sẽ hiển thị lịch sử dụng fullCalendar plugin -->
     </div>
-    <div class="col">
-
-    </div>
+    <div class="col"></div>
+    <!-- Cột trống -->
 </div>
 
 <script th:inline="javascript">
+    // Bắt đầu đoạn script JavaScript với Thymeleaf inline
     $(function () {
+        // Hàm được gọi khi trang web được tải
         $('#calendar').fullCalendar({
+            // Sử dụng fullCalendar plugin để hiển thị lịch
             defaultView: 'agendaWeek',
+            // Chế độ xem mặc định là 'agendaWeek'
             header: {
                 left: 'prev,next today',
                 center: 'title',
                 right: 'month,agendaWeek'
             },
+            // Cấu trúc header với các nút điều hướng và tiêu đề ở giữa
             allDaySlot: false,
+            // Tắt khe cho sự kiện cả ngày
             minTime: "06:00:00",
             maxTime: "22:00:00",
-            timeFormat: 'H:mm', // uppercase H for 24-hour clock,
+            // Thời gian bắt đầu và kết thúc cho lịch
+            timeFormat: 'H:mm', // uppercase H for 24-hour clock
+            // Định dạng hiển thị thời gian
             firstDay: 1,
+            // Đặt ngày bắt đầu là thứ hai
             eventSources: [
-
                 {
                     url: /*[[${'/api/user/'+user.id+'/appointments'}]]*/ '/api/user/1/appointments',
+                    // Đường dẫn API để lấy dữ liệu sự kiện
                     color: 'yellow',
+                    // Màu nền cho sự kiện
                     textColor: 'black'
-
+                    // Màu chữ cho sự kiện
                 }
             ]
         })
-
     });
 </script>
 </body>

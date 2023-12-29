@@ -44,13 +44,13 @@ public class InvoiceServiceImpl implements InvoiceService {
      * where YYYY is the current year, MM is the current month and NNN is the number of invoices issued in the current month.
      * @return invoice number
      */
-    //TODO: change invoice number
+    //Done: change invoice number
     @Override
     public String generateInvoiceNumber() {
         List<Invoice> invoices = invoiceRepository.findAllIssuedInCurrentMonth(LocalDate.now().with(TemporalAdjusters.firstDayOfMonth()).atStartOfDay());
         int nextInvoiceNumber = invoices.size() + 1;
         LocalDateTime today = LocalDateTime.now();
-        return "FV/" + today.getYear() + "/" + today.getMonthValue() + "/" + nextInvoiceNumber;
+        return "HD/" + today.getYear() + "/" + today.getMonthValue() + "/" + nextInvoiceNumber;
     }
     /**
      * Creates new invoice and saves it to the database.

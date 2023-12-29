@@ -103,23 +103,30 @@ public class RetailCustomerUserServiceTest {
 
 
     }
-
+    /**
+     * Test for saving new retail customer
+     */
     @Test
     public void shouldSaveNewRetailCustomer() {
         ArgumentCaptor<RetailCustomer> argumentCaptor = ArgumentCaptor.forClass(RetailCustomer.class);
         userService.saveNewRetailCustomer(retailUserForm);
-
+        // verify that save method was called once and capture the argument
         verify(retailCustomerRepository, times(1)).save(argumentCaptor.capture());
     }
 
+    /**
+     * Test for ecoding password for new retail customer
+     */
     @Test
     public void shouldEncodePasswordWhenForNewRetailCustomer() {
         when(passwordEncoder.encode(password)).thenReturn(passwordEncoded);
-
+        // Khởi tạo một đối tượng ArgumentCaptor để bắt đối tượng RetailCustomer được truyền vào phương thức save()
         ArgumentCaptor<RetailCustomer> argumentCaptor = ArgumentCaptor.forClass(RetailCustomer.class);
+        // lưu đối tượng RetailCustomer
         userService.saveNewRetailCustomer(retailUserForm);
-
+        // xác nhận rằng phương thức save() được gọi một lần và bắt được đối tượng RetailCustomer được truyền vào
         verify(retailCustomerRepository, times(1)).save(argumentCaptor.capture());
+        // xác nhận rằng mật khẩu đã được mã hóa
         Assert.assertEquals(argumentCaptor.getValue().getPassword(), passwordEncoded);
     }
 
