@@ -74,6 +74,7 @@ public class RetailCustomerUserServiceTest {
         lastName = "lastname";
         email = "email@example.com";
         mobile = "123456789";
+        // TODO - sửa chung thành address
         street = "street";
         postcode = "12-345";
         city = "city";

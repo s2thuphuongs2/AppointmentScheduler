@@ -11,9 +11,11 @@ public class UserFactoryTest {
         userForm.setFirstName("Tomasz");
         userForm.setLastName("Nowak");
         userForm.setMobile("123456");
+        // TODO - change to address
         userForm.setPostcode("12-234");
         userForm.setStreet("Street");
         userForm.setUserName("sampleUser");
+        //---
         userForm.setPassword("password");
         return userForm;
     }
