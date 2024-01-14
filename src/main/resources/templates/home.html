@@ -2,19 +2,32 @@
 <html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'home','Home')}">
 <!-- Đoạn mã HTML sử dụng Thymeleaf, thay thế nội dung của trang bằng template "layout" với các tham số -->
 
+
 <body>
-<div class="row mt-3">
-    <!-- Một hàng chứa các cột, có thể là một phần của hệ thống grid (ví dụ: Bootstrap) -->
-    <div class="col"></div>
-    <!-- Cột trống -->
-    <div class="col-10">
-        <!-- Cột chiếm 10/12 của hàng, chứa một div với id là 'calendar' -->
-        <div id='calendar'></div>
-        <!-- Đây là nơi sẽ hiển thị lịch sử dụng fullCalendar plugin -->
-    </div>
-    <div class="col"></div>
-    <!-- Cột trống -->
-</div>
+<!-- Thân trang web -->
+
+        <!--Calendar-->
+        <div class="row mt-3">
+            <!-- Một hàng chứa các cột, có thể là một phần của hệ thống grid (ví dụ: Bootstrap) -->
+            <div class="col"></div>
+            <!-- Cột trống -->
+            <div class="col-10">
+                <!-- Cột chiếm 10/12 của hàng, chứa một div với id là 'calendar' -->
+                <div id='calendar'></div>
+                <!-- Đây là nơi sẽ hiển thị lịch sử dụng fullCalendar plugin -->
+            </div>
+            <div class="col"></div>
+            <!-- Cột trống -->
+        </div>
+
+<!--<div class="card">-->
+<!--    <div class="card-body shadow">-->
+
+<!--        <div id='calendar'></div>-->
+<!--    </div>-->
+
+<!--</div>-->
+
 
 <script th:inline="javascript">
     // Bắt đầu đoạn script JavaScript với Thymeleaf inline
@@ -22,7 +35,7 @@
         // Hàm được gọi khi trang web được tải
         $('#calendar').fullCalendar({
             // Sử dụng fullCalendar plugin để hiển thị lịch
-            defaultView: 'agendaWeek',
+            defaultView: 'month',
             // Chế độ xem mặc định là 'agendaWeek'
             header: {
                 left: 'prev,next today',
@@ -52,6 +65,8 @@
         })
     });
 </script>
+<!-- Kết thúc đoạn script JavaScript với Thymeleaf inline -->
+
 </body>
 
 </html>

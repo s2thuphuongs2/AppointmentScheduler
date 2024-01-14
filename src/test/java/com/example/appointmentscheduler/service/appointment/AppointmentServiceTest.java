@@ -30,6 +30,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
+
 @RunWith(MockitoJUnitRunner.class)
 public class AppointmentServiceTest {
 
@@ -65,9 +66,13 @@ public class AppointmentServiceTest {
     private Provider provider;
     private Customer customer;
 
+    /**
+     * Initializing objects for testing
+     *
+     */
     @Before
     public void initObjects() {
-
+        // Initializing test data
         customerId = 1;
         providerId = 2;
         workId = 3;
@@ -87,19 +92,25 @@ public class AppointmentServiceTest {
         appointments.add(appointment);
 
     }
-
+    /**
+     * Test case for creating a new appointment when all conditions are met.
+     *
+     */
     @Test
     public void shouldBookAppointmentWhenAllConditionsMet() {
         LocalDateTime startOfNewAppointment = LocalDateTime.of(2019, 01, 01, 6, 0);
 
+        //Mocking dependencies and behavior
         when(workService.isWorkForCustomer(workId, customerId)).thenReturn(true);
         when(workService.getWorkById(workId)).thenReturn(work);
         when(userService.getProviderById(providerId)).thenReturn(provider);
         when(userService.getCustomerById(customerId)).thenReturn(customer);
 
+        // Using ArgumentCaptor to capture the Appointment object that is passed to the appointmentRepository.save() method
         ArgumentCaptor<Appointment> argumentCaptor = ArgumentCaptor.forClass(Appointment.class);
         appointmentService.createNewAppointment(workId, providerId, customerId, startOfNewAppointment);
-
+        //
+        // Xác minh rằng phương thức lưu của cuộc hẹnRepository được gọi chính xác một lần với đối số đã ghi
         verify(appointmentRepository, times(1)).save(argumentCaptor.capture());
     }
 
@@ -107,19 +118,25 @@ public class AppointmentServiceTest {
     public void shouldNotBookAppointmentWhenAppointmentStartIsNotWithinProviderWorkingHours() {
         LocalDateTime startOfNewAppointment = LocalDateTime.of(2019, 01, 01, 5, 59);
 
+        //Mocking dependencies and behavior
         when(workService.isWorkForCustomer(workId, customerId)).thenReturn(true);
         when(workService.getWorkById(workId)).thenReturn(work);
         when(userService.getProviderById(providerId)).thenReturn(provider);
 
+        // Using ArgumentCaptor to capture the Appointment object that is passed to the appointmentRepository.save() method
         ArgumentCaptor<Appointment> argumentCaptor = ArgumentCaptor.forClass(Appointment.class);
         appointmentService.createNewAppointment(workId, providerId, customerId, startOfNewAppointment);
         verify(appointmentRepository, times(1)).save(argumentCaptor.capture());
     }
 
+    /**
+     * Test case for creating a new appointment when all conditions are met.
+     */
     @Test(expected = RuntimeException.class)
     public void shouldNotBookNewAppointmentWhenCollidingWithProviderAlreadyBookedAppointments() {
         LocalDateTime startOfNewAppointment = LocalDateTime.of(2019, 01, 01, 6, 0);
 
+        // Mocking dependencies and behavior
         Appointment existingAppointment = new Appointment();
         LocalDateTime startOfExistingAppointment = LocalDateTime.of(2019, 01, 01, 6, 0);
         LocalDateTime endOfExistingAppointment = LocalDateTime.of(2019, 01, 01, 7, 0);
@@ -133,16 +150,23 @@ public class AppointmentServiceTest {
         when(workService.getWorkById(workId)).thenReturn(work);
         when(userService.getProviderById(providerId)).thenReturn(provider);
 
+        // Sử dụng ArgumentCaptor để nắm bắt đối số được truyền vào phương thức save
         ArgumentCaptor<Appointment> argumentCaptor = ArgumentCaptor.forClass(Appointment.class);
         appointmentService.createNewAppointment(workId, providerId, customerId, startOfNewAppointment);
 
+        //
         verify(appointmentRepository, times(1)).save(argumentCaptor.capture());
     }
 
+    /**
+     * Test case for creating a new appointment when all conditions are met.
+     * Kiểm tra việc không tạo cuộc hẹn mới khi xung đột với các cuộc hẹn đã được đặt trước của khách hàng.
+     */
     @Test(expected = RuntimeException.class)
     public void shouldNotBookNewAppointmentWhenCollidingWithCustomerAlreadyBookedAppointments() {
         LocalDateTime startOfNewAppointment = LocalDateTime.of(2019, 01, 01, 6, 0);
 
+        // Mocking dependencies and behavior
         Appointment existingAppointment = new Appointment();
         LocalDateTime startOfExistingAppointment = LocalDateTime.of(2019, 01, 01, 6, 0);
         LocalDateTime endOfExistingAppointment = LocalDateTime.of(2019, 01, 01, 7, 0);
@@ -156,13 +180,17 @@ public class AppointmentServiceTest {
         when(workService.getWorkById(workId)).thenReturn(work);
         when(userService.getProviderById(providerId)).thenReturn(provider);
 
+        // Sử dụng ArgumentCaptor để nắm bắt đối số được truyền vào phương thức save
         ArgumentCaptor<Appointment> argumentCaptor = ArgumentCaptor.forClass(Appointment.class);
         appointmentService.createNewAppointment(workId, providerId, customerId, startOfNewAppointment);
 
+        // Xác minh rằng phương thức lưu của cuộc hẹnRepository được gọi chính xác một lần với đối số đã ghi
         verify(appointmentRepository, times(1)).save(argumentCaptor.capture());
     }
 
-
+    /**
+     *
+     */
     @Test
     public void shouldFindAppointmentById() {
         when(appointmentRepository.findById(1)).thenReturn(optionalAppointment);

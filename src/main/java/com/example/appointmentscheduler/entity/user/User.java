@@ -33,6 +33,7 @@ public class User extends BaseEntity {
     @Column(name = "mobile")
     private String mobile;
 
+    // TODO Change to address
     @Column(name = "street")
     private String street;
 

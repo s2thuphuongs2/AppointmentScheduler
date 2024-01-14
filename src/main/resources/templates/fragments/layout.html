@@ -12,13 +12,35 @@
     <link rel="stylesheet" href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css"/>
     <!-- Fullcalendar CSS -->
     <link rel="stylesheet" th:href="@{/css/vendor/fullcalendar.css}"/>
+
+
     <!-- Site CSS -->
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" th:href="@{/assets1/theme/css/style.css}"/>
+    <link rel="stylesheet" th:href="@{/assets1/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/assets1/bootstrap/css/bootstrap-grid.min.css}"/>
+    <link rel="stylesheet" th:href="@{/assets1/bootstrap/css/bootstrap-reboot.min.css}"/>
+    <link rel="stylesheet" th:href="@{/assets1/mobirise/css/mbr-additional.css}"/>
+
     <!--DataTables CSS-->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
 
     <link rel="stylesheet" th:href="@{/css/vendor/bootstrap-notifications.css}"/>
-
+    <!-- page css -->
+    <!-- Core css -->
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/app.min.css}" />
+    <!-- Design page css -->
+    <link rel="stylesheet" th:href="@{/assets/web/~/assets/mobirise-icons/mobirise-icons.css}">
+    <link rel="stylesheet" th:href="@{/assets/tether/tether.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/bootstrap/css/bootstrap-grid.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/bootstrap/css/bootstrap-reboot.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/dropdown/css/style.css}">
+    <link rel="stylesheet" th:href="@{/assets/socicon/css/styles.css}">
+    <link rel="stylesheet" th:href="@{/assets/theme/css/style.css}">
+    <link rel="stylesheet" th:href="@{/assets/mobirise/css/mbr-additional.css}">
+    <!-- Favicon -->
+<!--    <img rel="shortcut icon" th:src="@{/assets/images/logo/favicon.png}" alt="Logo" width="100" height="100">-->
 
     <!--font awesome-->
     <script src="https://kit.fontawesome.com/56438f342e.js"></script>
@@ -35,6 +57,7 @@
     <script type="text/javascript" charset="utf8"
             src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
 
+
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-137823705-3"></script>
     <script>
@@ -45,12 +68,15 @@
         gtag('config', 'UA-137823705-3');
     </script>
 
+
+
 </head>
 
 <body>
 
 <!-- Navigation -->
 <div sec:authorize="isAuthenticated()">
+<!--<div>-->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
         <div class="container">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
@@ -72,7 +98,7 @@
                 <!-- menu for admin-->
                 <div th:replace="fragments/admin-nav.html :: navlinks(${activeLink})"></div>
             </th:block>
-            <!--notifications-->
+
 
 
 
@@ -97,19 +123,50 @@
                     </li>
                 </ul>
             </div>
+            <!--notifications-->
+
         </div>
     </nav>
 </div>
 
+<!--Banner START-->
+<section class="cid-qxz61ptK8m" id="social-buttons3-c" data-rv-view="111">
+
+
+
+    <div class="mbr-overlay" style="opacity: 0.5; background-color: rgb(10, 10, 10);">
+    </div>
+
+    <div class="container banner">
+        <div class="media-container-row">
+            <div class="col-md-8 align-center">
+                <h2 class="pb-3 mbr-section-title mbr-fonts-style text-white">
+                    <strong th:text="${pageTitle}">
+                        Page title
+                    </strong>
+                </h2>
+
+            </div>
+        </div>
+    </div>
+</section>
+<!--Banner END-->
 <!-- Page Content -->
 <div class="container">
-    <th:block th:include="${content}"/>
+    <div class="card">
+        <div class="card-body">
+            <div class="m-t-25">
+                <th:block th:include="${content}"/>
+            </div>
+        </div>
+    </div>
+
     <div class="row align-items-center justify-content-center" style="margin-top: 50px">
-        <p>AppointmentScheduler v<span th:text="${currentVersion}">1.0</span></p>
+<!--        TODO: add content-->
     </div>
 </div>
 
-<script th:inline="javascript">
+<script >
     function fetchdata(){
         $.ajax({
             url: '/api/user/notifications',
@@ -136,6 +193,12 @@
     });
 
 </script>
+
+<script th:src="@{/assets1/smooth-scroll/smooth-scroll.js}"></script>
+<script th:src="@{/assets1/smooth-scroll/smooth-scroll.js}"></script>
+<script th:src="@{/assets1/jarallax/jarallax.min.js}"></script>
+<script th:src="@{/assets1/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/assets1/tether/tether.min.js}"></script>
 
 </body>
 

@@ -1,47 +1,102 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body}, '','Login form')}"
->
-<body>
-<div class="row" style="margin-top: 50px" ;>
-    <div class="col-lg-4 text-center"></div>
-    <div class="col-lg-4 text-center">
-        <div class="card">
-            <div class="card-header">
-                Sign in
-            </div>
-            <div class="card-body">
-                <form id="login-form" th:action="@{/perform_login}" method='POST' class="form-horizontal">
-                    <div th:if="${param.error != null}" class="alert alert-danger">
-                        Invalid username or password.
-                    </div>
-                    <div th:if="${createdUserName != null}" class="alert alert-success">
-                        <p>User <span th:text="${createdUserName}"></span> added!</p>
-                    </div>
-                    <div th:if="${param.logout != null}" class="alert alert-success">
-                        <p>Logged out successfully</p>
-                    </div>
-                    <div style="margin-bottom: 25px" class="input-group">
-                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                        <input type="text" id="username" name="username" placeholder="username" class="form-control">
-                    </div>
-                    <div style="margin-bottom: 25px" class="input-group">
-                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                        <input type="password" id="password" name="password" placeholder="password"
-                               class="form-control">
-                    </div>
-                    <div style="margin-top: 10px" class="input-group">
-                        <button type="submit" class="btn btn-success">Login</button>
-                    </div>
-                    <div style="margin-top: 10px" class="input-group">
+<html lang="en">
 
-                        <p>Need account? </p>
-                        <p>Create new <a th:href="@{/customers/new/retail}">Retail</a> or <a th:href="@{/customers/new/corporate}">Corporate</a> account</p>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Login</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" th:href="@{/assets/images/logo/favicon.png}">
+
+    <!-- page css -->
+    <!-- Core css -->
+    <link th:href="@{assets/css/app.min.css}" rel="stylesheet">
+
+</head>
+<body>
+<div class="app">
+    <div class="container-fluid p-h-0 p-v-20 bg full-height d-flex" th:style="@{background-image: url('assets/images/others/login-3.png')}">
+        <div class="d-flex flex-column justify-content-between w-100">
+            <div class="container d-flex h-100">
+                <div class="row align-items-center w-100">
+                    <div class="col-md-7 col-lg-5 m-h-auto">
+                        <div class="card shadow-lg">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center justify-content-between m-b-30">
+                                    <img class="img-fluid" alt="" th:src="@{/assets/images/logo/logo.png}">
+                                    <h2 class="m-b-0">Sign In</h2>
+                                </div>
+                                <form id="login-form" th:action="@{/perform_login}" method='POST' class="form-horizontal">
+                                    <!--Thông báo đăng nhập và đăng xuất-->
+                                    <div th:if="${param.error != null}" class="alert alert-danger">
+                                        Invalid username or password.
+                                    </div>
+                                    <div th:if="${createdUserName != null}" class="alert alert-success">
+                                        <p>User <span th:text="${createdUserName}"></span> added!</p>
+                                    </div>
+                                    <div th:if="${param.logout != null}" class="alert alert-success">
+                                        <p>Logged out successfully</p>
+                                    </div>
+
+                                    <div class="form-group input-group">
+                                        <label class="font-weight-semibold" for="username">Username:</label>
+                                        <div class="input-affix">
+                                            <i class="prefix-icon anticon anticon-user"></i>
+                                            <input type="text" class="form-control" id="username" name="username" placeholder="Username">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="font-weight-semibold" for="password">Password:</label>
+                                        <a class="float-right font-size-13 text-muted" href="">Forget Password?</a>
+                                        <div class="input-affix m-b-10">
+                                            <i class="prefix-icon anticon anticon-lock"></i>
+                                            <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                                <span class="font-size-13 text-muted">
+                                                    <p>Don't have an account? </p>
+                                                    <p>
+                                                        Create new
+                                                        <a  th:href="@{/customers/new/retail}"> Retail</a>
+                                                        or
+                                                        <a  th:href="@{/customers/new/corporate}"> Corporate</a>
+                                                    </p>
+                                                    account
+                                                </span>
+                                            <button class="btn btn-primary">Login</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                </form>
+                </div>
+            </div>
+            <div class="d-none d-md-flex p-h-40 justify-content-between">
+                <span class="">© 2019 ThemeNate</span>
+                <ul class="list-inline">
+                    <li class="list-inline-item">
+                        <a class="text-dark text-link" href="">Legal</a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a class="text-dark text-link" href="">Privacy</a>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
-    <div class="col-lg-4 text-center"></div>
 </div>
+
+<!--Login form-->
+<!-- Core Vendors JS -->
+<script type="text/javascript" th:inline="javascript" th:src="@{/assets/js/vendors.min.js}"></script>
+<!-- page js -->
+<!-- Core JS -->
+<script type="text/javascript" th:inline="javascript" th:src="@{/assets/js/app.min.js}"></script>
+
+
+
 </body>
-</html>

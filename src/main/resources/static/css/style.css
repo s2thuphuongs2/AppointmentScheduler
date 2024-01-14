@@ -1,0 +1,11 @@
+.thead-dark .thead-dark th {
+    /*background-color: #343a40;*/
+    background: #3a87ad ;
+    color: white;
+    border-radius: 10px 10px 0px 0px;
+}
+
+.table{
+    border-radius: 0px 0px 10px 10px;
+    /*box-shadow: 0px 0px 10px 0px #000000;*/
+}

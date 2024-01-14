@@ -18,7 +18,7 @@
             <table id="appointments" class="table" width="500px">
 
                 <tr th:each="appointment : ${eligibleAppointments}">
-                    <td><span th:text="${#temporals.format(appointment.start, 'dd-MM-yyyy HH:mm')}">10-01-2019 12:40</span></td>
+                    <td><span th:text="${#temporals.format(appointment.start, 'dd-MM-yyyy HH:mm')}">10-02-2024 12:40</span></td>
                 <td><a th:href="@{'/exchange/' +${appointmentId} + '/'+ ${appointment.id}}">Select</a> </td>
                 </tr>
 

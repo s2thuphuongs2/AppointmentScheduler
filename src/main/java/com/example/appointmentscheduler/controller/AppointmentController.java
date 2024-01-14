@@ -166,7 +166,6 @@ public class AppointmentController {
         return "redirect:/appointments/all";
     }
 
-
     public static String formatDuration(Duration duration) {
         long s = duration.getSeconds();
         return String.format("%dh%02dm", s / 3600, (s % 3600) / 60);

@@ -36,30 +36,58 @@ public class LoginPageIT {
     @LocalServerPort
     private int port;
 
+    /**
+     * @param port
+     * @param chrome
+     * Rule annotation is used to define the order of execution of the test methods.
+     * @see <a href="https://www.testcontainers.org/test_framework_integration/manual_lifecycle_control/#singleton-containers">Singleton Containers</a>
+     * @Description: This method is used to run the test cases in the order of the methods.
+     */
     @Rule
     public BrowserWebDriverContainer chrome = new BrowserWebDriverContainer()
             .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.RECORD_ALL, new File("./target/"))
             .withCapabilities(new ChromeOptions());
 
+    /**
+     * This method is used to test the login page and successfully login
+     * to admin account using admin credentials.
+     * Test annotation is used to run the test cases.
+     *
+     */
     @Test
     public void shouldShowLoginPageAndSuccessfullyLoginToAdminAccountUsingAdminCredentials() {
+        // Get the driver
         RemoteWebDriver driver = chrome.getWebDriver();
+        // Get the url of the application using the port number
         String url = "http://host.testcontainers.internal:" + port + "/";
+        // Load the url in the browser
         driver.get(url);
-
+        // Search for the HTML element using the id name "login-form" and store it in the variable
         WebElement elementById = driver.findElementById("login-form");
+        // Search for the element has id "username" and send the keys "admin" to it
         driver.findElementById("username").sendKeys("admin");
+        // Search for the element has id "password" and send the keys "password" to it
         driver.findElementById("password").sendKeys("qwerty123");
+        // Search for the element has tag name "button" and click on it
         driver.findElementByTagName("button").click();
 
+        // Search for the element has *link text* "Appointments" and store it in the variable
         WebElement appointments = driver.findElementByLinkText("Appointments");
 
+        // Kiem tra xem ptu "login-form" co ton tai hay khong, dam bao rang da dang nhap thanh cong
         assertNotNull(elementById);
+        // Kiem tra xem ptu lien ket van ban "Appointments" co ton tai hay khong,
+        // dam bao rang dang nhap thanh cong se chuyen huong den trang Appointment.
         assertNotNull(appointments);
     }
 
+    /**
+     * This method is used to test the login page and successfully login
+     * to retail customer account using retail customer credentials.
+     */
     @Test
     public void shouldLoginAsRetailCustomerAndSuccessfullyBookNewAppointment() {
+        // Get the driver
         RemoteWebDriver driver = chrome.getWebDriver();
         String url = "http://host.testcontainers.internal:" + port + "/";
 

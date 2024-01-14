@@ -1,15 +1,32 @@
 <th:block th:fragment="navlinks(activeLink)">
-    <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item " th:classappend="${activeLink} == 'home' ? 'active':''">
-                <a class="nav-link" th:href="@{/}">Home</a>
-            </li>
-            <li class="nav-item" th:classappend="${activeLink} == 'appointments' ? 'active':''">
-                <a class="nav-link" th:href="@{/appointments/all}">Appointments</a>
-            </li>
-            <li class="nav-item" th:classappend="${activeLink} == 'account' ? 'active':''">
-                <a class="nav-link" th:href="@{'/customers/' + ${#authentication.principal.id}}">My account</a>
-            </li>
-        </ul>
+    <!--Menu START-->
+    <div class="menu-logo">
+        <div class="navbar-brand">
+
+                <span class="navbar-caption-wrap">
+                    <a class="navbar-caption text-white" th:href="@{/}">
+                        WebDatLich
+                    </a>
+                </span>
+        </div>
     </div>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent navbarResponsive">
+        <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+            <ul class="navbar-nav flex-grow-1 mr-auto">
+                <li class="nav-item " th:classappend="${activeLink} == 'home' ? 'active':''">
+                    <a class="nav-link" th:href="@{/}">Home</a>
+                </li>
+                <li class="nav-item" th:classappend="${activeLink} == 'appointments' ? 'active':''">
+                    <a class="nav-link" th:href="@{/appointments/all}">Appointments</a>
+                </li>
+                <li class="nav-item" th:classappend="${activeLink} == 'account' ? 'active':''">
+                    <a class="nav-link" th:href="@{'/customers/' + ${#authentication.principal.id}}">My account</a>
+                </li>
+            </ul>
+        </div>
+        <!--Menu end-->
+
+
+    </div>
+    <!--Menu END-->
 </th:block>

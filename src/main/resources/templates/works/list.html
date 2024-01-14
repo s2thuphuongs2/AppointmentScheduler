@@ -9,32 +9,32 @@
 <div class="row align-items-center justify-content-center" style="margin-top: 50px">
     <div>
         <table id="works" class="table text-center">
-            <thead class="thead-dark">
+            <thead class="thead-primary" style="background-color: #e3f2fd;">
             <tr>
-                <th> Name</th>
-                <th> Target</th>
-                <th> Price</th>
-                <th> Duration</th>
-                <th> Providers</th>
-                <th> Action</th>
+                <th> Nội dung</th>
+                <th> Đối tượng</th>
+                <th> Chi phí</th>
+                <th> Thời lượng</th>
+                <th> Người tạo lịch</th>
+                <th> </th>
             </tr>
             </thead>
             <tbody>
             <tr th:if="${works == null}">
-                <td colspan="4"> No Works Available</td>
+                <td colspan="4"> Không có nội dung hẹn nào</td>
             </tr>
 
             <tr th:each="work : ${works}"
                 th:classappend="${work.targetCustomer=='retail'} ? table-primary : table-info">
                 <td><span th:text="${work.name}"> english </span></td>
-                <td><span th:text="${work.targetCustomer}"> retail </span></td>
-                <td><span th:text="${work.price + ' PLN'}"> 50 PLN </span></td>
-                <td><span th:text="${work.duration+' min'}"> 30 min </span></td>
+                <td><span th:text="${work.targetCustomer}"> cá nhân </span></td>
+                <td><span th:text="${work.price + ' VND'}"> 50000 VND </span></td>
+                <td><span th:text="${work.duration+' phút'}"> 30 phút </span></td>
                 <td><span th:text="${work.providers.size()}"> 2 </span></td>
-                <td><a class="btn btn-secondary" th:href="@{'/works/' + ${work.id}}" role="button">Details</a>
+                <td><a class="btn btn-secondary" th:href="@{'/works/' + ${work.id}}" role="button">Chi tiết</a>
                     <form class="d-inline-block" th:action="@{/works/delete}" method="POST">
                         <input type="hidden" name="workId" th:value="${work.id}" />
-                        <button type="submit" name="submit" value="value" class="btn btn-danger">Delete</button>
+                        <button type="submit" name="submit" value="value" class="btn btn-danger">Xóa</button>
                     </form>
                 </td>
             </tr>
@@ -44,7 +44,7 @@
 
 </div>
 <div class="row align-items-center justify-content-center" style="margin-top: 50px">
-    <a class="btn btn-primary" th:href="@{/works/new}" role="button">New work</a>
+    <a class="btn btn-primary" th:href="@{/works/new}" role="button">Nội dung mới</a>
 </div>
 
 

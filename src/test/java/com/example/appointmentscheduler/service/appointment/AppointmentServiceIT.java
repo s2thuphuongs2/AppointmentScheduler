@@ -29,14 +29,21 @@ public class AppointmentServiceIT {
     @Autowired
     private AppointmentService appointmentService;
 
+    /**
+     * Test case for {@link AppointmentService#getAllAppointments()}
+     *
+     */
     @Test
     @Transactional
     @WithUserDetails("admin")
     public void shouldSaveNewRetailCustomer() {
+        // Creating a new appointment with  workId= 1, providerId= 3, customerId = 3, time = 2020-02-09 12:00:00
         appointmentService.createNewAppointment(1, 2, 3, LocalDateTime.of(2020, 02, 9, 12, 0, 0));
-
+        // Retrieving all appointments
         List<Appointment> appointmentByProviderId = appointmentService.getAllAppointments();
+        // Asserting that the size of the appointment list is 2
         assertThat(appointmentByProviderId).hasSize(2);
+        // Asserting that the status of the first appointment in the list is "SCHEDULED"
         Assert.assertEquals(AppointmentStatus.SCHEDULED, appointmentByProviderId.get(0).getStatus());
 
     }

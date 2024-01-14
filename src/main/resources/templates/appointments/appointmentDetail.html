@@ -8,7 +8,7 @@
 
     <div class="container">
         <div class="row justify-content-center">
-            <div clas="col-md-1">
+            <div class="col-md-1">
             </div>
             <div th:if="${appointment.exchangeRequest !=null && appointment.exchangeRequest.getStatus().name()== 'PENDING'}" class="col-md-9 p-3 mb-2 bg-warning text-dark text-center">
                 <p>Someone requested this appointment to be exchanged.</p>
@@ -32,6 +32,7 @@
                     <input type="submit" class="btn btn-danger" value="Reject" />
                 </form>
             </div>
+
             <div th:if="${allowedToAcceptRejection}" class="col-md-9 p-3 mb-2 bg-warning text-dark text-center">
                 <p>Customer claims that this appointment didn't take place.</p>
                 <p>If you agree with that, click the button below:</p>
@@ -110,7 +111,7 @@
                             <p>This appointment cannot be exchanged.</p>
                         </td>
                     </tr>
-                    
+
                     <tr>
                         <td><b>cancellation</b></td>
                         <td th:if="${allowedToCancel}">
@@ -127,7 +128,7 @@
                 </table>
 
             </div>
-            <div class="col-md-5">
+            <div class="col-md-5 chat-conversation">
 
                 <div class="chatbody">
                     <div class="panel panel-primary">
@@ -143,8 +144,8 @@
 
                         <div class="panel-body msg_container_base">
                             <div th:each="chatMessage : ${appointment.chatMessages}" class="row msg_container base_receive">
-                                <div class="col-md-12 col-xs-12">
-                                    <div class="messages msg_receive">
+                                <div class="col-md-12 col-xs-12 conversation-list">
+                                    <div class="messages msg_receive ctext-wrap">
                                         <p th:text="${chatMessage.message}">messae</p>
                                         <time datetime="2009-11-13T20:00"><span
                                                 th:text="${chatMessage.author.firstName}">author</span> • <span
