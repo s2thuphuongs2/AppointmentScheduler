@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'exchange','Appointments eligible to exchange')}"
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'exchange','Danh sách cuộc hẹn đủ điều kiện để trao đổi')}"
       xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <body>
@@ -10,7 +10,7 @@
             <div clas="col-md-1">
             </div>
             <div>
-                <p>There are <span th:text="${numberOfEligibleAppointments}"> 3</span> appointments that you can exchange with. Please select one.</p>
+                <p>Có <span th:text="${numberOfEligibleAppointments}"> 3</span> lịch hẹn bạn có thể trao đổi. Hãy chọn một.</p>
             </div>
         </div>
 
@@ -19,7 +19,7 @@
 
                 <tr th:each="appointment : ${eligibleAppointments}">
                     <td><span th:text="${#temporals.format(appointment.start, 'dd-MM-yyyy HH:mm')}">10-02-2024 12:40</span></td>
-                <td><a th:href="@{'/exchange/' +${appointmentId} + '/'+ ${appointment.id}}">Select</a> </td>
+                <td><a th:href="@{'/exchange/' +${appointmentId} + '/'+ ${appointment.id}}">Chọn</a> </td>
                 </tr>
 
             </table>

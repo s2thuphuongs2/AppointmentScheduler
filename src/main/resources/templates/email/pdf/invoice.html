@@ -113,8 +113,8 @@
                         </td>
 
                         <td>
-                            <span th:text="${invoice.number}" id="number">FV/2019/03/42</span><br />
-                            Issued: <span th:text="${#temporals.format(invoice.issued, 'dd-MM-yyyy')}">Issued: 01-03-2019</span><br/>
+                            <span th:text="${invoice.number}" id="number">TDT/2019/03/42</span><br />
+                            Ngày xuất: <span th:text="${#temporals.format(invoice.issued, 'dd-MM-yyyy')}">Issued: 01-03-2019</span><br/>
                         </td>
                     </tr>
                 </table>
@@ -166,7 +166,7 @@
             </td>
 
             <td>
-                <span th:text="${appointment.work.price}">50 PLN</span> PLN
+                <span th:text="${appointment.work.price}">50 VND</span> VND
             </td>
         </tr>
 
@@ -174,7 +174,7 @@
             <td></td>
 
             <td>
-                Total: <span th:text="${invoice.totalAmount}">50 PLN</span> PLN
+                Total: <span th:text="${invoice.totalAmount}">50 VND</span> VND
             </td>
         </tr>
     </table>

@@ -7,14 +7,14 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/appointments/all}"
-                   th:classappend="${activeLink} == 'appointments' ? 'active':''">Appointments</a>
+                   th:classappend="${activeLink} == 'appointments' ? 'active':''">Danh sách lịch hẹn</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/providers/availability}"
-                   th:classappend="${activeLink} == 'availability' ? 'active':''">Availability</a>
+                   th:classappend="${activeLink} == 'availability' ? 'active':''">Khả dụng</a>
             </li>
             <li class="nav-item" th:classappend="${activeLink} == 'account' ? 'active':''">
-                <a class="nav-link" th:href="@{'/providers/' + ${#authentication.principal.id}}">My account</a>
+                <a class="nav-link" th:href="@{'/providers/' + ${#authentication.principal.id}}">Tài khoản của tôi</a>
             </li>
         </ul>
     </div>

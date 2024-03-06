@@ -17,10 +17,10 @@
                     <a class="nav-link" th:href="@{/}">Home</a>
                 </li>
                 <li class="nav-item" th:classappend="${activeLink} == 'appointments' ? 'active':''">
-                    <a class="nav-link" th:href="@{/appointments/all}">Appointments</a>
+                    <a class="nav-link" th:href="@{/appointments/all}">Danh sách lịch hẹn</a>
                 </li>
                 <li class="nav-item" th:classappend="${activeLink} == 'account' ? 'active':''">
-                    <a class="nav-link" th:href="@{'/customers/' + ${#authentication.principal.id}}">My account</a>
+                    <a class="nav-link" th:href="@{'/customers/' + ${#authentication.principal.id}}">Tài khoản của tôi</a>
                 </li>
             </ul>
         </div>

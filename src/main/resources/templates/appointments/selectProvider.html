@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'','Select provider')}"
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'','Chọn người đặt lịch')}"
       xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <body>
@@ -13,9 +13,9 @@
                 <h5 class="card-title"><span th:text="${provider.firstName +' ' +provider.lastName}"> Name
                             Lastname</span></h5>
                 <p sec:authorize="hasRole('ROLE_CUSTOMER_RETAIL')"
-                   th:text="${'Available works: '+ provider.getRetailWorks().size()}">Available works: 3</p>
+                   th:text="${'Nội dung hẹn có sẵn: '+ provider.getRetailWorks().size()}">Nội dung hẹn có sẵn: 3</p>
                 <p sec:authorize="hasRole('ROLE_CUSTOMER_CORPORATE')"
-                   th:text="${'Available works: '+ provider.getCorporateWorks().size()}">Available works: 3</p>
+                   th:text="${'Nội dung hẹn có sẵn: '+ provider.getCorporateWorks().size()}">Nội dung hẹn có sẵn: 3</p>
                 <a th:href="@{'/appointments/new/'+${provider.id}}" class="btn btn-primary">Select</a>
 
             </div>

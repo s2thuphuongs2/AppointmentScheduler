@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'','Select service')}"
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'','Chọn dịch vụ/nội dung')}"
       xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <body>
@@ -9,23 +9,23 @@
             <table id="customers" class="table table-striped text-center">
                 <thead class="thead-primary" style="background-color: #e3f2fd;">
                 <tr>
-                    <th> Name</th>
-                    <th> Duration</th>
-                    <th> Price</th>
-                    <th> Action</th>
+                    <th> Nội dung</th>
+                    <th> Thời lượng</th>
+                    <th> Chi phí</th>
+                    <th> Hoạt động</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:if="${works == null}">
-                    <td colspan="4"> No works available</td>
+                    <td colspan="4"> Không có nội dung hẹn.</td>
                 </tr>
                 <tr th:each="work : ${works}">
                     <td><span th:text="${work.name}"> work name </span></td>
-                    <td><span th:text="${work.duration }"> 30 min </span></td>
+                    <td><span th:text="${work.duration }"> 30 phút </span></td>
                     <td><span th:text="${work.price}"> 3 </span></td>
                     <td><a class="btn btn-primary"
                            th:href="@{'/appointments/new/'+${providerId} +'/'+ ${work.id}}"
-                           role="button">Select</a>
+                           role="button">Chọn</a>
                     </td>
                 </tr>
                 </tbody>

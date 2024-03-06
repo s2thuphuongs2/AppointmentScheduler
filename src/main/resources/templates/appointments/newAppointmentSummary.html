@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{fragments/layout :: layout (~{::body},'appointments','New appointment confirmation')}"
+      th:replace="~{fragments/layout :: layout (~{::body},'appointments','Xác nhận cuộc hẹn mới')}"
       xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <body>
@@ -41,11 +41,11 @@
 
             <tr>
                 <td><b>price</b></td>
-                <td><span th:text="${work.price}"> 50 </span> pln</td>
+                <td><span th:text="${work.price}"> 50 </span> VND</td>
             </tr>
 
             <tr>
-                <td><b>cancellable by customer?</b></td>
+                <td><b>người đặt lịch?</b></td>
                 <td><p th:text="${work.editable ? 'Yes':'No, only by provider'}">Yes</p></td>
             </tr>
             <tr class="text-center">
@@ -56,7 +56,7 @@
                         <input type="hidden" name="start" th:value="${start}">
 
 
-                        <button type="submit" class="btn btn-primary">Book</button>
+                        <button type="submit" class="btn btn-primary">Đặt</button>
                     </form>
 
                 </td>

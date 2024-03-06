@@ -4,14 +4,14 @@
 <head></head>
 
 <body>
-<p>Hello, <span th:text="${appointment.provider.firstName}"></span></p>
-<p>You customer claims that the following appointment didn't take place: </p>
-<p>Customer: <span th:text="${appointment.customer.firstName + ' ' + appointment.customer.lastName}"></span></p>
-<p>Start date: <span th:text="${#temporals.format(appointment.start, 'dd-MM-yyyy HH:mm')}"></span></p>
-<p>Work: <span th:text="${appointment.work.name}"></span></p>
-<p>Duration: <span th:text="${appointment.work.duration}"></span></p>
-<p>Price: <span th:text="${appointment.work.price}"></span></p>
-<p>If you agree with that, click <a th:href="${url}">here</a></p>
+<p>Chào bạn, <span th:text="${appointment.provider.firstName}"></span></p>
+<p>Bên đặt lích của bạn khiếu nại rằng cuộc hẹn sau đã không diễn ra: </p>
+<p>Người đặt lịch <span th:text="${appointment.customer.firstName + ' ' + appointment.customer.lastName}"></span></p>
+<p>Ngày bắt đầu: <span th:text="${#temporals.format(appointment.start, 'dd-MM-yyyy HH:mm')}"></span></p>
+<p>Nội dung: <span th:text="${appointment.work.name}"></span></p>
+<p>Thời lượng: <span th:text="${appointment.work.duration}"></span></p>
+<p>Chi phí: <span th:text="${appointment.work.price}"></span></p>
+<p>Nếu cuộc hẹn thực sự chưa diễn ra, nhấp vào <a th:href="${url}">đây.</a></p>
 
 </body>
 

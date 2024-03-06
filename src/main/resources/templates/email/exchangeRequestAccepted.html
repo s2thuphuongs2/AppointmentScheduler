@@ -4,12 +4,12 @@
 <head></head>
 
 <body>
-<p>Hello, <span th:text="${exchangeRequest.getRequested().getCustomer().getFirstName()}"></span></p>
-<p>Someone accepted you request to exchange your appointments. </p>
-<p>Your old appointment date was: <span th:text="${#temporals.format(exchangeRequest.getRequested().getStart(), 'dd-MM-yyyy HH:mm')}"></span></p>
-<p>Your new appointment date is: <span th:text="${#temporals.format(exchangeRequest.getRequestor().getStart(), 'dd-MM-yyyy HH:mm')}"></span></p>
+<p>Chào bạn, <span th:text="${exchangeRequest.getRequested().getCustomer().getFirstName()}"></span></p>
+<p>Ai đó đã chấp nhận yêu cầu trao đổi cuộc hẹn của bạn. </p>
+<p>Ngày hẹn cũ: <span th:text="${#temporals.format(exchangeRequest.getRequested().getStart(), 'dd-MM-yyyy HH:mm')}"></span></p>
+<p>Ngày hẹn mới: <span th:text="${#temporals.format(exchangeRequest.getRequestor().getStart(), 'dd-MM-yyyy HH:mm')}"></span></p>
 
-<p>Click <a th:href="${url}">here</a> to see your appointment.</p>
+<p>Click <a th:href="${url}">vào đây</a> để xem thông tin cuộc hẹn.</p>
 
 </body>
 </html>

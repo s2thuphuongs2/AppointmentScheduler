@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{fragments/layout :: layout (~{::body},'invoices','Available invoices')}"
+      th:replace="~{fragments/layout :: layout (~{::body},'invoices','Hóa đơn')}"
       xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <body>
@@ -15,17 +15,17 @@
             <thead class="thead-primary" style="background-color: #e3f2fd;">
 
             <tr >
-                <th> Number</th>
-                <th> Issued</th>
-                <th> Status</th>
-                <th> Total price</th>
-                <th> Customer</th>
-                <th> Action</th>
+                <th> Mã hóa đơn</th>
+                <th> Ngày cấp</th>
+                <th> Trạng thái</th>
+                <th> Tổng chi phí</th>
+                <th> Người đặt lịch</th>
+                <th> Hành động</th>
             </tr>
             </thead>
             <tbody>
             <tr th:if="${invoices == null}">
-                <td colspan="4"> No Invoices Available</td>
+                <td colspan="4"> Không có hóa đơn nào.</td>
             </tr>
             <tr th:each="invoice : ${invoices}">
                 <td><span th:text="${invoice.number}"> HD/2019/02/03 </span></td>
@@ -35,11 +35,11 @@
                 <td><span th:text="${invoice.totalAmount +' VND'}"> 60.00 VND</span></td>
                 <td><span th:text="${invoice.appointments[0].customer.firstName + ' '+invoice.appointments[0].customer.lastName}">Jan Kowalski</span></td>
                 <td>
-                    <a class="btn btn-secondary" th:href="@{'/invoices/download/' + ${invoice.id}}" role="button">Download</a>
+                    <a class="btn btn-secondary" th:href="@{'/invoices/download/' + ${invoice.id}}" role="button">Tải hóa đơn</a>
                     <form th:if="${invoice.status=='issued'}" class="d-inline-block"
                           th:action="@{'/invoices/paid/' + ${invoice.id}}" method="POST">
                         <input type="hidden" name="invoiceId" th:value="${invoice.id}"/>
-                        <button type="submit" name="submit" value="value" class="btn btn-success">Mark as paid</button>
+                        <button type="submit" name="submit" value="value" class="btn btn-success">Đã trả</button>
                     </form>
                 </td>
             </tr>
@@ -49,7 +49,7 @@
 
 </div>
 <div class="row align-items-center justify-content-center">
-    <a style="margin-bottom: 5px"  th:href="@{/invoices/issue}" class="btn btn-success" role="button" aria-pressed="true">Issue invoices manually</a>
+    <a style="margin-bottom: 5px"  th:href="@{/invoices/issue}" class="btn btn-success" role="button" aria-pressed="true">Xuất hóa đơn</a>
 </div>
 </body>
 </html>

@@ -1,47 +1,45 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"
-      th:replace="~{fragments/layout :: layout (~{::body},'appointments','Customer appointments')}">
-
+      th:replace="~{fragments/layout :: layout (~{::body},'appointments','Danh sách đặt lịch hẹn')}">
 <body>
 
 <!-- Page Content -->
 <div class="row align-items-center justify-content-center" style="margin-top: 50px">
     <!-- chuyển đến trang tạo lịch hẹn mới -->
     <div th:fragment="customerAppointments">
-
-                    <table id="appointments" class="table text-center">
+        <table id="appointments" class="table text-center">
                         <thead class="thead-primary" style="background-color: #e3f2fd;">
                         <tr>
-                            <th> Work</th>
-                            <th> Status</th>
-                            <th> Start</th>
-                            <th sec:authorize="!hasRole('ROLE_PROVIDER')"> Provider</th>
-                            <th sec:authorize="!hasRole('ROLE_CUSTOMER')"> Customer</th>
-                            <th> Duration</th>
-                            <th> Action</th>
+                            <th> Nội dung</th>
+                            <th> Trạng thái</th>
+                            <th> Bắt đầu</th>
+                            <th sec:authorize="!hasRole('ROLE_PROVIDER')"> Người tạo lịch</th>
+                            <th sec:authorize="!hasRole('ROLE_CUSTOMER')"> Người tạo lịch</th>
+                            <th> Thời lượng</th>
+                            <th> Hoạt động</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr th:if="${appointments == null}">
-                            <td colspan="2"> No Appointments Available</td>
+                            <td colspan="2"> Không có lịch hẹn nào </td>
                         </tr>
                         <tr th:each="appointment : ${appointments}"
                             th:classappend="${appointment.status.name() == 'CANCELED' || appointment.status.name()  == 'FINISHED' || appointment.status.name()  == 'INVOICED' || appointment.status.name()  == 'REJECTION_REQUESTED' || appointment.status.name()  == 'REJECTED'} ? table-secondary : table-success">
-                            <td><span th:text="${appointment.work.name}"> Work </span></td>
+                            <td><span th:text="${appointment.work.name}"> Nội dung </span></td>
                             <td><span th:text="${appointment.status}"> scheduled </span></td>
                             <td><span th:text="${#temporals.format(appointment.start, 'yyyy-MM-dd HH:mm')}"> 21-01-2019 15:00</span>
                             </td>
                             <td sec:authorize="!hasRole('ROLE_PROVIDER')"><span
                                     th:text="${appointment.provider.firstName + ' ' + appointment.provider.lastName}">
-                                Provider </span>
+                                Người tạo lịch </span>
                             </td>
                             <td sec:authorize="!hasRole('ROLE_CUSTOMER')"><span
                                     th:text="${appointment.customer.firstName + ' ' + appointment.customer.lastName}">
-                                Customer </span>
+                                Người đặt lịch </span>
                             </td>
-                            <td><span th:text="${appointment.work.duration + ' min'}"> 60 min </span></td>
+                            <td><span th:text="${appointment.work.duration + ' phút'}"> 60 phút </span></td>
                             <td><a class="btn btn-secondary" th:href="@{'/appointments/' + ${appointment.id}}"
-                                   role="button">Details</a></td>
+                                   role="button">Chi tiết</a></td>
                         </tr>
                         </tbody>
                         <tfoot class="text-primary">
@@ -59,7 +57,7 @@
 
 
         <div sec:authorize="hasRole('ROLE_CUSTOMER')" class="text-center">
-            <a class="btn btn-primary mt-2" th:href="@{/appointments/new}" role="button">New appointment</a>
+            <a class="btn btn-primary mt-2" th:href="@{/appointments/new}" role="button">Tạo lịch hẹn mới</a>
         </div>
 
     </div>
@@ -75,7 +73,7 @@
                 ],
                 "initComplete": function () {
                     this.api().columns([1]).every(function () {
-                        $("div.toolbar").html('<div id="my_filter" style="margin-bottom: 10px">Status filter: </div>');
+                        $("div.toolbar").html('<div id="my_filter" style="margin-bottom: 10px">Lọc trạng thái: </div>');
                         var column = this;
                         column.search('^SCHEDULED$', true, false).draw();
                         var select = $('<select name="statuses"><option value="SCHEDULED">SCHEDULED</option></select>')

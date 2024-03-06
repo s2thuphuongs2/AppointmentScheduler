@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{fragments/layout :: layout (~{::body},'appointments','Appointment detail')}"
+      th:replace="~{fragments/layout :: layout (~{::body},'appointments','Chi tiết cuộc hẹn')}"
       xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <body>
@@ -11,7 +11,7 @@
             <div class="col-md-1">
             </div>
             <div th:if="${appointment.exchangeRequest !=null && appointment.exchangeRequest.getStatus().name()== 'PENDING'}" class="col-md-9 p-3 mb-2 bg-warning text-dark text-center">
-                <p>Someone requested this appointment to be exchanged.</p>
+                <p>Có người yêu cầu trao đổi cuộc hẹn này.</p>
 
                 <form th:action="@{/exchange/reject}" method='POST'>
                     <input type="hidden" name="exchangeId" th:value="${appointment.exchangeRequest.id}">
@@ -23,9 +23,8 @@
                 </form>
             </div>
             <div th:if="${allowedToRequestRejection}" class="col-md-9 p-3 mb-2 bg-warning text-dark text-center">
-                <p>You have <span class="font-weight-bold" th:text="${remainingTime}">3h 45m</span> to deny that
-                    this appointment took place.</p>
-                <p>After that time it will be invoiced automatically.</p>
+                <p>Bạn có <span class="font-weight-bold" th:text="${remainingTime}">3h 45m</span> để báo cuộc hẹn này chưa diễn ra.</p>
+                <p>Sau thời gian đó hệ thống sẽ tự động xuất hoá đơn</p>
 
                 <form th:action="@{/appointments/reject}" method='POST'>
                     <input type="hidden" name="appointmentId" th:value="${appointment.id}">
@@ -34,8 +33,8 @@
             </div>
 
             <div th:if="${allowedToAcceptRejection}" class="col-md-9 p-3 mb-2 bg-warning text-dark text-center">
-                <p>Customer claims that this appointment didn't take place.</p>
-                <p>If you agree with that, click the button below:</p>
+                <p>Người đặt lịch báo cáo cuộc hẹn này không diễn ra</p>
+                <p>Nếu đúng như vậy, vui lòng click đây:</p>
 
                 <form th:action="@{/appointments/acceptRejection}" method='POST'>
                     <input type="hidden" name="appointmentId" th:value="${appointment.id}">
@@ -55,55 +54,54 @@
                         <td><span th:text="${appointment.status}"> scheduled </span></td>
                     </tr>
                     <tr th:if="${appointment.status.name()=='CANCELED'}">
-                        <td><b>canceled by</b></td>
+                        <td><b>bị hủy bởi</b></td>
                         <td><span
-                                th:text="${appointment.canceler.firstName+' '+appointment.canceler.lastName}">Canceller
-                            name</span>
+                                th:text="${appointment.canceler.firstName+' '+appointment.canceler.lastName}">Người hủy</span>
                         </td>
 
                     </tr>
 
                     <tr>
-                        <td><b>date</b></td>
+                        <td><b>ngày</b></td>
                         <td><span th:text="${#temporals.format(appointment.start, 'dd-MM-yyyy')}">10-01-2019</span></td>
                     </tr>
                     <tr>
-                        <td><b>time</b></td>
+                        <td><b>giờ</b></td>
                         <td><span th:text="${#temporals.format(appointment.start, 'HH:mm')+' - '+ #temporals.format(appointment.end, 'HH:mm')}">14:00 - 15:00</span>
                         </td>
                     </tr>
                     <tr>
-                        <td><b>customer</b></td>
+                        <td><b>khách</b></td>
                         <td><span th:text="${appointment.customer.firstName+' '+appointment.customer.lastName}">Peter Kowalski</span>
                         </td>
                     </tr>
                     <tr>
-                        <td><b>provider</b></td>
+                        <td><b>chủ lịch hẹn</b></td>
                         <td><span th:text="${appointment.provider.firstName+' '+appointment.provider.lastName}">Marian Nowak</span>
                         </td>
                     </tr>
 
                     <tr>
-                        <td><b>work</b></td>
+                        <td><b>nội dung</b></td>
                         <td><span th:text="${appointment.work.name}"> english </span></td>
                     </tr>
                     <tr>
-                        <td><b>description</b></td>
+                        <td><b>mô tả</b></td>
                         <td><span th:text="${appointment.work.description}">description</span></td>
                     </tr>
 
 
                     <tr>
-                        <td><b>price</b></td>
-                        <td><span th:text="${appointment.work.price}"> 50 </span> pln</td>
+                        <td><b>chi phí</b></td>
+                        <td><span th:text="${appointment.work.price}"> 50 </span> VND</td>
                     </tr>
                     <tr th:if="${appointment.status.name()=='INVOICED'}">
-                        <td><b>invoice</b></td>
-                        <td><a th:href="@{'/invoices/download/'+${appointment.invoice.id}}">download</a></td>
+                        <td><b>hóa đơn</b></td>
+                        <td><a th:href="@{'/invoices/download/'+${appointment.invoice.id}}">tải</a></td>
                     </tr>
 
                     <tr>
-                        <td><b>exchange</b></td>
+                        <td><b>trao đổi</b></td>
                         <td th:if="${allowedToExchange}">
                             <a th:href="@{'/exchange/'+${appointment.id}}">exchange</a>
                         </td>
@@ -113,7 +111,7 @@
                     </tr>
 
                     <tr>
-                        <td><b>cancellation</b></td>
+                        <td><b>trường hợp hủy</b></td>
                         <td th:if="${allowedToCancel}">
                             <form th:action="@{/appointments/cancel}" method='POST'>
                                 <input type="hidden" name="appointmentId" th:value="${appointment.id}">
@@ -121,7 +119,7 @@
                             </form>
                         </td>
                         <td th:unless="${allowedToCancel}">
-                            <p th:text="${cancelNotAllowedReason}">Reason why appointment cannot be cancelled.</p>
+                            <p th:text="${cancelNotAllowedReason}">Lý do không thể hủy cuộc hẹn.</p>
                         </td>
                     </tr>
 
@@ -135,7 +133,7 @@
                         <div class="panel-heading top-bar">
                             <div class="col-md-8 col-xs-8">
                                 <p>
-                                    Appointment chat with
+                                    Chat hẹn với
                                     <span sec:authorize="hasRole('ROLE_PROVIDER')" th:text="${appointment.customer.firstName}"></span>
                                     <span sec:authorize="hasRole('ROLE_CUSTOMER')" th:text="${appointment.provider.firstName}"></span>
                                 </p>
@@ -158,9 +156,9 @@
                         <form th:action="@{/appointments/messages/new}" th:object="${chatMessage}" method='POST'>
                             <div class="input-group mb-3">
                                 <input type="hidden" name="appointmentId" th:value="${appointment.id}">
-                                <input type="text" class="form-control" th:field="*{message}" placeholder="Write your message here..." aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                <input type="text" class="form-control" th:field="*{message}" placeholder="Nhắn gì đó..." aria-label="Recipient's username" aria-describedby="basic-addon2">
                                 <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary" type="submit">Send</button>
+                                    <button class="btn btn-outline-secondary" type="submit">Gửi</button>
                                 </div>
                             </div>
                         </form>

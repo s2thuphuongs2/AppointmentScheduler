@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'customers','Customers')}"
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'customers','Danh sách người đặt lích')}"
       xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <body>
@@ -11,19 +11,19 @@
 <!--            // TODO: change colors-->
             <thead class="thead-primary" style="background-color: #e3f2fd;">
             <tr>
-                <th> Name</th>
-                <th> Type </th>
+                <th> Tên</th>
+                <th> Đối tượng </th>
                 <th> E-mail</th>
-                <th> Appointments</th>
-                <th> Action</th>
+                <th> Các cuộc hẹn</th>
+                <th> Hành động</th>
             </tr>
             </thead>
             <tbody>
             <tr th:if="${customers == null}">
-                <td colspan="4"> No Providers Available</td>
+                <td colspan="4"> Không có người tạo lịch nào.</td>
             </tr>
             <tr th:each="customer : ${customers}" th:classappend="${customer.getType()=='retail' ? 'table-primary' : 'table-info'}">
-                <td><span th:text="${customer.firstName +' ' + customer.lastName}"> Name Lastname </span></td>
+                <td><span th:text="${customer.firstName +' ' + customer.lastName}"> Họ và Tên </span></td>
                 <td><span th:text="${customer.getType() == 'retail'? 'retail':'corporate'}"> retail </span></td>
                 <td><span th:text="${customer.email }"> email </span></td>
                 <td><span th:text="${customer.appointments.size() }"> 3 </span></td>
