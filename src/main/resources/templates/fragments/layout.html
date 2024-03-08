@@ -113,13 +113,13 @@
                         </a>
                     </li>
                     <li>
-                        <p class="navbar-nav ml-auto navbar-text"> Logged as:
+                        <p class="navbar-nav ml-auto navbar-text"> Đăng nhập bởi:
                             <span sec:authentication="name">username</span> | </p>
                     </li>
                     <li>
                         <form th:action="@{/perform_logout}" id="logout" method="POST">
                             <a class="nav-link" href="#"
-                               onclick="document.getElementById('logout').submit(); return false;">Log out</a>
+                               onclick="document.getElementById('logout').submit(); return false;">Đăng xuất</a>
                         </form>
                     </li>
                 </ul>

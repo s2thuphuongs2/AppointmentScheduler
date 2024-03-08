@@ -1,5 +1,6 @@
 package com.example.appointmentscheduler.entity;
 
+import java.util.ResourceBundle;
 public enum AppointmentStatus {
     SCHEDULED,
     FINISHED,
@@ -9,5 +10,11 @@ public enum AppointmentStatus {
     DENIED,
     REJECTION_REQUESTED,
     REJECTED,
-    EXCHANGE_REQUESTED
+    EXCHANGE_REQUESTED;
+    private static final ResourceBundle messages = ResourceBundle.getBundle("messages", new java.util.Locale("vi"));
+
+    public String getDisplayName() {
+        return messages.getString("appointment.status." + this.name());
+    }
 }
+

@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = UniqueUsernameValidator.class)
 public @interface UniqueUsername {
 
-    String message() default "Username already exists";
+    String message() default "Tên đăng nhập đã tồn tại.";
 
     Class<?>[] groups() default {};
 

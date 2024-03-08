@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{fragments/layout :: layout (~{::body},'providers','Danh sách người tạo lịch')}"
+      th:replace="~{fragments/layout :: layout (~{::body},'providers','Danh sách bác sĩ')}"
       xmlns:sec="http://www.w3.org/1999/xhtml">
 <body>
 
@@ -19,7 +19,7 @@
             </thead>
             <tbody>
             <tr th:if="${providers == null}">
-                <td colspan="4"> Không có người tạo lịch nào.</td>
+                <td colspan="4"> Không có bác sĩ nào.</td>
             </tr>
             <tr th:each="provider : ${providers}">
                 <td><span th:text="${provider.firstName +' ' + provider.lastName}"> Họ và tên </span></td>
@@ -39,7 +39,7 @@
 
 </div>
 <div class="row align-items-center justify-content-center" style="margin-top: 50px">
-    <a class="btn btn-primary" th:href="@{/providers/new}" role="button">Tạo người tạo lịch mới.</a>
+    <a class="btn btn-primary" th:href="@{/providers/new}" role="button">Bác sĩ mới.</a>
 </div>
 
 

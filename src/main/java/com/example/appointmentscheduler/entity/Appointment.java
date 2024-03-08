@@ -56,9 +56,9 @@ public class Appointment extends BaseEntity implements Comparable<Appointment> {
     @ManyToOne
     @JoinColumn(name = "id_invoice")
     private Invoice invoice;
-
-    @OneToOne(mappedBy = "requested", cascade = {CascadeType.ALL})
-    private ExchangeRequest exchangeRequest;
+//
+//    @OneToOne(mappedBy = "requested", cascade = {CascadeType.ALL})
+//    private ExchangeRequest exchangeRequest;
 
     public Appointment() {
     }
@@ -156,12 +156,12 @@ public class Appointment extends BaseEntity implements Comparable<Appointment> {
     public void setInvoice(Invoice invoice) {
         this.invoice = invoice;
     }
+////DELETE:    public ExchangeRequest getExchangeRequest() {
+//    public ExchangeRequest getExchangeRequest() {
+//        return exchangeRequest;
+//    }
 
-    public ExchangeRequest getExchangeRequest() {
-        return exchangeRequest;
-    }
-
-    public void setExchangeRequest(ExchangeRequest exchangeRequest) {
-        this.exchangeRequest = exchangeRequest;
-    }
+//    public void setExchangeRequest(ExchangeRequest exchangeRequest) {
+//        this.exchangeRequest = exchangeRequest;
+//    }
 }

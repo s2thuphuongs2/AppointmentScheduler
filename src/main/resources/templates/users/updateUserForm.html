@@ -46,7 +46,7 @@
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item">
                 <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
-                   aria-controls="profile" aria-selected="true">Profile</a>
+                   aria-controls="profile" aria-selected="true">Hồ sơ</a>
             </li>
             <li sec:authorize="hasRole('ROLE_PROVIDER') or hasRole('ROLE_CUSTOMER')" class="nav-item">
                 <a class="nav-link" id="newPassword-tab" data-toggle="tab" href="#newPassword" role="tab"
@@ -83,7 +83,7 @@
                     <th:block th:if="${account_type =='customer_corporate'}">
                         <div class="form-row">
                             <div class="form-group col-md-6">
-                                <label for="companyName">Tên Công ty</label>
+                                <label for="companyName">Tên Phòng khám</label>
                                 <input type="text" class="form-control" th:classappend="${#fields.hasErrors('companyName') ? 'is-invalid' :''}" th:field="*{companyName}">
                                 <div th:if="${#fields.hasErrors('companyName')}" class="invalid-feedback">
                                     <p th:errors="*{companyName}"></p>
@@ -147,13 +147,13 @@
 
                     <th:block th:if="${account_type =='provider'}">
                         <div class="form-group">
-                            <p class="text-primary">đối tượng cá nhân</p>
-                            <p class="text-info">đối tượng doanh nghiệp</p>
+                            <p class="text-primary">đối tượng là cá nhân</p>
+                            <p class="text-info">đối tượng thuộc bệnh viện/tổ chức</p>
                             <label>Nội dung lịch hẹn quản lý:</label>
                             <ul>
                                 <li th:each="work : ${allWorks}">
                                     <input type="checkbox" th:field="*{works}" th:value="${work.id}" />
-                                    <label th:for="${#ids.prev('works')}" th:classappend="${work.targetCustomer=='retail'} ? text-primary : text-info" th:text="${work.name}">French lesson</label>
+                                    <label th:for="${#ids.prev('works')}" th:classappend="${work.targetCustomer=='retail'} ? text-primary : text-info" th:text="${work.name}">Tư vấn tâm lý</label>
                                 </li>
                             </ul>
                         </div>

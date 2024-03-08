@@ -10,18 +10,19 @@
         <div class="row justify-content-center">
             <div class="col-md-1">
             </div>
-            <div th:if="${appointment.exchangeRequest !=null && appointment.exchangeRequest.getStatus().name()== 'PENDING'}" class="col-md-9 p-3 mb-2 bg-warning text-dark text-center">
-                <p>Có người yêu cầu trao đổi cuộc hẹn này.</p>
+<!--            DELETE exchange-->
+<!--            <div th:if="${appointment.exchangeRequest !=null && appointment.exchangeRequest.getStatus().name()== 'PENDING'}" class="col-md-9 p-3 mb-2 bg-warning text-dark text-center">-->
+<!--                <p>Có người yêu cầu trao đổi cuộc hẹn này.</p>-->
 
-                <form th:action="@{/exchange/reject}" method='POST'>
-                    <input type="hidden" name="exchangeId" th:value="${appointment.exchangeRequest.id}">
-                    <input type="submit" class="btn btn-success" value="Reject" />
-                </form>
-                <form th:action="@{/exchange/accept}" method='POST'>
-                    <input type="hidden" name="exchangeId" th:value="${appointment.exchangeRequest.id}">
-                    <input type="submit" class="btn btn-success" value="Accept" />
-                </form>
-            </div>
+<!--                <form th:action="@{/exchange/reject}" method='POST'>-->
+<!--                    <input type="hidden" name="exchangeId" th:value="${appointment.exchangeRequest.id}">-->
+<!--                    <input type="submit" class="btn btn-success" value="Reject" />-->
+<!--                </form>-->
+<!--                <form th:action="@{/exchange/accept}" method='POST'>-->
+<!--                    <input type="hidden" name="exchangeId" th:value="${appointment.exchangeRequest.id}">-->
+<!--                    <input type="submit" class="btn btn-success" value="Accept" />-->
+<!--                </form>-->
+<!--            </div>-->
             <div th:if="${allowedToRequestRejection}" class="col-md-9 p-3 mb-2 bg-warning text-dark text-center">
                 <p>Bạn có <span class="font-weight-bold" th:text="${remainingTime}">3h 45m</span> để báo cuộc hẹn này chưa diễn ra.</p>
                 <p>Sau thời gian đó hệ thống sẽ tự động xuất hoá đơn</p>
@@ -99,16 +100,16 @@
                         <td><b>hóa đơn</b></td>
                         <td><a th:href="@{'/invoices/download/'+${appointment.invoice.id}}">tải</a></td>
                     </tr>
-
-                    <tr>
-                        <td><b>trao đổi</b></td>
-                        <td th:if="${allowedToExchange}">
-                            <a th:href="@{'/exchange/'+${appointment.id}}">exchange</a>
-                        </td>
-                        <td th:unless="${allowedToExchange}">
-                            <p>This appointment cannot be exchanged.</p>
-                        </td>
-                    </tr>
+<!--Xóa xột exchange-->
+<!--                    <tr>-->
+<!--                        <td><b>trao đổi</b></td>-->
+<!--                        <td th:if="${allowedToExchange}">-->
+<!--                            <a th:href="@{'/exchange/'+${appointment.id}}">exchange</a>-->
+<!--                        </td>-->
+<!--                        <td th:unless="${allowedToExchange}">-->
+<!--                            <p>This appointment cannot be exchanged.</p>-->
+<!--                        </td>-->
+<!--                    </tr>-->
 
                     <tr>
                         <td><b>trường hợp hủy</b></td>

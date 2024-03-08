@@ -8,9 +8,9 @@
     <div class="col-lg-6">
         <div class="card shadow">
             <div class="card-header text-center" style="background-color: #e3f2fd;">
-                <th:block th:if="${account_type =='customer_corporate'}">Đăng ký tài khoàn Đặt lịch Doanh nghiệp</th:block>
-                <th:block th:if="${account_type =='customer_retail'}">Đăng ký tài khoản Đặt lịch Cá nhân</th:block>
-                <th:block th:if="${account_type =='provider'}">Đăng ký tài khoản tạo lịch</th:block>
+                <th:block th:if="${account_type =='customer_corporate'}">Đăng ký tài khoàn cho Phòng khám/Tổ chức/Bệnh viện</th:block>
+                <th:block th:if="${account_type =='customer_retail'}">Đăng ký tài khoản Cá nhân</th:block>
+                <th:block th:if="${account_type =='provider'}">Đăng ký tài khoản Bác sĩ</th:block>
             </div>
             <div class="card-body">
 
@@ -50,9 +50,9 @@
 
                     <th:block th:if="${account_type =='customer_corporate'}">
                         <div class="form-group">
-                            <label for="companyName">Tên Công ty</label>
+                            <label for="companyName">Tên Phòng khám</label>
                             <input type="text" class="form-control" th:classappend="${#fields.hasErrors('companyName') ? 'is-invalid' :''}" th:field="*{companyName}"
-                                   placeholder="Công ty TNHH một thành viên">
+                                   placeholder="Phòng khám bác sĩ Huy">
                             <div th:if="${#fields.hasErrors('companyName')}" class="invalid-feedback">
                                 <p th:errors="*{companyName}"></p>
                             </div>
@@ -143,7 +143,7 @@
                     <th:block th:if="${account_type =='provider'}">
                         <div class="form-group">
                             <p class="text-primary">Đối tượng cá nhân</p>
-                            <p class="text-info">Đối tượng doanh nghiệp</p>
+                            <p class="text-info">Đối tượng tổ chức/bệnh viện</p>
                             <label>Nội dung lịch hẹn:</label>
                             <ul>
                                 <li th:each="work : ${allWorks}">

@@ -1,10 +1,11 @@
 package com.example.appointmentscheduler.entity;
 
 public enum ExchangeStatus {
-    PENDING,
-    ACCEPTED,
-    REJECTED,
-    EXPIRED
+    ////DELETE
+//    PENDING,
+//    ACCEPTED,
+//    REJECTED,
+//    EXPIRED
 }
 
 

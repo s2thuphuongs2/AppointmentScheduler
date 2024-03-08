@@ -16,7 +16,7 @@ public @interface FieldsMatches {
 
     String matchingField();
 
-    String message() default "Passwords don't match";
+    String message() default "Mật khẩu không khớp!";
 
     Class<?>[] groups() default {};
 

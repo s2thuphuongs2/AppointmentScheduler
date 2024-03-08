@@ -16,11 +16,11 @@ public class ChangePasswordForm {
     @NotNull
     private int id;
 
-    @Size(min = 5, max = 10, message = "Password should have 5-15 letters")
+    @Size(min = 5, max = 10, message = "Mật khẩu nên có 5-15 chữ cái")
     @NotBlank()
     private String password;
 
-    @Size(min = 5, max = 10, message = "Password should have 5-15 letters")
+    @Size(min = 5, max = 10, message = "Mật khẩu nên có 5-15 chữ cái")
     @NotBlank()
     private String matchingPassword;
 

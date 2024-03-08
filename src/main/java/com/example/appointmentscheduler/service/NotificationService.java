@@ -34,10 +34,10 @@ public interface NotificationService {
     void newChatMessageNotification(ChatMessage chatMessage, boolean sendEmail);
 
     void newInvoice(Invoice invoice, boolean sendEmail);
-
-    void newExchangeRequestedNotification(Appointment oldAppointment, Appointment newAppointment, boolean sendEmail);
-
-    void newExchangeAcceptedNotification(ExchangeRequest exchangeRequest, boolean sendEmail);
-
-    void newExchangeRejectedNotification(ExchangeRequest exchangeRequest, boolean sendEmail);
+////DELETE: delete exchange
+//    void newExchangeRequestedNotification(Appointment oldAppointment, Appointment newAppointment, boolean sendEmail);
+//
+//    void newExchangeAcceptedNotification(ExchangeRequest exchangeRequest, boolean sendEmail);
+//
+//    void newExchangeRejectedNotification(ExchangeRequest exchangeRequest, boolean sendEmail);
 }

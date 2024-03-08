@@ -11,7 +11,7 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/providers/availability}"
-                   th:classappend="${activeLink} == 'availability' ? 'active':''">Khả dụng</a>
+                   th:classappend="${activeLink} == 'availability' ? 'active':''">Thời gian làm việc</a>
             </li>
             <li class="nav-item" th:classappend="${activeLink} == 'account' ? 'active':''">
                 <a class="nav-link" th:href="@{'/providers/' + ${#authentication.principal.id}}">Tài khoản của tôi</a>

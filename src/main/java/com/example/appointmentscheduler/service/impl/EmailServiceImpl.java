@@ -62,7 +62,7 @@ public class EmailServiceImpl implements EmailService {
             javaMailSender.send(message);
 
         } catch (MessagingException e) {
-            log.error("Error while adding attachment to email, error is {}", e.getLocalizedMessage());
+            log.error("Lỗi khi thêm tệp đính kèm vào email, lỗi là {}", e.getLocalizedMessage());
         }
 
     }
@@ -73,7 +73,7 @@ public class EmailServiceImpl implements EmailService {
         Context context = new Context();
         context.setVariable("appointment", appointment);
         context.setVariable("url", baseUrl + "/appointments/reject?token=" + jwtTokenService.generateAppointmentRejectionToken(appointment));
-        sendEmail(appointment.getCustomer().getEmail(), "Finished appointment summary", "appointmentFinished", context, null);
+        sendEmail(appointment.getCustomer().getEmail(), "Hoàn thành tóm tắt cuộc hẹn", "appointmentFinished", context, null);
     }
 
     @Async
@@ -82,7 +82,7 @@ public class EmailServiceImpl implements EmailService {
         Context context = new Context();
         context.setVariable("appointment", appointment);
         context.setVariable("url", baseUrl + "/appointments/acceptRejection?token=" + jwtTokenService.generateAcceptRejectionToken(appointment));
-        sendEmail(appointment.getProvider().getEmail(), "Rejection requested", "appointmentRejectionRequested", context, null);
+        sendEmail(appointment.getProvider().getEmail(), "Yêu cầu hủy lịch hẹn", "appointmentRejectionRequested", context, null);
     }
 
     @Async
@@ -90,7 +90,7 @@ public class EmailServiceImpl implements EmailService {
     public void sendNewAppointmentScheduledNotification(Appointment appointment) {
         Context context = new Context();
         context.setVariable("appointment", appointment);
-        sendEmail(appointment.getProvider().getEmail(), "New appointment booked", "newAppointmentScheduled", context, null);
+        sendEmail(appointment.getProvider().getEmail(), "Lịch hẹn mới đã được đặt", "newAppointmentScheduled", context, null);
     }
 
     @Async
@@ -99,7 +99,7 @@ public class EmailServiceImpl implements EmailService {
         Context context = new Context();
         context.setVariable("appointment", appointment);
         context.setVariable("canceler", "customer");
-        sendEmail(appointment.getProvider().getEmail(), "Appointment canceled by Customer", "appointmentCanceled", context, null);
+        sendEmail(appointment.getProvider().getEmail(), "Bên đặt lịch đã hủy lịch hẹn", "appointmentCanceled", context, null);
     }
 
     @Async
@@ -108,7 +108,7 @@ public class EmailServiceImpl implements EmailService {
         Context context = new Context();
         context.setVariable("appointment", appointment);
         context.setVariable("canceler", "provider");
-        sendEmail(appointment.getCustomer().getEmail(), "Appointment canceled by Provider", "appointmentCanceled", context, null);
+        sendEmail(appointment.getCustomer().getEmail(), "Bác sĩ đã hủy lịch hẹn", "appointmentCanceled", context, null);
     }
 
     @Async
@@ -118,9 +118,9 @@ public class EmailServiceImpl implements EmailService {
         context.setVariable("customer", invoice.getAppointments().get(0).getCustomer().getFirstName() + " " + invoice.getAppointments().get(0).getCustomer().getLastName());
         try {
             File invoicePdf = pdfGenaratorUtil.generatePdfFromInvoice(invoice);
-            sendEmail(invoice.getAppointments().get(0).getCustomer().getEmail(), "Appointment invoice", "appointmentInvoice", context, invoicePdf);
+            sendEmail(invoice.getAppointments().get(0).getCustomer().getEmail(), "Hóa đơn cuộc hẹn", "appointmentInvoice", context, invoicePdf);
         } catch (Exception e) {
-            log.error("Error while generating pdf, error is {}", e.getLocalizedMessage());
+            log.error("Lỗi khi tạo pdf, lỗi là {}", e.getLocalizedMessage());
         }
 
     }
@@ -130,7 +130,7 @@ public class EmailServiceImpl implements EmailService {
     public void sendAppointmentRejectionAcceptedNotification(Appointment appointment) {
         Context context = new Context();
         context.setVariable("appointment", appointment);
-        sendEmail(appointment.getCustomer().getEmail(), "Rejection request accepted", "appointmentRejectionAccepted", context, null);
+        sendEmail(appointment.getCustomer().getEmail(), "Yêu cầu từ chối đã được chấp nhận.", "appointmentRejectionAccepted", context, null);
     }
 
     @Async
@@ -141,32 +141,32 @@ public class EmailServiceImpl implements EmailService {
         context.setVariable("recipent", recipent);
         context.setVariable("appointment", chatMessage.getAppointment());
         context.setVariable("url", baseUrl + "/appointments/" + chatMessage.getAppointment().getId());
-        sendEmail(recipent.getEmail(), "New chat message", "newChatMessage", context, null);
+        sendEmail(recipent.getEmail(), "Tin nhắn mới", "newChatMessage", context, null);
     }
-
-    @Async
-    @Override
-    public void sendNewExchangeRequestedNotification(Appointment oldAppointment, Appointment newAppointment) {
-        Context context = new Context();
-        context.setVariable("oldAppointment", oldAppointment);
-        context.setVariable("newAppointment", newAppointment);
-        context.setVariable("url", baseUrl + "/appointments/" + newAppointment.getId());
-        sendEmail(newAppointment.getCustomer().getEmail(), "New Appointment Exchange Request", "newExchangeRequest", context, null);
-    }
-
-    @Override
-    public void sendExchangeRequestAcceptedNotification(ExchangeRequest exchangeRequest) {
-        Context context = new Context();
-        context.setVariable("exchangeRequest", exchangeRequest);
-        context.setVariable("url", baseUrl + "/appointments/" + exchangeRequest.getRequested().getId());
-        sendEmail(exchangeRequest.getRequested().getCustomer().getEmail(), "Exchange request accepted", "exchangeRequestAccepted", context, null);
-    }
-
-    @Override
-    public void sendExchangeRequestRejectedNotification(ExchangeRequest exchangeRequest) {
-        Context context = new Context();
-        context.setVariable("exchangeRequest", exchangeRequest);
-        context.setVariable("url", baseUrl + "/appointments/" + exchangeRequest.getRequestor().getId());
-        sendEmail(exchangeRequest.getRequestor().getCustomer().getEmail(), "Exchange request rejected", "exchangeRequestRejected", context, null);
-    }
+/////////====DELETE Xóa trao đổi lịch hẹn ======/////////
+//    @Async
+//    @Override
+//    public void sendNewExchangeRequestedNotification(Appointment oldAppointment, Appointment newAppointment) {
+//        Context context = new Context();
+//        context.setVariable("oldAppointment", oldAppointment);
+//        context.setVariable("newAppointment", newAppointment);
+//        context.setVariable("url", baseUrl + "/appointments/" + newAppointment.getId());
+//        sendEmail(newAppointment.getCustomer().getEmail(), "Yêu cầu trao đổi cuộc hẹn mới", "newExchangeRequest", context, null);
+//    }
+//
+//    @Override
+//    public void sendExchangeRequestAcceptedNotification(ExchangeRequest exchangeRequest) {
+//        Context context = new Context();
+//        context.setVariable("exchangeRequest", exchangeRequest);
+//        context.setVariable("url", baseUrl + "/appointments/" + exchangeRequest.getRequested().getId());
+//        sendEmail(exchangeRequest.getRequested().getCustomer().getEmail(), "Exchange request accepted", "exchangeRequestAccepted", context, null);
+//    }
+//
+//    @Override
+//    public void sendExchangeRequestRejectedNotification(ExchangeRequest exchangeRequest) {
+//        Context context = new Context();
+//        context.setVariable("exchangeRequest", exchangeRequest);
+//        context.setVariable("url", baseUrl + "/appointments/" + exchangeRequest.getRequestor().getId());
+//        sendEmail(exchangeRequest.getRequestor().getCustomer().getEmail(), "Exchange request rejected", "exchangeRequestRejected", context, null);
+//    }
 }

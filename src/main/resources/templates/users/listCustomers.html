@@ -20,7 +20,7 @@
             </thead>
             <tbody>
             <tr th:if="${customers == null}">
-                <td colspan="4"> Không có người tạo lịch nào.</td>
+                <td colspan="4"> Không có bác sĩ nào.</td>
             </tr>
             <tr th:each="customer : ${customers}" th:classappend="${customer.getType()=='retail' ? 'table-primary' : 'table-info'}">
                 <td><span th:text="${customer.firstName +' ' + customer.lastName}"> Họ và Tên </span></td>
@@ -28,10 +28,10 @@
                 <td><span th:text="${customer.email }"> email </span></td>
                 <td><span th:text="${customer.appointments.size() }"> 3 </span></td>
                 <td><a class="btn btn-secondary" th:href="@{'/customers/' + ${customer.id}}"
-                       role="button">Details</a>
+                       role="button">Chi tiết</a>
                     <form class="d-inline-block" th:action="@{/customers/delete}" method="POST">
                         <input type="hidden" name="customerId" th:value="${customer.id}" />
-                        <button type="submit" name="submit" value="value" class="btn btn-danger">Delete</button>
+                        <button type="submit" name="submit" value="value" class="btn btn-danger">Xóa</button>
                     </form>
                 </td>
             </tr>

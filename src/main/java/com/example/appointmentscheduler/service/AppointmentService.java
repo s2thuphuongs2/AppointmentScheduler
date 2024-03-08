@@ -17,8 +17,8 @@ public interface AppointmentService {
     void updateUserAppointmentsStatuses(int userId);
 
     void updateAllAppointmentsStatuses();
-
-    void updateAppointmentsStatusesWithExpiredExchangeRequest();
+////DELETE
+//    void updateAppointmentsStatusesWithExpiredExchangeRequest();
 
     void deleteAppointmentById(int appointmentId);
 

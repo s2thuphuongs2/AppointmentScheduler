@@ -18,6 +18,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     public CustomUserDetails loadUserByUsername(String userName) {
         return userRepository.findByUserName(userName)
                 .map(CustomUserDetails::create)
-                .orElseThrow(() -> new UsernameNotFoundException("Invalid username or password!"));
+                .orElseThrow(() -> new UsernameNotFoundException("Tên đăng nhập hoặc mật khẩu không hợp lệ!"));
     }
 }

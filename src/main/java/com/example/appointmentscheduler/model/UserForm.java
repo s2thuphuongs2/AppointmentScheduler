@@ -20,51 +20,51 @@ public class UserForm {
     private int id;
 
     @UniqueUsername(groups = {CreateUser.class})
-    @Size(min = 5, max = 15, groups = {CreateUser.class}, message = "Username should have 5-15 letters")
+    @Size(min = 5, max = 15, groups = {CreateUser.class}, message = "Tên đăng nhập phải có 5-15 chữ cái")
     @NotBlank(groups = {CreateUser.class})
     private String userName;
 
-    @Size(min = 5, max = 15, groups = {CreateUser.class}, message = "Password should have 5-15 letters")
+    @Size(min = 5, max = 15, groups = {CreateUser.class}, message = "Mật khẩu phải có 5-15 chữ cái")
     @NotBlank(groups = {CreateUser.class})
     private String password;
 
-    @Size(min = 5, max = 15, groups = {CreateUser.class}, message = "Password should have 5-15 letters")
+    @Size(min = 5, max = 15, groups = {CreateUser.class}, message = "Mật khẩu phải có 5-15 chữ cái")
     @NotBlank(groups = {CreateUser.class})
     private String matchingPassword;
 
-    @NotBlank(groups = {CreateUser.class, UpdateUser.class}, message = "First name cannot be empty")
+    @NotBlank(groups = {CreateUser.class, UpdateUser.class}, message = "Tên không thể để trống")
     private String firstName;
 
-    @NotBlank(groups = {CreateUser.class, UpdateUser.class}, message = "Last name cannot be empty")
+    @NotBlank(groups = {CreateUser.class, UpdateUser.class}, message = "Họ không được để trống")
     private String lastName;
 
-    @Email(groups = {CreateUser.class, UpdateUser.class}, message = "Email not valid!")
-    @NotBlank(groups = {CreateUser.class, UpdateUser.class}, message = "Email cannot be empty")
+    @Email(groups = {CreateUser.class, UpdateUser.class}, message = "Email không tồn tại!")
+    @NotBlank(groups = {CreateUser.class, UpdateUser.class}, message = "Email không thể để trống!")
     private String email;
 
-    @Pattern(groups = {CreateUser.class, UpdateUser.class}, regexp = "[0-9]{9}", message = "Please enter valid mobile phone")
-    @NotBlank(groups = {CreateUser.class, UpdateUser.class}, message = "Mobile phone cannot be empty")
+    @Pattern(groups = {CreateUser.class, UpdateUser.class}, regexp = "[0-10]{10}", message = "Vui lòng nhập số điện thoại di động hợp lệ")
+    @NotBlank(groups = {CreateUser.class, UpdateUser.class}, message = "Số điện thoại không được để trống")
     private String mobile;
 
-    @Size(groups = {CreateUser.class, UpdateUser.class}, min = 5, max = 30, message = "Wrong street!")
-    @NotBlank(groups = {CreateUser.class, UpdateUser.class}, message = "Street cannot be empty")
+    @Size(groups = {CreateUser.class, UpdateUser.class}, min = 5, max = 30, message = "Sai số nhà & đường!")
+    @NotBlank(groups = {CreateUser.class, UpdateUser.class}, message = "Số nhà & đường không được để trống")
     private String street;
 
-    @Pattern(groups = {CreateUser.class, UpdateUser.class}, regexp = "[0-9]{2}-[0-9]{3}", message = "Please enter valid postcode")
-    @NotBlank(groups = {CreateUser.class, UpdateUser.class}, message = "Post code cannot be empty")
+//    @Pattern(groups = {CreateUser.class, UpdateUser.class}, regexp = "[0-9]{2}-[0-9]{3}", message = "Please enter valid postcode")
+//    @NotBlank(groups = {CreateUser.class, UpdateUser.class}, message = "Post code cannot be empty")
     private String postcode;
 
-    @NotBlank(groups = {CreateUser.class, UpdateUser.class}, message = "City cannot be empty")
+    @NotBlank(groups = {CreateUser.class, UpdateUser.class}, message = "Thành phố không thể để trống")
     private String city;
 
     /*
      * CorporateCustomer only:
      * */
-    @NotBlank(groups = {CreateCorporateCustomer.class, UpdateCorporateCustomer.class}, message = "Company cannot be empty")
+    @NotBlank(groups = {CreateCorporateCustomer.class, UpdateCorporateCustomer.class}, message = "Tổ chức/Bệnh viện không thể để trống")
     private String companyName;
 
-    @Pattern(groups = {CreateCorporateCustomer.class, UpdateCorporateCustomer.class}, regexp = "[0-9]{10}", message = "Please enter valid Polish VAT number")
-    @NotBlank(groups = {CreateCorporateCustomer.class, UpdateCorporateCustomer.class}, message = "VAT number cannot be empty")
+//    @Pattern(groups = {CreateCorporateCustomer.class, UpdateCorporateCustomer.class}, regexp = "[0-9]{10}", message = "Vui lòng điền số VAT hợp lệ")
+//    @NotBlank(groups = {CreateCorporateCustomer.class, UpdateCorporateCustomer.class}, message = "Mẫ số VAT không được để trống")
     private String vatNumber;
 
     /*

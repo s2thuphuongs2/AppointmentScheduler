@@ -30,7 +30,7 @@
                                 <form id="login-form" th:action="@{/perform_login}" method='POST' class="form-horizontal">
                                     <!--Thông báo đăng nhập và đăng xuất-->
                                     <div th:if="${param.error != null}" class="alert alert-danger">
-                                        Invalid username or password.
+                                        Tên đăng nhập hoặc mật khẩu không đúng!
                                     </div>
                                     <div th:if="${createdUserName != null}" class="alert alert-success">
                                         <p>User <span th:text="${createdUserName}"></span> added!</p>
@@ -57,14 +57,13 @@
                                     <div class="form-group">
                                         <div class="d-flex align-items-center justify-content-between">
                                                 <span class="font-size-13 text-muted">
-                                                    <p>Don't have an account? </p>
+                                                    <p>Bạn chưa có tài khoản? </p>
                                                     <p>
-                                                        Create new
-                                                        <a  th:href="@{/customers/new/retail}"> Retail</a>
+                                                        Tạo tài khoản
+                                                        <a  th:href="@{/customers/new/retail}"> Cá nhân</a>
                                                         or
-                                                        <a  th:href="@{/customers/new/corporate}"> Corporate</a>
+                                                        <a  th:href="@{/customers/new/corporate}"> Tổ chức</a>
                                                     </p>
-                                                    account
                                                 </span>
                                             <button class="btn btn-primary">Đăng nhập</button>
                                         </div>
@@ -76,7 +75,7 @@
                 </div>
             </div>
             <div class="d-none d-md-flex p-h-40 justify-content-between">
-                <span class="">© 2019 ThemeNate</span>
+                <span class="">© 2024 PhuongDuong</span>
                 <ul class="list-inline">
                     <li class="list-inline-item">
                         <a class="text-dark text-link" href="">Legal</a>

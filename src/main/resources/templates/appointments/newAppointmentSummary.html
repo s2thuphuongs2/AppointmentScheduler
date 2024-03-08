@@ -11,7 +11,7 @@
             <thead>
             <tr class="text-center">
                 <td colspan="2">
-                    <h3>Your new appointment summary</h3>
+                    <h3>Tóm tắt cuộc hẹn mới</h3>
                 </td>
             </tr>
             </thead>
@@ -36,7 +36,7 @@
             </tr>
             <tr>
                 <td><b>description</b></td>
-                <td><span th:text="${work.description}">description</span></td>
+                <td><span th:text="${work.description}">mô tả</span></td>
             </tr>
 
             <tr>
@@ -45,8 +45,8 @@
             </tr>
 
             <tr>
-                <td><b>người đặt lịch?</b></td>
-                <td><p th:text="${work.editable ? 'Yes':'No, only by provider'}">Yes</p></td>
+                <td><b>người đặt lịch có thể sửa?</b></td>
+                <td><p th:text="${work.editable ? 'Có thể':'không, chỉ bác sĩ được phép'}">Yes</p></td>
             </tr>
             <tr class="text-center">
                 <td colspan="2">

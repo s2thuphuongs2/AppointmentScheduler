@@ -143,7 +143,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             chatMessageRepository.save(chatMessage);
             notificationService.newChatMessageNotification(chatMessage, true);
         } else {
-            throw new org.springframework.security.access.AccessDeniedException("Unauthorized");
+            throw new org.springframework.security.access.AccessDeniedException("Không được phép");
         }
     }
 
@@ -221,15 +221,15 @@ public class AppointmentServiceImpl implements AppointmentService {
                     updateAppointment(appointment);
                 });
     }
-
-    @Override
-    public void updateAppointmentsStatusesWithExpiredExchangeRequest() {
-        appointmentRepository.findExchangeRequestedWithStartBefore(LocalDateTime.now().plusDays(1))
-                .forEach(appointment -> {
-                    appointment.setStatus(AppointmentStatus.SCHEDULED);
-                    updateAppointment(appointment);
-                });
-    }
+////DELETE
+//    @Override
+//    public void updateAppointmentsStatusesWithExpiredExchangeRequest() {
+//        appointmentRepository.findExchangeRequestedWithStartBefore(LocalDateTime.now().plusDays(1))
+//                .forEach(appointment -> {
+//                    appointment.setStatus(AppointmentStatus.SCHEDULED);
+//                    updateAppointment(appointment);
+//                });
+//    }
 
     @Override
     public void cancelUserAppointmentById(int appointmentId, int userId) {
@@ -246,7 +246,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                 notificationService.newAppointmentCanceledByProviderNotification(appointment, true);
             }
         } else {
-            throw new org.springframework.security.access.AccessDeniedException("Unauthorized");
+            throw new org.springframework.security.access.AccessDeniedException("Không được phép");
         }
 
 
@@ -360,12 +360,12 @@ public class AppointmentServiceImpl implements AppointmentService {
         Appointment appointment = getAppointmentByIdWithAuthorization(appointmentId);
 
         if (user.hasRole("ROLE_ADMIN")) {
-            return "Only customer or provider can cancel appointments";
+            return "Chỉ có bác sĩ hoặc bên đặt lịch được phép hủy lịch hẹn";
         }
 
         if (appointment.getProvider().equals(user)) {
             if (!appointment.getStatus().equals(AppointmentStatus.SCHEDULED)) {
-                return "Only appoinmtents with scheduled status can be cancelled.";
+                return "Chỉ có thể hủy cuộc hẹn đang ở trạng thái SCHEDULED.";
             } else {
                 return null;
             }
@@ -373,13 +373,13 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         if (appointment.getCustomer().equals(user)) {
             if (!appointment.getStatus().equals(AppointmentStatus.SCHEDULED)) {
-                return "Only appoinmtents with scheduled status can be cancelled.";
+                return "Chỉ có thể hủy cuộc hẹn đang ở trạng thái SCHEDULED.";
             } else if (LocalDateTime.now().plusDays(1).isAfter(appointment.getStart())) {
-                return "Appointments which will be in less than 24 hours cannot be canceled.";
+                return "Các cuộc hẹn sẽ diễn ra trong vòng 24 giờ tới không thể bị hủy";
             } else if (!appointment.getWork().getEditable()) {
-                return "This type of appointment can be canceled only by Provider.";
+                return "Chỉ Bác sĩ mới được hủy cuộc hẹn này";
             } else if (getCanceledAppointmentsByCustomerIdForCurrentMonth(userId).size() >= NUMBER_OF_ALLOWED_CANCELATIONS_PER_MONTH) {
-                return "You can't cancel this appointment because you exceeded maximum number of cancellations in this month.";
+                return "Bạn không thể hủy lịch hẹn này vì bạn đã hủy quá số lần cho phép trong tháng này.";
             } else {
                 return null;
             }
