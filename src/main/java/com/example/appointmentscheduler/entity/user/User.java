@@ -60,7 +60,6 @@ public class User extends BaseEntity {
         this.setEmail(newUserForm.getEmail());
         this.setCity(newUserForm.getCity());
         this.setStreet(newUserForm.getStreet());
-        this.setPostcode(newUserForm.getPostcode());
         this.setMobile(newUserForm.getMobile());
         this.password = encryptedPassword;
         this.roles = roles;
@@ -73,7 +72,6 @@ public class User extends BaseEntity {
         this.setMobile(updateData.getMobile());
         this.setCity(updateData.getCity());
         this.setStreet(updateData.getStreet());
-        this.setPostcode(updateData.getPostcode());
     }
 
 

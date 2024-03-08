@@ -52,7 +52,6 @@ public class UserForm {
 
 //    @Pattern(groups = {CreateUser.class, UpdateUser.class}, regexp = "[0-9]{2}-[0-9]{3}", message = "Please enter valid postcode")
 //    @NotBlank(groups = {CreateUser.class, UpdateUser.class}, message = "Post code cannot be empty")
-    private String postcode;
 
     @NotBlank(groups = {CreateUser.class, UpdateUser.class}, message = "Thành phố không thể để trống")
     private String city;
@@ -85,7 +84,6 @@ public class UserForm {
         this.setEmail(user.getEmail());
         this.setCity(user.getCity());
         this.setStreet(user.getStreet());
-        this.setPostcode(user.getPostcode());
         this.setMobile(user.getMobile());
     }
 
@@ -190,14 +188,6 @@ public class UserForm {
 
     public void setStreet(String street) {
         this.street = street;
-    }
-
-    public String getPostcode() {
-        return postcode;
-    }
-
-    public void setPostcode(String postcode) {
-        this.postcode = postcode;
     }
 
     public String getCity() {
