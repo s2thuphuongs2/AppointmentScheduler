@@ -57,7 +57,7 @@
 
 
         <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active pt-3" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+            <div class="tab-pane fade show active pt-3 shadow-lg" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                 <form th:action="@{${formActionProfile}}" th:object="${user}" method="POST">
 
                     <input type="hidden" class="form-control" th:field="*{id}">
