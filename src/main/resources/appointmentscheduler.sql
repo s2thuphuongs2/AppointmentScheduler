@@ -20,7 +20,6 @@ CREATE TABLE IF NOT EXISTS `users` (
 	`mobile` varchar(50),
 	`street` varchar(50),
 	`city` varchar(50),
-	`postcode` varchar(50),
   PRIMARY KEY (`id`)
 )
 	ENGINE = InnoDB
@@ -306,7 +305,7 @@ VALUES (4, 4);
 
 INSERT INTO `works` (id, name, duration, price, editable, target, description)
 VALUES (1, 'English lesson', 60, 100.00, true, 'retail',
-        'This is english lesson with duration 60 minutes and price 100 pln');
+        'This is english lesson with duration 60 minutes and price 100 VND');
 
 INSERT INTO works_providers
 VALUES (2, 1);
