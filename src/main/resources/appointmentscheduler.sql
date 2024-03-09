@@ -318,3 +318,32 @@ VALUES (2,
         '{"workingHours":{"start":[6,0],"end":[18,0]},"breaks":[],"timePeroidsWithBreaksExcluded":[{"start":[6,0],"end":[18,0]}]}',
         '{"workingHours":{"start":[6,0],"end":[18,0]},"breaks":[],"timePeroidsWithBreaksExcluded":[{"start":[6,0],"end":[18,0]}]}',
         '{"workingHours":{"start":[6,0],"end":[18,0]},"breaks":[],"timePeroidsWithBreaksExcluded":[{"start":[6,0],"end":[18,0]}]}');
+
+-- Thêm cột barcode_id vào bảng appointments
+ALTER TABLE appointments
+    ADD COLUMN barcode_id BIGINT UNSIGNED NOT NULL;
+-- Đặt giá trị mặc định là giá trị ngẫu nhiên
+ALTER TABLE appointments
+    ALTER COLUMN barcode_id SET DEFAULT 0;
+-- Tạo trigger để sinh barcode_id ngẫu nhiên
+DELIMITER //
+
+CREATE TRIGGER before_insert_appointments
+    BEFORE INSERT ON appointments FOR EACH ROW
+BEGIN
+    IF NEW.barcode_id = 0 OR NEW.barcode_id IS NULL THEN
+        SET NEW.barcode_id = FLOOR(100000000 + RAND() * 900000000);
+    END IF;
+END;
+//
+
+DELIMITER ;
+-- Thêm cột TEXT để lưu chuỗi Base64 của barcode
+ALTER TABLE appointments
+    ADD COLUMN barcode_image TEXT;
+
+
+
+# ALTER TABLE appointments
+#     DROP COLUMN barcode_id;
+

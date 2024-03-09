@@ -76,8 +76,8 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void newAppointmentFinishedNotification(Appointment appointment, boolean sendEmail) {
-        String title = "Appointment Finished";
-        String message = "Appointment finished, you can reject that it took place until " + appointment.getEnd().plusHours(24).toString();
+        String title = "Lịch hẹn kết thúc";
+        String message = "Cuộc hẹn đã kết thúc, bạn có thể từ chối rằng nó đã diễn ra cho đến khi đủ " + appointment.getEnd().plusHours(24).toString();
         String url = "/appointments/" + appointment.getId();
         newNotification(title, message, url, appointment.getCustomer());
         if (sendEmail && mailingEnabled) {
@@ -88,8 +88,8 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void newAppointmentRejectionRequestedNotification(Appointment appointment, boolean sendEmail) {
-        String title = "Appointment Rejected";
-        String message = appointment.getCustomer().getFirstName() + " " + appointment.getCustomer().getLastName() + "rejected an appointment. Your approval is required";
+        String title = "Lịch hẹn bị từ chối";
+        String message = appointment.getCustomer().getFirstName() + " " + appointment.getCustomer().getLastName() + "từ chối một cuộc hẹn. Cần có sự chấp thuận của bạn";
         String url = "/appointments/" + appointment.getId();
         newNotification(title, message, url, appointment.getProvider());
         if (sendEmail && mailingEnabled) {
@@ -99,8 +99,8 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void newNewAppointmentScheduledNotification(Appointment appointment, boolean sendEmail) {
-        String title = "New appointment scheduled";
-        String message = "New appointment scheduled with" + appointment.getCustomer().getFirstName() + " " + appointment.getProvider().getLastName() + " on " + appointment.getStart().toString();
+        String title = "Đã lên lịch hẹn mới";
+        String message = "Cuộc hẹn mới đã được lên lịch với " + appointment.getCustomer().getFirstName() + " " + appointment.getProvider().getLastName() + " vào lúc " + appointment.getStart().toString();
         String url = "/appointments/" + appointment.getId();
         newNotification(title, message, url, appointment.getProvider());
         if (sendEmail && mailingEnabled) {
@@ -110,8 +110,8 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void newAppointmentCanceledByCustomerNotification(Appointment appointment, boolean sendEmail) {
-        String title = "Appointment Canceled";
-        String message = appointment.getCustomer().getFirstName() + " " + appointment.getCustomer().getLastName() + " cancelled appointment scheduled at " + appointment.getStart().toString();
+        String title = "Lịch hẹn đã bị hủy";
+        String message = appointment.getCustomer().getFirstName() + " " + appointment.getCustomer().getLastName() + " hủy lịch hẹn vào lúc " + appointment.getStart().toString();
         String url = "/appointments/" + appointment.getId();
         newNotification(title, message, url, appointment.getProvider());
         if (sendEmail && mailingEnabled) {
@@ -121,8 +121,8 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void newAppointmentCanceledByProviderNotification(Appointment appointment, boolean sendEmail) {
-        String title = "Appointment Canceled";
-        String message = appointment.getProvider().getFirstName() + " " + appointment.getProvider().getLastName() + " cancelled appointment scheduled at " + appointment.getStart().toString();
+        String title = "Lịch hẹn đã bị hủy";
+        String message = appointment.getProvider().getFirstName() + " " + appointment.getProvider().getLastName() + " hủy lịch hẹn vào lúc " + appointment.getStart().toString();
         String url = "/appointments/" + appointment.getId();
         newNotification(title, message, url, appointment.getCustomer());
         if (sendEmail && mailingEnabled) {
@@ -131,8 +131,8 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     public void newInvoice(Invoice invoice, boolean sendEmail) {
-        String title = "New invoice";
-        String message = "New invoice has been issued for you";
+        String title = "Hóa đơn mới";
+        String message = "Hóa đơn mới đã được phát hành";
         String url = "/invoices/" + invoice.getId();
         newNotification(title, message, url, invoice.getAppointments().get(0).getCustomer());
         if (sendEmail && mailingEnabled) {
@@ -175,8 +175,8 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void newAppointmentRejectionAcceptedNotification(Appointment appointment, boolean sendEmail) {
-        String title = "Rejection accepted";
-        String message = "You provider accepted your rejection request";
+        String title = "Yêu cầu từ chối đã được chấp nhận";
+        String message = "Bác sĩ chấp thuận yêu cầu từ chối lịch hẹn của bạn";
         String url = "/appointments/" + appointment.getId();
         newNotification(title, message, url, appointment.getCustomer());
         if (sendEmail && mailingEnabled) {
@@ -186,8 +186,8 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void newChatMessageNotification(ChatMessage chatMessage, boolean sendEmail) {
-        String title = "New chat message";
-        String message = "You have new chat message from " + chatMessage.getAuthor().getFirstName() + " regarding appointment scheduled at " + chatMessage.getAppointment().getStart();
+        String title = "Có tin nhắn mới";
+        String message = "Bạn có tin nhắn mới từ " + chatMessage.getAuthor().getFirstName() + " về cuộc hẹn đã được lên lịch vào lúc " + chatMessage.getAppointment().getStart();
         String url = "/appointments/" + chatMessage.getAppointment().getId();
         newNotification(title, message, url, chatMessage.getAuthor() == chatMessage.getAppointment().getProvider() ? chatMessage.getAppointment().getCustomer() : chatMessage.getAppointment().getProvider());
         if (sendEmail && mailingEnabled) {

@@ -59,6 +59,11 @@ public class Appointment extends BaseEntity implements Comparable<Appointment> {
 //
 //    @OneToOne(mappedBy = "requested", cascade = {CascadeType.ALL})
 //    private ExchangeRequest exchangeRequest;
+    @Column(name = "barcode_id")
+    private Long barcodeId;
+
+    @Column(name = "barcode_image")
+    private String barcodeImage;
 
     public Appointment() {
     }
@@ -164,4 +169,21 @@ public class Appointment extends BaseEntity implements Comparable<Appointment> {
 //    public void setExchangeRequest(ExchangeRequest exchangeRequest) {
 //        this.exchangeRequest = exchangeRequest;
 //    }
+
+    public Long getBarcodeId() {
+        return barcodeId;
+    }
+
+    public void setBarcodeId(Long barcodeId) {
+        this.barcodeId = barcodeId;
+    }
+
+    public String getBarcodeImage() {
+        return barcodeImage;
+    }
+
+    public void setBarcodeImage(String barcodeImage) {
+        this.barcodeImage = barcodeImage;
+    }
+
 }

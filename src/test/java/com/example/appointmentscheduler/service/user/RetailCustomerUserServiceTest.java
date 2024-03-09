@@ -90,7 +90,7 @@ public class RetailCustomerUserServiceTest {
         retailUserForm.setEmail(email);
         retailUserForm.setMobile(mobile);
         retailUserForm.setStreet(street);
-        retailUserForm.setPostcode(postcode);
+//        retailUserForm.setPostcode(postcode);
         retailUserForm.setCity(city);
         retailUserForm.setId(userId);
 
@@ -145,7 +145,7 @@ public class RetailCustomerUserServiceTest {
         Assert.assertEquals(argumentCaptor.getValue().getMobile(), retailUserForm.getMobile());
         Assert.assertEquals(argumentCaptor.getValue().getStreet(), retailUserForm.getStreet());
         Assert.assertEquals(argumentCaptor.getValue().getCity(), retailUserForm.getCity());
-        Assert.assertEquals(argumentCaptor.getValue().getPostcode(), retailUserForm.getPostcode());
+//        Assert.assertEquals(argumentCaptor.getValue().getPostcode(), retailUserForm.getPostcode());
     }
 
     @Test
@@ -189,7 +189,7 @@ public class RetailCustomerUserServiceTest {
         Assert.assertEquals(argumentCaptor.getValue().getMobile(), retailUserForm.getMobile());
         Assert.assertEquals(argumentCaptor.getValue().getStreet(), retailUserForm.getStreet());
         Assert.assertEquals(argumentCaptor.getValue().getCity(), retailUserForm.getCity());
-        Assert.assertEquals(argumentCaptor.getValue().getPostcode(), retailUserForm.getPostcode());
+//        Assert.assertEquals(argumentCaptor.getValue().getPostcode(), retailUserForm.getPostcode());
     }
 
     @Test

@@ -42,8 +42,8 @@ public class UserForm {
     @NotBlank(groups = {CreateUser.class, UpdateUser.class}, message = "Email không thể để trống!")
     private String email;
 
-    @Pattern(groups = {CreateUser.class, UpdateUser.class}, regexp = "[0-10]{10}", message = "Vui lòng nhập số điện thoại di động hợp lệ")
-    @NotBlank(groups = {CreateUser.class, UpdateUser.class}, message = "Số điện thoại không được để trống")
+//    @Pattern(groups = {CreateUser.class, UpdateUser.class}, regexp = "[0-9]{9}", message = "Vui lòng nhập số điện thoại di động hợp lệ")
+//    @NotBlank(groups = {CreateUser.class, UpdateUser.class}, message = "Số điện thoại không được để trống")
     private String mobile;
 
     @Size(groups = {CreateUser.class, UpdateUser.class}, min = 5, max = 30, message = "Sai số nhà & đường!")

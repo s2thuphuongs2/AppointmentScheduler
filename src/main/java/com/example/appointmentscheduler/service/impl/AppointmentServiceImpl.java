@@ -12,14 +12,19 @@ import com.example.appointmentscheduler.model.TimePeroid;
 import com.example.appointmentscheduler.service.AppointmentService;
 import com.example.appointmentscheduler.service.UserService;
 import com.example.appointmentscheduler.service.WorkService;
+import com.google.zxing.WriterException;
+import com.google.zxing.oned.Code128Reader;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,6 +38,8 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final ChatMessageRepository chatMessageRepository;
     private final NotificationService notificationService;
     private final JwtTokenServiceImpl jwtTokenService;
+    @Autowired
+    private BarcodeServiceImpl barcodeService;
 
     public AppointmentServiceImpl(AppointmentRepository appointmentRepository, UserService userService, WorkService workService, ChatMessageRepository chatMessageRepository, NotificationService notificationService, JwtTokenServiceImpl jwtTokenService) {
         this.appointmentRepository = appointmentRepository;
@@ -43,8 +50,15 @@ public class AppointmentServiceImpl implements AppointmentService {
         this.jwtTokenService = jwtTokenService;
     }
 
+    /**
+     * phuong thuc updateAppointment()
+     * @author PT
+     * @description Lưu appointment vào database
+     * @update 2024/03/9
+     */
     @Override
-    public void updateAppointment(Appointment appointment) {
+    public void updateAppointment(Appointment appointment)
+    {
         appointmentRepository.save(appointment);
     }
 
@@ -125,6 +139,16 @@ public class AppointmentServiceImpl implements AppointmentService {
             appointment.setWork(work);
             appointment.setStart(start);
             appointment.setEnd(start.plusMinutes(work.getDuration()));
+
+            // Chuyển đổi barcode_id thành hình ảnh và lưu vào file
+            try {
+                String barcodeImagePath = barcodeService.generateBarcodeImageAndSave(appointment.getBarcodeId());
+                // Lưu đường dẫn vào cột barcode_image
+                appointment.setBarcodeImage(barcodeImagePath);
+            } catch (IOException | WriterException e) {
+                throw new RuntimeException("Error generating and saving barcode image", e);
+            }
+            // Save the appointment to with the updated barcode image to the database
             appointmentRepository.save(appointment);
             notificationService.newNewAppointmentScheduledNotification(appointment, true);
         } else {
