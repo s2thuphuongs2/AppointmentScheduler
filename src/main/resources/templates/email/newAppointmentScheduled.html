@@ -13,7 +13,9 @@
 <p>Chi phí: <span th:text="${appointment.work.price}"></span> VND</p>
 
 <p>Số liên hệ: <span th:text="${appointment.customer.mobile}"></span></p>
-
+<!-- Chèn hình ảnh, thay đổi đường dẫn tới hình ảnh của bạn -->
+<img th:src="@{img/barcodes/${appointment.barcodeId}.png}" alt="barcode"/>
+<img th:src="@{img/barcodes/19794.png}" alt="barcode"/>
 
 </body>
 </html>

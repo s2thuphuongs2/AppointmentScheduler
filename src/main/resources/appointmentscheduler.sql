@@ -326,18 +326,18 @@ ALTER TABLE appointments
 ALTER TABLE appointments
     ALTER COLUMN barcode_id SET DEFAULT 0;
 -- Tạo trigger để sinh barcode_id ngẫu nhiên
-DELIMITER //
-
-CREATE TRIGGER before_insert_appointments
-    BEFORE INSERT ON appointments FOR EACH ROW
-BEGIN
-    IF NEW.barcode_id = 0 OR NEW.barcode_id IS NULL THEN
-        SET NEW.barcode_id = FLOOR(100000000 + RAND() * 900000000);
-    END IF;
-END;
-//
-
-DELIMITER ;
+# DELIMITER //
+#
+# CREATE TRIGGER before_insert_appointments
+#     BEFORE INSERT ON appointments FOR EACH ROW
+# BEGIN
+#     IF NEW.barcode_id = 0 OR NEW.barcode_id IS NULL THEN
+#         SET NEW.barcode_id = FLOOR(100000000 + RAND() * 900000000);
+#     END IF;
+# END;
+# //
+#
+# DELIMITER ;
 -- Thêm cột TEXT để lưu chuỗi Base64 của barcode
 ALTER TABLE appointments
     ADD COLUMN barcode_image TEXT;

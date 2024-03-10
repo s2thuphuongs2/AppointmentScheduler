@@ -53,8 +53,10 @@ public class AppointmentServiceTest {
     @Mock
     private BarcodeService barcodeService;
 
+    @Mock
+    private AppointmentService appointmentService;
     @InjectMocks
-    private AppointmentServiceImpl appointmentService;
+    private AppointmentServiceImpl appointmentServiceTest;
 
     @Before
     public void setUp() {
@@ -117,12 +119,13 @@ public class AppointmentServiceTest {
         when(userService.getProviderById(providerId)).thenReturn(provider);
         when(userService.getCustomerById(customerId)).thenReturn(customer);
         // TODO: Mocking the behavior of the barcodeService.genarateBarcodeImage method
-        when(barcodeService.genarateBarcodeImage(barcodeId)).thenReturn(new byte[]{/* Mocked byte array */});
+//        when(barcodeService.genarateBarcodeImage(barcodeId)).thenReturn(new byte[]{/* Mocked byte array */});
         when(barcodeService.generateBarcodeImageAndSave(barcodeId)).thenReturn("src/main/resources/static/img/barcodes/123456789.png");
         when(appointmentRepository.save(appointment)).thenReturn(appointment);
         // Using ArgumentCaptor to capture the Appointment object that is passed to the appointmentRepository.save() method
         ArgumentCaptor<Appointment> argumentCaptor = ArgumentCaptor.forClass(Appointment.class);
         // TODO: Check if the appointmentService.createNewAppointment method does not throw any exception
+        Work tmp = workService.getWorkById(workId);
         appointmentService.createNewAppointment(workId, providerId, customerId, startOfNewAppointment);
 
         // Xác minh rằng phương thức lưu của cuộc hẹnRepository được gọi chính xác một lần với đối số đã ghi

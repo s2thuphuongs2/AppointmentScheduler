@@ -59,9 +59,13 @@ public class WorkServiceImpl implements WorkService {
 
     @Override
     public boolean isWorkForCustomer(int workId, int customerId) {
+//        return true;
         Customer customer = userService.getCustomerById(customerId);
         Work work = getWorkById(workId);
-        // if customer is retail and work is not for retail
+//        // if customer is retail and work is not for retail
+//        if (customer.hasRole("ROLE_ADMIN")) {
+//            return true;
+//        }
         if (customer.hasRole("ROLE_CUSTOMER_RETAIL") && !work.getTargetCustomer().equals("retail")) {
             return false;
             // if customer is not corporate or work is for corporate

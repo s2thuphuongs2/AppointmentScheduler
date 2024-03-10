@@ -10,7 +10,11 @@ import org.springframework.stereotype.Service;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Random;
 
 @Service
 public class BarcodeServiceImpl implements BarcodeService {
@@ -41,16 +45,23 @@ public class BarcodeServiceImpl implements BarcodeService {
     }
 
     public String generateBarcodeImageAndSave(Long barcodeIdNum) throws WriterException, IOException {
-        String barcodeId = String.valueOf(barcodeIdNum);
         byte[] barcodeImageBytes = genarateBarcodeImage(barcodeIdNum);
-        String imagePath = saveImageToFile(barcodeId, barcodeImageBytes);
+        String imagePath = saveImageToFile(barcodeIdNum, barcodeImageBytes);
         return imagePath;
     }
-    private String saveImageToFile(String barcodeId, byte[] imageBytes) throws IOException {
+    private String saveImageToFile(Long barcodeIdNum, byte[] imageBytes) throws IOException {
+        String barcodeId = String.valueOf(barcodeIdNum);
         String imagePath = "src/main/resources/static/img/barcodes/" + barcodeId + ".png";
         // Lưu byte array vào file ảnh
         // (Bạn có thể sử dụng java.nio.file.Files hoặc các thư viện hỗ trợ để thực hiện việc này)
         // Ví dụ: Files.write(Paths.get(imagePath), imageBytes);
+        File imageFile = new File(imagePath);
+        Files.write(Paths.get(imageFile.getAbsolutePath()), imageBytes);
         return imagePath;
+    }
+
+    public long generate9DigitBarcode() {
+        Random random = new Random();
+        return 100_000_000L + random.nextInt(900_000_000);
     }
 }

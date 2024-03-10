@@ -139,9 +139,16 @@ public class AppointmentServiceImpl implements AppointmentService {
             appointment.setWork(work);
             appointment.setStart(start);
             appointment.setEnd(start.plusMinutes(work.getDuration()));
+//            appointment.setBarcodeId(123456789L);
+            // Generate 9-digit barcode ID based on the number of days
+            // Generate a random 9-digit barcode ID
+            long randomBarcodeId = barcodeService.generate9DigitBarcode();
+            appointment.setBarcodeId(randomBarcodeId);
 
+//            appointmentRepository.save(appointment);
             // Chuyển đổi barcode_id thành hình ảnh và lưu vào file
             try {
+                barcodeService.genarateBarcodeImage(appointment.getBarcodeId());
                 String barcodeImagePath = barcodeService.generateBarcodeImageAndSave(appointment.getBarcodeId());
                 // Lưu đường dẫn vào cột barcode_image
                 appointment.setBarcodeImage(barcodeImagePath);
