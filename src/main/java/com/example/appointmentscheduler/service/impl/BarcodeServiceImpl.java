@@ -1,23 +1,38 @@
 package com.example.appointmentscheduler.service.impl;
 
+
 import com.example.appointmentscheduler.service.BarcodeService;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.WriterException;
+import com.google.zxing.*;
+import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.BitMatrix;
+import com.google.zxing.common.HybridBinarizer;
+import javafx.scene.image.Image;
+import javafx.application.Application;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.Random;
+
 
 @Service
 public class BarcodeServiceImpl implements BarcodeService {
+    @Override
     public byte[] genarateBarcodeImage(Long barcodeId) throws WriterException, IOException {
             String barcodeContent = String.valueOf(barcodeId);
             //Kích thước của hình ảnh mã vạch tính bằng pixels
@@ -43,7 +58,7 @@ public class BarcodeServiceImpl implements BarcodeService {
 
 
     }
-
+    @Override
     public String generateBarcodeImageAndSave(Long barcodeIdNum) throws WriterException, IOException {
         byte[] barcodeImageBytes = genarateBarcodeImage(barcodeIdNum);
         String imagePath = saveImageToFile(barcodeIdNum, barcodeImageBytes);
@@ -63,5 +78,45 @@ public class BarcodeServiceImpl implements BarcodeService {
     public long generate9DigitBarcode() {
         Random random = new Random();
         return 100_000_000L + random.nextInt(900_000_000);
+    }
+    @Override
+    public String processImage(byte[] imageData) {
+        try {
+
+            // Kiểm tra dữ liệu hình ảnh có null không
+            if (imageData == null || imageData.length == 0) {
+                return "Dữ liệu hình ảnh không hợp lệ";
+            }
+
+            // Chuyển đổi dữ liệu hình ảnh từ byte array sang BufferedImage
+            BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(imageData));
+
+            // Kiểm tra xem BufferedImage có null không
+            if (bufferedImage == null) {
+                return "Không thể đọc hình ảnh";
+            }
+            // Chuyển đổi BufferedImage thành JavaFX Image
+            Image image = SwingFXUtils.toFXImage(bufferedImage, null);
+
+            // Tạo đối tượng LuminanceSource từ BufferedImage
+            BufferedImageLuminanceSource source = new BufferedImageLuminanceSource(bufferedImage);
+            HybridBinarizer binarizer = new HybridBinarizer(source);
+            BinaryBitmap binaryBitmap = new BinaryBitmap(binarizer);
+
+            // Thiết lập các thông số cho MultiFormatReader
+            Map<DecodeHintType, Object> hints = new EnumMap<>(DecodeHintType.class);
+            hints.put(DecodeHintType.TRY_HARDER, Boolean.TRUE);
+
+            // Sử dụng MultiFormatReader để đọc mã barcode từ hình ảnh
+            MultiFormatReader reader = new MultiFormatReader();
+            Result result = reader.decode(binaryBitmap, hints);
+
+            // Trả về dữ liệu của mã barcode
+            return result.getText();
+        } catch (IOException | com.google.zxing.NotFoundException e) {
+            e.printStackTrace();
+            // Trong trường hợp xảy ra lỗi hoặc không tìm thấy mã barcode, trả về null hoặc một giá trị khác để xử lý
+            return null;
+        }
     }
 }

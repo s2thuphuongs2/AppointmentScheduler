@@ -20,6 +20,8 @@
             <!-- Cột trống -->
         </div>
 
+
+
 <!--<div class="card">-->
 <!--    <div class="card-body shadow">-->
 
@@ -67,6 +69,100 @@
 </script>
 <!-- Kết thúc đoạn script JavaScript với Thymeleaf inline -->
 
+<!-- Hiển thị hình ảnh từ camera -->
+<!--<h2>Quét mã barcode từ camera</h2>-->
+<!--<video id="video" width="100%" height="auto" autoplay></video>-->
+<!--<button id="scanButton">Quét</button>-->
+
+<script th:inline="javascript">
+    // Lấy phần hiển thị của camera và nút quét
+    const video = document.getElementById('video');
+    const scanButton = document.getElementById('scanButton');
+    let isScanning = false; // Biến flag để xác định xem đang quét hay không
+
+    // Gọi hàm để chạy video khi trang web được tải
+    window.onload = function() {
+        // Chạy hàm chụp hình ảnh từ camera mỗi giây
+        setInterval(takePicture, 1000);
+    };
+
+    // Sự kiện click cho nút quét
+    scanButton.addEventListener('click', () => {
+        // Bật cờ để báo hiệu đang quét
+        isScanning = true;
+        // Chụp hình ảnh từ camera khi nút quét được nhấn
+        takePicture();
+    });
+
+    // Thực hiện chụp hình ảnh từ camera
+    function takePicture() {
+        if (!isScanning) {
+            // Nếu không đang quét, không thực hiện chụp hình ảnh
+            return;
+        }
+        // Sử dụng hàm navigator để truy cập camera
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function(stream) {
+                // Hiển thị hình ảnh từ camera lên video element
+                video.srcObject = stream;
+                // Chờ 1 giây để camera ổn định
+                setTimeout(() => {
+                    // Tạo canvas để lưu hình ảnh từ camera
+                    const canvas = document.createElement('canvas');
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                    // Lấy context để vẽ hình ảnh từ camera lên canvas (2d là ảnh 2 chiều)
+                    const context = canvas.getContext('2d');
+                    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    // Chuyển hình ảnh từ canvas thành dữ liệu base64
+                    const imageData = canvas.toDataURL('image/png');
+                    // Gửi dữ liệu hình ảnh lên server để xử lý
+                    sendImageToServer(imageData);
+                    // Dừng truy cập camera
+                    stream.getTracks().forEach(track => track.stop());
+                }, 1000);
+            })
+            .catch(function(error) {
+                console.log('Không thể truy cập camera: ', error);
+                alert("Không thể truy cập camera:");
+            });
+    }
+
+    // Hàm gửi dữ liệu hình ảnh từ camera lên server để xử lý
+    function sendImageToServer(imageData) {
+        fetch('/process-image', {
+            method: 'POST',
+            body: imageData
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Có lỗi xảy ra khi gửi hình ảnh lên server.');
+                }
+                return response.text();
+            })
+
+            .then(data => {
+                // Kiểm tra dữ liệu trả về để hiển thị các cảnh báo alert tương ứng
+                switch(data){
+                    case 'Không thể đọc hình ảnh':
+                        alert("Không thể đọc hình ảnh");
+                        isScanning = false;
+                        break;
+                    case "Dữ liệu hình ảnh không hợp lệ":
+                        alert("Dữ liệu hình ảnh không hợp lệ");
+                        isScanning = false;
+                        break;
+                    default:
+                        // Xử lý dữ liệu barcode nhận được từ server
+                        console.log('Dữ liệu barcode từ server:', data);
+                        // Thực hiện các thao tác tiếp theo tại đây
+                        break;
+                }
+
+            })
+            .catch(error => console.error('Lỗi khi gửi hình ảnh lên server:', error));
+    }
+</script>
 </body>
 
 </html>
