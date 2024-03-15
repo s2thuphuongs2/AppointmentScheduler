@@ -104,12 +104,11 @@
                     <tr>
                         <td><b>mã vạch</b></td>
                         <td>
-<!--                            TODO: Sửa lỗi Ảnh không hiện -->
-                            <img th:src="@{img/barcodes/${appointment.barcodeId}.png}" alt="barcode"/>
-                            <img th:src="@{img/barcodes/937801552.png}" alt="barcode"/>
-                            <img src="../../static/img/barcodes/19794.png"/>
+
+                            <img th:src="@{'/img/barcodes/'+${appointment.barcodeId}+'.png'}" alt="barcode"/>
                         </td>
                     </tr>
+                    
 
 <!--Xóa xột exchange-->
 <!--                    <tr>-->
