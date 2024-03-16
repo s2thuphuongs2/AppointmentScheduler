@@ -7,7 +7,7 @@
 <p>Chào bạn, <span th:text="${appointment.customer.firstName}"></span></p>
 <p>Đây là bản tóm tắt lịch hẹn đã hoàn thành của bạn:</p>
 <p>Ngày: <span th:text="${#temporals.format(appointment.start, 'dd-MM-yyyy HH:mm')}"></span></p>
-<p>Bên tạo lịch: <span th:text="${appointment.provider.firstName}"></span></p>
+<p>Bên tạo lịch: <span th:text="${appointment.doctor.firstName}"></span></p>
 <p>Nội dung: <span th:text="${appointment.work.name}"></span></p>
 <p>Thời lượng: <span th:text="${appointment.work.duration}"></span></p>
 <p>Chi phí: <span th:text="${appointment.work.price}"></span></p>

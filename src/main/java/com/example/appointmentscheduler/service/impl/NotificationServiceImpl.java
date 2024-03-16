@@ -91,7 +91,7 @@ public class NotificationServiceImpl implements NotificationService {
         String title = "Lịch hẹn bị từ chối";
         String message = appointment.getCustomer().getFirstName() + " " + appointment.getCustomer().getLastName() + "từ chối một cuộc hẹn. Cần có sự chấp thuận của bạn";
         String url = "/appointments/" + appointment.getId();
-        newNotification(title, message, url, appointment.getProvider());
+        newNotification(title, message, url, appointment.getDoctor());
         if (sendEmail && mailingEnabled) {
             emailService.sendAppointmentRejectionRequestedNotification(appointment);
         }
@@ -100,9 +100,9 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public void newNewAppointmentScheduledNotification(Appointment appointment, boolean sendEmail) {
         String title = "Đã lên lịch hẹn mới";
-        String message = "Cuộc hẹn mới đã được lên lịch với " + appointment.getCustomer().getFirstName() + " " + appointment.getProvider().getLastName() + " vào lúc " + appointment.getStart().toString();
+        String message = "Cuộc hẹn mới đã được lên lịch với " + appointment.getCustomer().getFirstName() + " " + appointment.getDoctor().getLastName() + " vào lúc " + appointment.getStart().toString();
         String url = "/appointments/" + appointment.getId();
-        newNotification(title, message, url, appointment.getProvider());
+        newNotification(title, message, url, appointment.getDoctor());
         if (sendEmail && mailingEnabled) {
             emailService.sendNewAppointmentScheduledNotification(appointment);
         }
@@ -113,20 +113,20 @@ public class NotificationServiceImpl implements NotificationService {
         String title = "Lịch hẹn đã bị hủy";
         String message = appointment.getCustomer().getFirstName() + " " + appointment.getCustomer().getLastName() + " hủy lịch hẹn vào lúc " + appointment.getStart().toString();
         String url = "/appointments/" + appointment.getId();
-        newNotification(title, message, url, appointment.getProvider());
+        newNotification(title, message, url, appointment.getDoctor());
         if (sendEmail && mailingEnabled) {
             emailService.sendAppointmentCanceledByCustomerNotification(appointment);
         }
     }
 
     @Override
-    public void newAppointmentCanceledByProviderNotification(Appointment appointment, boolean sendEmail) {
+    public void newAppointmentCanceledByDoctorNotification(Appointment appointment, boolean sendEmail) {
         String title = "Lịch hẹn đã bị hủy";
-        String message = appointment.getProvider().getFirstName() + " " + appointment.getProvider().getLastName() + " hủy lịch hẹn vào lúc " + appointment.getStart().toString();
+        String message = appointment.getDoctor().getFirstName() + " " + appointment.getDoctor().getLastName() + " hủy lịch hẹn vào lúc " + appointment.getStart().toString();
         String url = "/appointments/" + appointment.getId();
         newNotification(title, message, url, appointment.getCustomer());
         if (sendEmail && mailingEnabled) {
-            emailService.sendAppointmentCanceledByProviderNotification(appointment);
+            emailService.sendAppointmentCanceledByDoctorNotification(appointment);
         }
     }
 
@@ -189,7 +189,7 @@ public class NotificationServiceImpl implements NotificationService {
         String title = "Có tin nhắn mới";
         String message = "Bạn có tin nhắn mới từ " + chatMessage.getAuthor().getFirstName() + " về cuộc hẹn đã được lên lịch vào lúc " + chatMessage.getAppointment().getStart();
         String url = "/appointments/" + chatMessage.getAppointment().getId();
-        newNotification(title, message, url, chatMessage.getAuthor() == chatMessage.getAppointment().getProvider() ? chatMessage.getAppointment().getCustomer() : chatMessage.getAppointment().getProvider());
+        newNotification(title, message, url, chatMessage.getAuthor() == chatMessage.getAppointment().getDoctor() ? chatMessage.getAppointment().getCustomer() : chatMessage.getAppointment().getDoctor());
         if (sendEmail && mailingEnabled) {
             emailService.sendNewChatMessageNotification(chatMessage);
         }

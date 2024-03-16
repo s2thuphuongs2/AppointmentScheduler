@@ -24,7 +24,7 @@
                     <td><span th:text="${work.duration }"> 30 phút </span></td>
                     <td><span th:text="${work.price}"> 3 </span></td>
                     <td><a class="btn btn-primary"
-                           th:href="@{'/appointments/new/'+${providerId} +'/'+ ${work.id}}"
+                           th:href="@{'/appointments/new/'+${doctorId} +'/'+ ${work.id}}"
                            role="button">Chọn</a>
                     </td>
                 </tr>

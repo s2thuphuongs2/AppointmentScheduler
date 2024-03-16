@@ -3,7 +3,7 @@ package com.example.appointmentscheduler.model;
 import com.example.appointmentscheduler.entity.user.User;
 import com.example.appointmentscheduler.entity.user.customer.CorporateCustomer;
 import com.example.appointmentscheduler.entity.user.customer.RetailCustomer;
-import com.example.appointmentscheduler.entity.user.provider.Provider;
+import com.example.appointmentscheduler.entity.user.doctor.Doctor;
 import com.example.appointmentscheduler.validation.UniqueUsername;
 import com.example.appointmentscheduler.entity.Work;
 import com.example.appointmentscheduler.validation.FieldsMatches;
@@ -67,9 +67,9 @@ public class UserForm {
     private String vatNumber;
 
     /*
-     * Provider only:
+     * Doctor only:
      * */
-    @NotNull(groups = {CreateProvider.class, UpdateProvider.class})
+    @NotNull(groups = {CreateDoctor.class, UpdateDoctor.class})
     private List<Work> works;
 
 
@@ -87,9 +87,9 @@ public class UserForm {
         this.setMobile(user.getMobile());
     }
 
-    public UserForm(Provider provider) {
-        this((User) provider);
-        this.setWorks(provider.getWorks());
+    public UserForm(Doctor doctor) {
+        this((User) doctor);
+        this.setWorks(doctor.getWorks());
     }
 
     public UserForm(RetailCustomer retailCustomer) {

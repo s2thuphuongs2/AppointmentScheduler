@@ -10,7 +10,7 @@
             <div class="card-header text-center" style="background-color: #e3f2fd;">
                 <th:block th:if="${account_type =='customer_corporate'}">Đăng ký tài khoàn cho Phòng khám/Tổ chức/Bệnh viện</th:block>
                 <th:block th:if="${account_type =='customer_retail'}">Đăng ký tài khoản Cá nhân</th:block>
-                <th:block th:if="${account_type =='provider'}">Đăng ký tài khoản Bác sĩ</th:block>
+                <th:block th:if="${account_type =='doctor'}">Đăng ký tài khoản Bác sĩ</th:block>
             </div>
             <div class="card-body">
 
@@ -74,7 +74,7 @@
 
                     <div class="form-group">
                         <label th:if="${account_type =='customer_corporate'}" for="firstName">Tên người liên hệ</label>
-                        <label th:if="${account_type =='customer_retail' or account_type =='provider'}"
+                        <label th:if="${account_type =='customer_retail' or account_type =='doctor'}"
                                for="firstName">Tên
                             </label>
                         <input type="text" class="form-control" th:classappend="${#fields.hasErrors('firstName') ? 'is-invalid' :''}" th:field="*{firstName}"  placeholder="Phương">
@@ -86,7 +86,7 @@
 
                     <div class="form-group">
                         <label th:if="${account_type =='customer_corporate'}" for="lastName">Họ người liên hệ</label>
-                        <label th:if="${account_type =='customer_retail' or account_type =='provider'}"
+                        <label th:if="${account_type =='customer_retail' or account_type =='doctor'}"
                                for="lastName">Họ và tên lót</label>
                         <input type="text" class="form-control" th:classappend="${#fields.hasErrors('lastName') ? 'is-invalid' :''}" th:field="*{lastName}" placeholder="Kowalski">
                         <div th:if="${#fields.hasErrors('lastName')}" class="invalid-feedback">
@@ -133,7 +133,7 @@
                         </div>
                     </div>
 
-                    <th:block th:if="${account_type =='provider'}">
+                    <th:block th:if="${account_type =='doctor'}">
                         <div class="form-group">
                             <p class="text-primary">Đối tượng cá nhân</p>
                             <p class="text-info">Đối tượng tổ chức/bệnh viện</p>

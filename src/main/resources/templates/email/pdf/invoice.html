@@ -141,7 +141,6 @@
                             <span th:if="${invoice.appointments[0].customer.hasRole('ROLE_CUSTOMER_CORPORATE')}" th:utext="${invoice.appointments[0].customer.companyName} +'&lt;br /&gt;'">Company name</span>
                             <span th:if="${invoice.appointments[0].customer.hasRole('ROLE_CUSTOMER_CORPORATE')}" th:utext="${'VAT: ' + invoice.appointments[0].customer.vatNumber}+'&lt;br /&gt;'">VAT: 697-134-42-81</span>
                             <span th:text="${invoice.appointments[0].customer.street}">ul. Pola Wincentego 7</span><br/>
-                            <span th:text="${invoice.appointments[0].customer.postcode + ' ' + invoice.appointments[0].customer.city}">71-342 Szczecin</span><br/>
                             <span th:text="${invoice.appointments[0].customer.mobile}">695-262-145</span><br/>
                             <span th:text="${invoice.appointments[0].customer.email}">email@example.com</span>
                         </td>
@@ -162,7 +161,7 @@
 
         <tr th:each="appointment : ${invoice.appointments}" class="item">
             <td>
-                <span th:text="${appointment.work.name +' with '+appointment.provider.firstName +' '+appointment.provider.lastName +' on '+#temporals.format(appointment.start, 'dd-MM-yyyy HH:mm')}"></span>
+                <span th:text="${appointment.work.name +' with '+appointment.doctor.firstName +' '+appointment.doctor.lastName +' on '+#temporals.format(appointment.start, 'dd-MM-yyyy HH:mm')}"></span>
             </td>
 
             <td>
@@ -174,7 +173,7 @@
             <td></td>
 
             <td>
-                Total: <span th:text="${invoice.totalAmount}">50 VND</span> VND
+                Tổng: <span th:text="${invoice.totalAmount}">50 VND</span> VND
             </td>
         </tr>
     </table>

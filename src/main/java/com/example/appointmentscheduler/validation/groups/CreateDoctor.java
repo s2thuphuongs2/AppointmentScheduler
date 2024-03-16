@@ -1,4 +1,4 @@
 package com.example.appointmentscheduler.validation.groups;
 
-public interface UpdateProvider {
+public interface CreateDoctor {
 }

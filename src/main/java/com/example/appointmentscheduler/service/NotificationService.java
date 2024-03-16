@@ -27,7 +27,7 @@ public interface NotificationService {
 
     void newAppointmentCanceledByCustomerNotification(Appointment appointment, boolean sendEmail);
 
-    void newAppointmentCanceledByProviderNotification(Appointment appointment, boolean sendEmail);
+    void newAppointmentCanceledByDoctorNotification(Appointment appointment, boolean sendEmail);
 
     void newAppointmentRejectionAcceptedNotification(Appointment appointment, boolean sendEmail);
 

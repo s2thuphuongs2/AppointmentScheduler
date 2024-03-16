@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface WorkingPlanRepository extends JpaRepository<WorkingPlan, Integer> {
-    @Query("select w from WorkingPlan w where w.provider.id = :providerId")
-    WorkingPlan getWorkingPlanByProviderId(@Param("providerId") int providerId);
+    @Query("select w from WorkingPlan w where w.doctor.id = :doctorId")
+    WorkingPlan getWorkingPlanByDoctorId(@Param("doctorId") int doctorId);
 }

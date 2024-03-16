@@ -34,18 +34,18 @@ public class AjaxController {
         if (currentUser.hasRole("ROLE_CUSTOMER")) {
             return appointmentService.getAppointmentByCustomerId(userId);
         } else if (currentUser.hasRole("ROLE_PROVIDER"))
-            return appointmentService.getAppointmentByProviderId(userId);
+            return appointmentService.getAppointmentByDoctorId(userId);
         else if (currentUser.hasRole("ROLE_ADMIN"))
             return appointmentService.getAllAppointments();
         else return Lists.newArrayList();
     }
 
-    @GetMapping("/availableHours/{providerId}/{workId}/{date}")
-    public List<AppointmentRegisterForm> getAvailableHours(@PathVariable("providerId") int providerId, @PathVariable("workId") int workId, @PathVariable("date") String date, @AuthenticationPrincipal CustomUserDetails currentUser) {
+    @GetMapping("/availableHours/{doctorId}/{workId}/{date}")
+    public List<AppointmentRegisterForm> getAvailableHours(@PathVariable("doctorId") int doctorId, @PathVariable("workId") int workId, @PathVariable("date") String date, @AuthenticationPrincipal CustomUserDetails currentUser) {
         LocalDate localDate = LocalDate.parse(date);
-        return appointmentService.getAvailableHours(providerId, currentUser.getId(), workId, localDate)
+        return appointmentService.getAvailableHours(doctorId, currentUser.getId(), workId, localDate)
                 .stream()
-                .map(timePeriod -> new AppointmentRegisterForm(workId, providerId, timePeriod.getStart().atDate(localDate), timePeriod.getEnd().atDate(localDate)))
+                .map(timePeriod -> new AppointmentRegisterForm(workId, doctorId, timePeriod.getStart().atDate(localDate), timePeriod.getEnd().atDate(localDate)))
                 .collect(Collectors.toList());
     }
 

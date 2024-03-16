@@ -6,17 +6,17 @@
 <div class="row align-items-center justify-content-center" style="margin-top: 50px">
 
 
-    <div class="col-md-3 m-3" th:each="provider : ${providers}">
+    <div class="col-md-3 m-3" th:each="doctor : ${doctors}">
         <div class="card" style="width: 18rem;">
             <img class="card-img-top" src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="Card image cap">
             <div class="card-body text-center">
-                <h5 class="card-title"><span th:text="${provider.firstName +' ' +provider.lastName}"> Name
+                <h5 class="card-title"><span th:text="${doctor.firstName +' ' +doctor.lastName}"> Name
                             Lastname</span></h5>
                 <p sec:authorize="hasRole('ROLE_CUSTOMER_RETAIL')"
-                   th:text="${'Nội dung hẹn có sẵn: '+ provider.getRetailWorks().size()}">Nội dung hẹn có sẵn: 3</p>
+                   th:text="${'Nội dung hẹn có sẵn: '+ doctor.getRetailWorks().size()}">Nội dung hẹn có sẵn: 3</p>
                 <p sec:authorize="hasRole('ROLE_CUSTOMER_CORPORATE')"
-                   th:text="${'Nội dung hẹn có sẵn: '+ provider.getCorporateWorks().size()}">Nội dung hẹn có sẵn: 3</p>
-                <a th:href="@{'/appointments/new/'+${provider.id}}" class="btn btn-primary">Select</a>
+                   th:text="${'Nội dung hẹn có sẵn: '+ doctor.getCorporateWorks().size()}">Nội dung hẹn có sẵn: 3</p>
+                <a th:href="@{'/appointments/new/'+${doctor.id}}" class="btn btn-primary">Select</a>
 
             </div>
         </div>

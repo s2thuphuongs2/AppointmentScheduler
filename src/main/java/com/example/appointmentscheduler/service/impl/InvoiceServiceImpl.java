@@ -123,7 +123,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         // Kiểm tra từng cuộc hẹn trong hóa đơn
         for (Appointment a : invoice.getAppointments()) {
             // Nếu người dùng là nhà cung cấp hoặc khách hàng trong bất kỳ cuộc hẹn nào, cho phép tải xuống
-            if (a.getProvider().getId() == userId || a.getCustomer().getId() == userId) {
+            if (a.getDoctor().getId() == userId || a.getCustomer().getId() == userId) {
                 return true;
             }
         }

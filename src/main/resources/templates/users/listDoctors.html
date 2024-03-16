@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout (~{::body},'doctors','Danh sách bác sĩ')}"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<body>
+
+
+<div class="row align-items-center justify-content-center" style="margin-top: 50px">
+    <div>
+        <table id="doctors" class="table shadow table-striped text-center  border-radius-6">
+            <thead class="thead-primary" style="background-color: #e3f2fd;">
+            <tr>
+                <th> Tên</th>
+                <th> E-mail</th>
+                <th> Các lịch hẹn</th>
+                <th> Nội dung công việc</th>
+                <th> Hành động</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${doctors == null}">
+                <td colspan="4"> Không có bác sĩ nào.</td>
+            </tr>
+            <tr th:each="doctor : ${doctors}">
+                <td><span th:text="${doctor.firstName +' ' + doctor.lastName}"> Họ và tên </span></td>
+                <td><span th:text="${doctor.email }"> email </span></td>
+                <td><span th:text="${doctor.appointments.size() }"> 3 </span></td>
+                <td><span th:text="${doctor.works.size() }"> 2 </span></td>
+                <td><a class="btn btn-secondary" th:href="@{'/doctors/' + ${doctor.id}}" role="button">Chi tiết</a>
+                    <form class="d-inline-block" th:action="@{/doctors/delete}" method="POST">
+                        <input type="hidden" name="doctorId" th:value="${doctor.id}"/>
+                        <button type="submit" name="submit" value="value" class="btn btn-danger">Xóa</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+<div class="row align-items-center justify-content-center" style="margin-top: 50px">
+    <a class="btn btn-primary" th:href="@{/doctors/new}" role="button">Bác sĩ mới.</a>
+</div>
+
+
+</body>
+</html>

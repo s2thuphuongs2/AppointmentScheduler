@@ -1,7 +1,7 @@
 package com.example.appointmentscheduler.entity;
 
 import com.example.appointmentscheduler.entity.user.User;
-import com.example.appointmentscheduler.entity.user.provider.Provider;
+import com.example.appointmentscheduler.entity.user.doctor.Doctor;
 import com.example.appointmentscheduler.model.DayPlan;
 import com.example.appointmentscheduler.model.TimePeroid;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
@@ -18,13 +18,13 @@ import java.time.LocalTime;
 public class WorkingPlan {
 
     @Id
-    @Column(name = "id_provider")
+    @Column(name = "id_doctor")
     private int id;
 
     @MapsId
     @OneToOne
-    @JoinColumn(name = "id_provider")
-    private Provider provider;
+    @JoinColumn(name = "id_doctor")
+    private Doctor doctor;
 
     @Type(type = "json")
     @Column(columnDefinition = "json", name = "monday")
@@ -66,12 +66,12 @@ public class WorkingPlan {
         this.id = id;
     }
 
-    public User getProvider() {
-        return provider;
+    public User getDoctor() {
+        return doctor;
     }
 
-    public void setProvider(Provider provider) {
-        this.provider = provider;
+    public void setDoctor(Doctor doctor) {
+        this.doctor = doctor;
     }
 
     public DayPlan getDay(String day) {

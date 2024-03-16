@@ -82,7 +82,7 @@ public class EmailServiceImpl implements EmailService {
         Context context = new Context();
         context.setVariable("appointment", appointment);
         context.setVariable("url", baseUrl + "/appointments/acceptRejection?token=" + jwtTokenService.generateAcceptRejectionToken(appointment));
-        sendEmail(appointment.getProvider().getEmail(), "Yêu cầu hủy lịch hẹn", "appointmentRejectionRequested", context, null);
+        sendEmail(appointment.getDoctor().getEmail(), "Yêu cầu hủy lịch hẹn", "appointmentRejectionRequested", context, null);
     }
 
     @Async
@@ -90,7 +90,7 @@ public class EmailServiceImpl implements EmailService {
     public void sendNewAppointmentScheduledNotification(Appointment appointment) {
         Context context = new Context();
         context.setVariable("appointment", appointment);
-        sendEmail(appointment.getProvider().getEmail(), "Lịch hẹn mới đã được đặt", "newAppointmentScheduled", context, null);
+        sendEmail(appointment.getDoctor().getEmail(), "Lịch hẹn mới đã được đặt", "newAppointmentScheduled", context, null);
     }
 
     @Async
@@ -99,15 +99,15 @@ public class EmailServiceImpl implements EmailService {
         Context context = new Context();
         context.setVariable("appointment", appointment);
         context.setVariable("canceler", "customer");
-        sendEmail(appointment.getProvider().getEmail(), "Bên đặt lịch đã hủy lịch hẹn", "appointmentCanceled", context, null);
+        sendEmail(appointment.getDoctor().getEmail(), "Bên đặt lịch đã hủy lịch hẹn", "appointmentCanceled", context, null);
     }
 
     @Async
     @Override
-    public void sendAppointmentCanceledByProviderNotification(Appointment appointment) {
+    public void sendAppointmentCanceledByDoctorNotification(Appointment appointment) {
         Context context = new Context();
         context.setVariable("appointment", appointment);
-        context.setVariable("canceler", "provider");
+        context.setVariable("canceler", "doctor");
         sendEmail(appointment.getCustomer().getEmail(), "Bác sĩ đã hủy lịch hẹn", "appointmentCanceled", context, null);
     }
 
@@ -137,36 +137,10 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public void sendNewChatMessageNotification(ChatMessage chatMessage) {
         Context context = new Context();
-        User recipent = chatMessage.getAuthor() == chatMessage.getAppointment().getProvider() ? chatMessage.getAppointment().getCustomer() : chatMessage.getAppointment().getProvider();
+        User recipent = chatMessage.getAuthor() == chatMessage.getAppointment().getDoctor() ? chatMessage.getAppointment().getCustomer() : chatMessage.getAppointment().getDoctor();
         context.setVariable("recipent", recipent);
         context.setVariable("appointment", chatMessage.getAppointment());
         context.setVariable("url", baseUrl + "/appointments/" + chatMessage.getAppointment().getId());
         sendEmail(recipent.getEmail(), "Tin nhắn mới", "newChatMessage", context, null);
     }
-/////////====DELETE Xóa trao đổi lịch hẹn ======/////////
-//    @Async
-//    @Override
-//    public void sendNewExchangeRequestedNotification(Appointment oldAppointment, Appointment newAppointment) {
-//        Context context = new Context();
-//        context.setVariable("oldAppointment", oldAppointment);
-//        context.setVariable("newAppointment", newAppointment);
-//        context.setVariable("url", baseUrl + "/appointments/" + newAppointment.getId());
-//        sendEmail(newAppointment.getCustomer().getEmail(), "Yêu cầu trao đổi cuộc hẹn mới", "newExchangeRequest", context, null);
-//    }
-//
-//    @Override
-//    public void sendExchangeRequestAcceptedNotification(ExchangeRequest exchangeRequest) {
-//        Context context = new Context();
-//        context.setVariable("exchangeRequest", exchangeRequest);
-//        context.setVariable("url", baseUrl + "/appointments/" + exchangeRequest.getRequested().getId());
-//        sendEmail(exchangeRequest.getRequested().getCustomer().getEmail(), "Exchange request accepted", "exchangeRequestAccepted", context, null);
-//    }
-//
-//    @Override
-//    public void sendExchangeRequestRejectedNotification(ExchangeRequest exchangeRequest) {
-//        Context context = new Context();
-//        context.setVariable("exchangeRequest", exchangeRequest);
-//        context.setVariable("url", baseUrl + "/appointments/" + exchangeRequest.getRequestor().getId());
-//        sendEmail(exchangeRequest.getRequestor().getCustomer().getEmail(), "Exchange request rejected", "exchangeRequestRejected", context, null);
-//    }
 }

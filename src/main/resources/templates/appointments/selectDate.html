@@ -44,7 +44,7 @@
                 // your event source
                 {
                     events: function (start, end, timezone, callback) {
-                        var url = [[${ '/api/availableHours/'+providerId + '/' + workId + '/' }]] + start.format('YYYY-MM-DD').toString();
+                        var url = [[${ '/api/availableHours/'+doctorId + '/' + workId + '/' }]] + start.format('YYYY-MM-DD').toString();
                         console.log(url);
                         $.ajax({
                             url: url,
@@ -52,7 +52,7 @@
                             success: function (doc) {
 
                                 var x = doc.map(function (entry) {
-                                    var URL = [[${ '/appointments/new/'+providerId + '/' + workId + '/' }]] + entry.start;
+                                    var URL = [[${ '/appointments/new/'+doctorId + '/' + workId + '/' }]] + entry.start;
                                     entry.url = URL;
                                     return entry;
                                 });

@@ -5,7 +5,7 @@ import com.example.appointmentscheduler.entity.Appointment;
 import com.example.appointmentscheduler.entity.Work;
 import com.example.appointmentscheduler.entity.WorkingPlan;
 import com.example.appointmentscheduler.entity.user.customer.Customer;
-import com.example.appointmentscheduler.entity.user.provider.Provider;
+import com.example.appointmentscheduler.entity.user.doctor.Doctor;
 import com.example.appointmentscheduler.service.*;
 import com.example.appointmentscheduler.service.impl.AppointmentServiceImpl;
 import com.google.zxing.WriterException;
@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
@@ -64,7 +63,7 @@ public class AppointmentServiceTest {
     }
 
     private int customerId;
-    private int providerId;
+    private int doctorId;
     private int workId;
 
     private Appointment appointment;
@@ -72,7 +71,7 @@ public class AppointmentServiceTest {
     private List<Appointment> appointments;
     private int appointmentId;
     private Work work;
-    private Provider provider;
+    private Doctor doctor;
     private Customer customer;
 
     private Long barcodeId;
@@ -85,14 +84,14 @@ public class AppointmentServiceTest {
     public void initObjects() {
         // Initializing test data
         customerId = 1;
-        providerId = 2;
+        doctorId = 2;
         workId = 3;
         work = new Work();
         work.setId(workId);
         work.setDuration(60);
-        provider = new Provider();
-        provider.setId(providerId);
-        provider.setWorkingPlan(WorkingPlan.generateDefaultWorkingPlan());
+        doctor = new Doctor();
+        doctor.setId(doctorId);
+        doctor.setWorkingPlan(WorkingPlan.generateDefaultWorkingPlan());
         customer = new Customer();
         customer.setId(customerId);
         appointment = new Appointment();
@@ -116,7 +115,7 @@ public class AppointmentServiceTest {
         //Mocking dependencies and behavior
         when(workService.isWorkForCustomer(workId, customerId)).thenReturn(true);
         when(workService.getWorkById(workId)).thenReturn(work);
-        when(userService.getProviderById(providerId)).thenReturn(provider);
+        when(userService.getDoctorById(doctorId)).thenReturn(doctor);
         when(userService.getCustomerById(customerId)).thenReturn(customer);
         // TODO: Mocking the behavior of the barcodeService.genarateBarcodeImage method
 //        when(barcodeService.genarateBarcodeImage(barcodeId)).thenReturn(new byte[]{/* Mocked byte array */});
@@ -126,24 +125,24 @@ public class AppointmentServiceTest {
         ArgumentCaptor<Appointment> argumentCaptor = ArgumentCaptor.forClass(Appointment.class);
         // TODO: Check if the appointmentService.createNewAppointment method does not throw any exception
         Work tmp = workService.getWorkById(workId);
-        appointmentService.createNewAppointment(workId, providerId, customerId, startOfNewAppointment);
+        appointmentService.createNewAppointment(workId, doctorId, customerId, startOfNewAppointment);
 
         // Xác minh rằng phương thức lưu của cuộc hẹnRepository được gọi chính xác một lần với đối số đã ghi
         verify(appointmentRepository, times(1)).save(argumentCaptor.capture());
     }
 
     @Test(expected = RuntimeException.class)
-    public void shouldNotBookAppointmentWhenAppointmentStartIsNotWithinProviderWorkingHours() {
+    public void shouldNotBookAppointmentWhenAppointmentStartIsNotWithinDoctorWorkingHours() {
         LocalDateTime startOfNewAppointment = LocalDateTime.of(2019, 01, 01, 5, 59);
 
         //Mocking dependencies and behavior
         when(workService.isWorkForCustomer(workId, customerId)).thenReturn(true);
         when(workService.getWorkById(workId)).thenReturn(work);
-        when(userService.getProviderById(providerId)).thenReturn(provider);
+        when(userService.getDoctorById(doctorId)).thenReturn(doctor);
 
         // Using ArgumentCaptor to capture the Appointment object that is passed to the appointmentRepository.save() method
         ArgumentCaptor<Appointment> argumentCaptor = ArgumentCaptor.forClass(Appointment.class);
-        appointmentService.createNewAppointment(workId, providerId, customerId, startOfNewAppointment);
+        appointmentService.createNewAppointment(workId, doctorId, customerId, startOfNewAppointment);
         verify(appointmentRepository, times(1)).save(argumentCaptor.capture());
     }
 
@@ -151,7 +150,7 @@ public class AppointmentServiceTest {
      * Test case for creating a new appointment when all conditions are met.
      */
     @Test(expected = RuntimeException.class)
-    public void shouldNotBookNewAppointmentWhenCollidingWithProviderAlreadyBookedAppointments() {
+    public void shouldNotBookNewAppointmentWhenCollidingWithDoctorAlreadyBookedAppointments() {
         LocalDateTime startOfNewAppointment = LocalDateTime.of(2019, 01, 01, 6, 0);
 
         // Mocking dependencies and behavior
@@ -160,17 +159,17 @@ public class AppointmentServiceTest {
         LocalDateTime endOfExistingAppointment = LocalDateTime.of(2019, 01, 01, 7, 0);
         existingAppointment.setStart(startOfExistingAppointment);
         existingAppointment.setEnd(endOfExistingAppointment);
-        List<Appointment> providerBookedAppointments = new ArrayList<>();
-        providerBookedAppointments.add(existingAppointment);
+        List<Appointment> doctorBookedAppointments = new ArrayList<>();
+        doctorBookedAppointments.add(existingAppointment);
 
         when(workService.isWorkForCustomer(workId, customerId)).thenReturn(true);
-        when(appointmentRepository.findByProviderIdWithStartInPeroid(providerId, startOfNewAppointment.toLocalDate().atStartOfDay(), startOfNewAppointment.toLocalDate().atStartOfDay().plusDays(1))).thenReturn(providerBookedAppointments);
+        when(appointmentRepository.findByDoctorIdWithStartInPeroid(doctorId, startOfNewAppointment.toLocalDate().atStartOfDay(), startOfNewAppointment.toLocalDate().atStartOfDay().plusDays(1))).thenReturn(doctorBookedAppointments);
         when(workService.getWorkById(workId)).thenReturn(work);
-        when(userService.getProviderById(providerId)).thenReturn(provider);
+        when(userService.getDoctorById(doctorId)).thenReturn(doctor);
 
         // Sử dụng ArgumentCaptor để nắm bắt đối số được truyền vào phương thức save
         ArgumentCaptor<Appointment> argumentCaptor = ArgumentCaptor.forClass(Appointment.class);
-        appointmentService.createNewAppointment(workId, providerId, customerId, startOfNewAppointment);
+        appointmentService.createNewAppointment(workId, doctorId, customerId, startOfNewAppointment);
 
         //
         verify(appointmentRepository, times(1)).save(argumentCaptor.capture());
@@ -196,11 +195,11 @@ public class AppointmentServiceTest {
         when(workService.isWorkForCustomer(workId, customerId)).thenReturn(true);
         when(appointmentRepository.findByCustomerIdWithStartInPeroid(customerId, startOfNewAppointment.toLocalDate().atStartOfDay(), startOfNewAppointment.toLocalDate().atStartOfDay().plusDays(1))).thenReturn(customerBookedAppointments);
         when(workService.getWorkById(workId)).thenReturn(work);
-        when(userService.getProviderById(providerId)).thenReturn(provider);
+        when(userService.getDoctorById(doctorId)).thenReturn(doctor);
 
         // Sử dụng ArgumentCaptor để nắm bắt đối số được truyền vào phương thức save
         ArgumentCaptor<Appointment> argumentCaptor = ArgumentCaptor.forClass(Appointment.class);
-        appointmentService.createNewAppointment(workId, providerId, customerId, startOfNewAppointment);
+        appointmentService.createNewAppointment(workId, doctorId, customerId, startOfNewAppointment);
 
         // Xác minh rằng phương thức lưu của cuộc hẹnRepository được gọi chính xác một lần với đối số đã ghi
         verify(appointmentRepository, times(1)).save(argumentCaptor.capture());

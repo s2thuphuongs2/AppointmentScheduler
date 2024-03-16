@@ -37,7 +37,7 @@ public class AppointmentServiceIT {
     @Transactional
     @WithUserDetails("admin")
     public void shouldSaveNewRetailCustomer() {
-        // Creating a new appointment with  workId= 1, providerId= 3, customerId = 3, time = 2020-02-09 12:00:00
+        // Creating a new appointment with  workId= 1, doctorId= 3, customerId = 3, time = 2020-02-09 12:00:00
         appointmentService.createNewAppointment(1, 2, 3, LocalDateTime.of(2020, 02, 9, 12, 0, 0));
         // Retrieving all appointments
         List<Appointment> appointmentByProviderId = appointmentService.getAllAppointments();

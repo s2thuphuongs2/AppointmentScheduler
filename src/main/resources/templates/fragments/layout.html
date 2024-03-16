@@ -91,8 +91,8 @@
             </th:block>
 
             <th:block sec:authorize="hasRole('ROLE_PROVIDER')">
-                <!-- menu for provider-->
-                <div th:replace="fragments/provider-nav.html :: navlinks(${activeLink})"></div>
+                <!-- menu for doctor-->
+                <div th:replace="fragments/doctor-nav.html :: navlinks(${activeLink})"></div>
             </th:block>
 
             <th:block sec:authorize="hasRole('ROLE_ADMIN')">

@@ -22,19 +22,19 @@ INSERT INTO appointmentscheduler.customers
 VALUES(6);
 
 INSERT INTO appointmentscheduler.appointments
-(`start`, `end`, canceled_at, status, id_canceler, id_provider, id_customer, id_work, id_invoice)
+(`start`, `end`, canceled_at, status, id_canceler, id_doctor, id_customer, id_work, id_invoice)
 VALUES('2023-12-25 10:15:00', '2023-12-25 11:00:00', NULL, 'REJECTION_REQUESTED', NULL, 2, 3, 2, NULL);
 INSERT INTO appointmentscheduler.appointments
-(`start`, `end`, canceled_at, status, id_canceler, id_provider, id_customer, id_work, id_invoice)
+(`start`, `end`, canceled_at, status, id_canceler, id_doctor, id_customer, id_work, id_invoice)
 VALUES('2023-12-27 03:00:00', '2023-12-27 04:00:00', NULL, 'SCHEDULED', NULL, 2, 3, 1, NULL);
 INSERT INTO appointmentscheduler.appointments
-(`start`, `end`, canceled_at, status, id_canceler, id_provider, id_customer, id_work, id_invoice)
+(`start`, `end`, canceled_at, status, id_canceler, id_doctor, id_customer, id_work, id_invoice)
 VALUES('2023-12-26 23:45:00', '2023-12-27 00:30:00', NULL, 'SCHEDULED', NULL, 2, 3, 2, NULL);
 INSERT INTO appointmentscheduler.appointments
-(`start`, `end`, canceled_at, status, id_canceler, id_provider, id_customer, id_work, id_invoice)
+(`start`, `end`, canceled_at, status, id_canceler, id_doctor, id_customer, id_work, id_invoice)
 VALUES('2023-12-27 04:00:00', '2023-12-27 05:00:00', '2023-12-25 13:37:22', 'CANCELED', 3, 2, 3, 1, NULL);
 INSERT INTO appointmentscheduler.appointments
-(`start`, `end`, canceled_at, status, id_canceler, id_provider, id_customer, id_work, id_invoice)
+(`start`, `end`, canceled_at, status, id_canceler, id_doctor, id_customer, id_work, id_invoice)
 VALUES('2023-12-27 01:15:00', '2023-12-27 02:00:00', NULL, 'SCHEDULED', NULL, 7, 4, 4, NULL);
 
 INSERT INTO appointmentscheduler.messages
@@ -96,10 +96,10 @@ VALUES('New appointment scheduled', 'New appointment scheduled withE Nguyen on 2
 
 INSERT INTO appointmentscheduler.users
 (username, password, first_name, last_name, email, mobile, street, city, postcode)
-VALUES('provider_c', '$2a$10$HpG89LYs67o6NdN2MtPl3OJTTgO7dDqlxOlRWfNtMX5.KrBuD4CSC', 'C', 'Nguyen', 'nguyenvancu@gmail.com', '123456789', 'Le Van Luong', 'HCM', '24-133');
+VALUES('doctor_c', '$2a$10$HpG89LYs67o6NdN2MtPl3OJTTgO7dDqlxOlRWfNtMX5.KrBuD4CSC', 'C', 'Nguyen', 'nguyenvancu@gmail.com', '123456789', 'Le Van Luong', 'HCM', '24-133');
 
-INSERT INTO appointmentscheduler.providers
-(id_provider)
+INSERT INTO appointmentscheduler.doctors
+(id_doctor)
 VALUES(7);
 
 INSERT INTO appointmentscheduler.retail_customers

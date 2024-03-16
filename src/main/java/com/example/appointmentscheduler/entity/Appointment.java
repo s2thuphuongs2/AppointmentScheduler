@@ -1,7 +1,8 @@
 package com.example.appointmentscheduler.entity;
 
 import com.example.appointmentscheduler.entity.user.customer.Customer;
-import com.example.appointmentscheduler.entity.user.provider.Provider;
+import com.example.appointmentscheduler.entity.user.doctor.Doctor;
+
 import com.example.appointmentscheduler.entity.user.User;
 import com.example.appointmentscheduler.model.AppointmentSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -43,8 +44,8 @@ public class Appointment extends BaseEntity implements Comparable<Appointment> {
     private Customer customer;
 
     @ManyToOne
-    @JoinColumn(name = "id_provider")
-    private Provider provider;
+    @JoinColumn(name = "id_doctor")
+    private Doctor doctor;
 
     @ManyToOne
     @JoinColumn(name = "id_work")
@@ -68,11 +69,11 @@ public class Appointment extends BaseEntity implements Comparable<Appointment> {
     public Appointment() {
     }
 
-    public Appointment(LocalDateTime start, LocalDateTime end, Customer customer, Provider provider, Work work) {
+    public Appointment(LocalDateTime start, LocalDateTime end, Customer customer, Doctor doctor, Work work) {
         this.start = start;
         this.end = end;
         this.customer = customer;
-        this.provider = provider;
+        this.doctor = doctor;
         this.work = work;
     }
 
@@ -105,12 +106,12 @@ public class Appointment extends BaseEntity implements Comparable<Appointment> {
         this.customer = customer;
     }
 
-    public Provider getProvider() {
-        return provider;
+    public Doctor getDoctor() {
+        return doctor;
     }
 
-    public void setProvider(Provider provider) {
-        this.provider = provider;
+    public void setDoctor(Doctor doctor) {
+        this.doctor = doctor;
     }
 
     public Work getWork() {

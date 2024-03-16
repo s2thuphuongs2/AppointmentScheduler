@@ -19,7 +19,7 @@ public interface EmailService {
 
     void sendAppointmentCanceledByCustomerNotification(Appointment appointment);
 
-    void sendAppointmentCanceledByProviderNotification(Appointment appointment);
+    void sendAppointmentCanceledByDoctorNotification(Appointment appointment);
 
     void sendInvoice(Invoice invoice);
 

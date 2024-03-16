@@ -78,7 +78,7 @@
                     </tr>
                     <tr>
                         <td><b>chủ lịch hẹn</b></td>
-                        <td><span th:text="${appointment.provider.firstName+' '+appointment.provider.lastName}">Marian Nowak</span>
+                        <td><span th:text="${appointment.doctor.firstName+' '+appointment.doctor.lastName}">Marian Nowak</span>
                         </td>
                     </tr>
 
@@ -146,7 +146,7 @@
                                 <p>
                                     Chat hẹn với
                                     <span sec:authorize="hasRole('ROLE_PROVIDER')" th:text="${appointment.customer.firstName}"></span>
-                                    <span sec:authorize="hasRole('ROLE_CUSTOMER')" th:text="${appointment.provider.firstName}"></span>
+                                    <span sec:authorize="hasRole('ROLE_CUSTOMER')" th:text="${appointment.doctor.firstName}"></span>
                                 </p>
                             </div>
                         </div>

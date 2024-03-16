@@ -26,8 +26,8 @@
                 </td>
             </tr>
             <tr>
-                <td><b>provider</b></td>
-                <td><span th:text="${provider}">Marian Nowak</span></td>
+                <td><b>doctor</b></td>
+                <td><span th:text="${doctor}">Marian Nowak</span></td>
             </tr>
 
             <tr>
@@ -52,7 +52,7 @@
                 <td colspan="2">
                     <form th:action="@{/appointments/new}" method="POST">
                         <input type="hidden" name="workId" th:value="${work.id}">
-                        <input type="hidden" name="providerId" th:value="${providerId}">
+                        <input type="hidden" name="doctorId" th:value="${doctorId}">
                         <input type="hidden" name="start" th:value="${start}">
 
 

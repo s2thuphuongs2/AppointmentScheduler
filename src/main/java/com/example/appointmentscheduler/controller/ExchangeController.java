@@ -1,15 +1,7 @@
 package com.example.appointmentscheduler.controller;
 
-import com.example.appointmentscheduler.entity.Appointment;
-import com.example.appointmentscheduler.security.CustomUserDetails;
-import com.example.appointmentscheduler.service.AppointmentService;
-import com.example.appointmentscheduler.service.ExchangeService;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/exchange")

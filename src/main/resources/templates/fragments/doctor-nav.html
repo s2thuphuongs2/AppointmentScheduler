@@ -10,11 +10,11 @@
                    th:classappend="${activeLink} == 'appointments' ? 'active':''">Danh sách lịch hẹn</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/providers/availability}"
+                <a class="nav-link" th:href="@{/doctors/availability}"
                    th:classappend="${activeLink} == 'availability' ? 'active':''">Thời gian làm việc</a>
             </li>
             <li class="nav-item" th:classappend="${activeLink} == 'account' ? 'active':''">
-                <a class="nav-link" th:href="@{'/providers/' + ${#authentication.principal.id}}">Tài khoản của tôi</a>
+                <a class="nav-link" th:href="@{'/doctors/' + ${#authentication.principal.id}}">Tài khoản của tôi</a>
             </li>
         </ul>
     </div>

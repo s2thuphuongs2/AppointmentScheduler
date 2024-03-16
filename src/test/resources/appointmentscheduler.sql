@@ -78,13 +78,13 @@ CREATE TABLE IF NOT EXISTS `appointments` (
 	`canceled_at` DATETIME,
 	`status` VARCHAR(20),
 	`id_canceler` INT(11),
-  `id_provider` INT(11),
+  `id_doctor` INT(11),
   `id_customer` INT(11),
   `id_work` INT(11),
 	`id_invoice` INT(11),
   PRIMARY KEY (`id`),
 	KEY `id_canceler` (`id_canceler`),
-  KEY `id_provider` (`id_provider`),
+  KEY `id_doctor` (`id_doctor`),
   KEY `id_customer` (`id_customer`),
   KEY `id_work` (`id_work`),
 	KEY `id_invoice` (`id_invoice`),
@@ -97,7 +97,7 @@ CREATE TABLE IF NOT EXISTS `appointments` (
   CONSTRAINT `appointments_works` FOREIGN KEY (`id_work`) REFERENCES `works` (`id`)
   ON DELETE CASCADE
   ON UPDATE CASCADE,
-  CONSTRAINT `appointments_users_provider` FOREIGN KEY (`id_provider`) REFERENCES `users` (`id`)
+  CONSTRAINT `appointments_users_doctor` FOREIGN KEY (`id_doctor`) REFERENCES `users` (`id`)
   ON DELETE CASCADE
   ON UPDATE CASCADE,
 	CONSTRAINT `appointments_invoices` FOREIGN KEY (`id_invoice`) REFERENCES `invoices` (`id`)
@@ -110,15 +110,15 @@ CREATE TABLE IF NOT EXISTS `appointments` (
 
 
 
-CREATE TABLE IF NOT EXISTS `works_providers` (
+CREATE TABLE IF NOT EXISTS `works_doctors` (
   `id_user` INT(11) NOT NULL,
   `id_work` INT(11) NOT NULL,
   PRIMARY KEY (`id_user`, `id_work`),
   KEY `id_work` (`id_work`),
-  CONSTRAINT `works_providers_users_provider` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`)
+  CONSTRAINT `works_doctors_users_doctor` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`)
   ON DELETE CASCADE
   ON UPDATE CASCADE,
-  CONSTRAINT `works_providers_works` FOREIGN KEY (`id_work`) REFERENCES `works` (`id`)
+  CONSTRAINT `works_doctors_works` FOREIGN KEY (`id_work`) REFERENCES `works` (`id`)
   ON DELETE CASCADE
   ON UPDATE CASCADE
 )
@@ -126,7 +126,7 @@ CREATE TABLE IF NOT EXISTS `works_providers` (
   DEFAULT CHARSET = utf8;
 
 CREATE TABLE IF NOT EXISTS `working_plans` (
-	`id_provider` int(11) NOT NULL,
+	`id_doctor` int(11) NOT NULL,
   `monday` TEXT,
 	`tuesday` TEXT,
 	`wednesday` TEXT,
@@ -135,10 +135,10 @@ CREATE TABLE IF NOT EXISTS `working_plans` (
 	`saturday` TEXT,
 	`sunday` TEXT,
 
-  PRIMARY KEY (`id_provider`),
-	KEY `id_provider` (`id_provider`),
+  PRIMARY KEY (`id_doctor`),
+	KEY `id_doctor` (`id_doctor`),
 
-	CONSTRAINT `FK_appointments_provider` FOREIGN KEY (`id_provider`)
+	CONSTRAINT `FK_appointments_doctor` FOREIGN KEY (`id_doctor`)
 	REFERENCES `users` (`id`)
 
 	ON DELETE NO ACTION
@@ -185,11 +185,11 @@ CREATE TABLE IF NOT EXISTS `corporate_customers` (
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 
-CREATE TABLE IF NOT EXISTS `providers` (
-	`id_provider` int(11) NOT NULL,
-  PRIMARY KEY (`id_provider`),
-	KEY `id_provider` (`id_provider`),
-	CONSTRAINT `FK_provider_user` FOREIGN KEY (`id_provider`)
+CREATE TABLE IF NOT EXISTS `doctors` (
+	`id_doctor` int(11) NOT NULL,
+  PRIMARY KEY (`id_doctor`),
+	KEY `id_doctor` (`id_doctor`),
+	CONSTRAINT `FK_doctor_user` FOREIGN KEY (`id_doctor`)
 	REFERENCES `users` (`id`)
 )
   ENGINE = InnoDB
@@ -270,10 +270,10 @@ VALUES (1, 'admin', '$2a$10$EqKcp1WFKVQISheBxkQJoOqFbsWDzGJXRz/tjkGq85IZKJJ1IipY
 INSERT INTO `users_roles` (user_id, role_id)
 VALUES (1, 1);
 
--- INSERT provider account with username: 'provider' and password 'qwerty123'
+-- INSERT doctor account with username: 'doctor' and password 'qwerty123'
 INSERT INTO `users` (id, username, password)
-VALUES (2, 'provider', '$2a$10$EqKcp1WFKVQISheBxkQJoOqFbsWDzGJXRz/tjkGq85IZKJJ1IipYi');
-INSERT INTO `providers` (id_provider)
+VALUES (2, 'doctor', '$2a$10$EqKcp1WFKVQISheBxkQJoOqFbsWDzGJXRz/tjkGq85IZKJJ1IipYi');
+INSERT INTO `doctors` (id_doctor)
 VALUES (2);
 INSERT INTO `users_roles` (user_id, role_id)
 VALUES (2, 2);
@@ -307,7 +307,7 @@ INSERT INTO `works` (id, name, duration, price, editable, target, description)
 VALUES (1, 'English lesson', 60, 100.00, true, 'retail',
         'This is english lesson with duration 60 minutes and price 100 pln');
 
-INSERT INTO works_providers
+INSERT INTO works_doctors
 VALUES (2, 1);
 INSERT INTO working_plans
 VALUES (2,

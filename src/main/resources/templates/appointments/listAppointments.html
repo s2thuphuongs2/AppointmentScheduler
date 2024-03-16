@@ -13,8 +13,8 @@
                             <th> Nội dung</th>
                             <th> Trạng thái</th>
                             <th> Bắt đầu</th>
-                            <th sec:authorize="!hasRole('ROLE_PROVIDER')"> Người tạo lịch</th>
-                            <th sec:authorize="!hasRole('ROLE_CUSTOMER')"> Người tạo lịch</th>
+                            <th sec:authorize="!hasRole('ROLE_PROVIDER')"> Bác sĩ</th>
+                            <th sec:authorize="!hasRole('ROLE_CUSTOMER')"> Người đặt lịch</th>
                             <th> Thời lượng</th>
                             <th> Hoạt động</th>
                         </tr>
@@ -30,7 +30,7 @@
                             <td><span th:text="${#temporals.format(appointment.start, 'yyyy-MM-dd HH:mm')}"> 21-01-2019 15:00</span>
                             </td>
                             <td sec:authorize="!hasRole('ROLE_PROVIDER')"><span
-                                    th:text="${appointment.provider.firstName + ' ' + appointment.provider.lastName}">
+                                    th:text="${appointment.doctor.firstName + ' ' + appointment.doctor.lastName}">
                                 Người tạo lịch </span>
                             </td>
                             <td sec:authorize="!hasRole('ROLE_CUSTOMER')"><span

@@ -4,7 +4,7 @@
 <head></head>
 
 <body>
-<p>Chào bạn, <span th:text="${appointment.provider.firstName}"></span></p>
+<p>Chào bạn, <span th:text="${appointment.doctor.firstName}"></span></p>
 <p>Bên đặt lích của bạn khiếu nại rằng cuộc hẹn sau đã không diễn ra: </p>
 <p>Người đặt lịch <span th:text="${appointment.customer.firstName + ' ' + appointment.customer.lastName}"></span></p>
 <p>Ngày bắt đầu: <span th:text="${#temporals.format(appointment.start, 'dd-MM-yyyy HH:mm')}"></span></p>

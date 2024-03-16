@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface AppointmentService {
-    void createNewAppointment(int workId, int providerId, int customerId, LocalDateTime start);
+    void createNewAppointment(int workId, int doctorId, int customerId, LocalDateTime start);
 
     void updateAppointment(Appointment appointment);
 
@@ -30,17 +30,17 @@ public interface AppointmentService {
 
     List<Appointment> getAppointmentByCustomerId(int customerId);
 
-    List<Appointment> getAppointmentByProviderId(int providerId);
+    List<Appointment> getAppointmentByDoctorId(int doctorId);
 
-    List<Appointment> getAppointmentsByProviderAtDay(int providerId, LocalDate day);
+    List<Appointment> getAppointmentsByDoctorAtDay(int doctorId, LocalDate day);
 
-    List<Appointment> getAppointmentsByCustomerAtDay(int providerId, LocalDate day);
+    List<Appointment> getAppointmentsByCustomerAtDay(int doctorId, LocalDate day);
 
     List<Appointment> getConfirmedAppointmentsByCustomerId(int customerId);
 
     List<Appointment> getCanceledAppointmentsByCustomerIdForCurrentMonth(int userId);
 
-    List<TimePeroid> getAvailableHours(int providerId, int customerId, int workId, LocalDate date);
+    List<TimePeroid> getAvailableHours(int doctorId, int customerId, int workId, LocalDate date);
 
     List<TimePeroid> calculateAvailableHours(List<TimePeroid> availableTimePeroids, Work work);
 
@@ -56,9 +56,9 @@ public interface AppointmentService {
 
     boolean requestAppointmentRejection(String token);
 
-    boolean isProviderAllowedToAcceptRejection(int providerId, int appointmentId);
+    boolean isDoctorAllowedToAcceptRejection(int doctorId, int appointmentId);
 
-    boolean acceptRejection(int appointmentId, int providerId);
+    boolean acceptRejection(int appointmentId, int doctorId);
 
     boolean acceptRejection(String token);
 
@@ -70,5 +70,5 @@ public interface AppointmentService {
     int getNumberOfScheduledAppointmentsForUser(int userId);
 
 
-    boolean isAvailable(int workId, int providerId, int customerId, LocalDateTime start);
+    boolean isAvailable(int workId, int doctorId, int customerId, LocalDateTime start);
 }

@@ -1,4 +1,4 @@
-package com.example.appointmentscheduler.entity.user.provider;
+package com.example.appointmentscheduler.entity.user.doctor;
 
 import com.example.appointmentscheduler.entity.user.Role;
 import com.example.appointmentscheduler.entity.Appointment;
@@ -14,27 +14,27 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "providers")
-@PrimaryKeyJoinColumn(name = "id_provider")
-public class Provider extends User {
+@Table(name = "doctors")
+@PrimaryKeyJoinColumn(name = "id_doctor")
+public class Doctor extends User {
 
-    @OneToMany(mappedBy = "provider")
+    @OneToMany(mappedBy = "doctor")
     private List<Appointment> appointments;
 
     @ManyToMany
-    @JoinTable(name = "works_providers", joinColumns = @JoinColumn(name = "id_user"), inverseJoinColumns = @JoinColumn(name = "id_work"))
+    @JoinTable(name = "works_doctors", joinColumns = @JoinColumn(name = "id_user"), inverseJoinColumns = @JoinColumn(name = "id_work"))
     private List<Work> works;
 
-    @OneToOne(mappedBy = "provider", cascade = {CascadeType.ALL})
+    @OneToOne(mappedBy = "doctor", cascade = {CascadeType.ALL})
     private WorkingPlan workingPlan;
 
-    public Provider() {
+    public Doctor() {
     }
 
-    public Provider(UserForm userFormDTO, String encryptedPassword, Collection<Role> roles, WorkingPlan workingPlan) {
+    public Doctor(UserForm userFormDTO, String encryptedPassword, Collection<Role> roles, WorkingPlan workingPlan) {
         super(userFormDTO, encryptedPassword, roles);
         this.workingPlan = workingPlan;
-        workingPlan.setProvider(this);
+        workingPlan.setDoctor(this);
         this.works = userFormDTO.getWorks();
     }
 
@@ -93,8 +93,8 @@ public class Provider extends User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        Provider provider = (Provider) o;
-        return provider.getId().equals(this.getId());
+        Doctor doctor = (Doctor) o;
+        return doctor.getId().equals(this.getId());
     }
 
     @Override

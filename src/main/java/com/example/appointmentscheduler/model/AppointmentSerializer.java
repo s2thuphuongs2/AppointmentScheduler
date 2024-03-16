@@ -20,7 +20,7 @@ public class AppointmentSerializer extends StdSerializer<Appointment> {
     }
 
     @Override
-    public void serialize(Appointment appointment, JsonGenerator gen, SerializerProvider provider) throws IOException {
+    public void serialize(Appointment appointment, JsonGenerator gen, SerializerProvider doctor) throws IOException {
         gen.writeStartObject();
         gen.writeNumberField("id", appointment.getId());
         gen.writeStringField("title", appointment.getWork().getName());

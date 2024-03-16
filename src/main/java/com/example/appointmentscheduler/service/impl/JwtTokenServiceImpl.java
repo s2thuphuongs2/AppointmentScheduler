@@ -50,7 +50,7 @@ public class JwtTokenServiceImpl implements JwtTokenService {
     public String generateAcceptRejectionToken(Appointment appointment) {
         return Jwts.builder()
                 .claim("appointmentId", appointment.getId())
-                .claim("providerId", appointment.getProvider().getId())
+                .claim("doctorId", appointment.getDoctor().getId())
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }
@@ -87,12 +87,12 @@ public class JwtTokenServiceImpl implements JwtTokenService {
     }
 
     @Override
-    public int getProviderIdFromToken(String token) {
+    public int getDoctorIdFromToken(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)
                 .getBody();
-        return (int) claims.get("providerId");
+        return (int) claims.get("doctorId");
     }
 
     @Override

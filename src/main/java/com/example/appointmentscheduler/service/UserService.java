@@ -7,7 +7,7 @@ import com.example.appointmentscheduler.entity.user.User;
 import com.example.appointmentscheduler.entity.user.customer.CorporateCustomer;
 import com.example.appointmentscheduler.entity.user.customer.Customer;
 import com.example.appointmentscheduler.entity.user.customer.RetailCustomer;
-import com.example.appointmentscheduler.entity.user.provider.Provider;
+import com.example.appointmentscheduler.entity.user.doctor.Doctor;
 import com.example.appointmentscheduler.model.ChangePasswordForm;
 import com.example.appointmentscheduler.model.UserForm;
 
@@ -33,23 +33,23 @@ public interface UserService {
     void updateUserPassword(ChangePasswordForm passwordChangeForm);
 
     /*
-     * Provider
+     * Doctor
      * */
-    Provider getProviderById(int providerId);
+    Doctor getDoctorById(int doctorId);
 
-    List<Provider> getProvidersWithRetailWorks();
+    List<Doctor> getDoctorsWithRetailWorks();
 
-    List<Provider> getProvidersWithCorporateWorks();
+    List<Doctor> getDoctorsWithCorporateWorks();
 
-    List<Provider> getProvidersByWork(Work work);
+    List<Doctor> getDoctorsByWork(Work work);
 
-    List<Provider> getAllProviders();
+    List<Doctor> getAllDoctors();
 
-    void saveNewProvider(UserForm userForm);
+    void saveNewDoctor(UserForm userForm);
 
-    void updateProviderProfile(UserForm updateData);
+    void updateDoctorProfile(UserForm updateData);
 
-    Collection<Role> getRolesForProvider();
+    Collection<Role> getRolesForDoctor();
 
     /*
      * Customer

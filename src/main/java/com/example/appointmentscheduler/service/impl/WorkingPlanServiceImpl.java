@@ -19,7 +19,7 @@ public class WorkingPlanServiceImpl implements WorkingPlanService {
     }
 
     @Override
-    @PreAuthorize("#updateData.provider.id == principal.id")
+    @PreAuthorize("#updateData.doctor.id == principal.id")
     public void updateWorkingPlan(WorkingPlan updateData) {
         WorkingPlan workingPlan = workingPlanRepository.getOne(updateData.getId());
         workingPlan.getMonday().setWorkingHours(updateData.getMonday().getWorkingHours());
@@ -36,7 +36,7 @@ public class WorkingPlanServiceImpl implements WorkingPlanService {
     public void addBreakToWorkingPlan(TimePeroid breakToAdd, int planId, String dayOfWeek) {
         CustomUserDetails currentUser = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         WorkingPlan workingPlan = workingPlanRepository.getOne(planId);
-        if (!workingPlan.getProvider().getId().equals(currentUser.getId())) {
+        if (!workingPlan.getDoctor().getId().equals(currentUser.getId())) {
             throw new org.springframework.security.access.AccessDeniedException("Unauthorized");
         }
         workingPlan.getDay(dayOfWeek).getBreaks().add(breakToAdd);
@@ -47,7 +47,7 @@ public class WorkingPlanServiceImpl implements WorkingPlanService {
     public void deleteBreakFromWorkingPlan(TimePeroid breakToDelete, int planId, String dayOfWeek) {
         CustomUserDetails currentUser = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         WorkingPlan workingPlan = workingPlanRepository.getOne(planId);
-        if (!workingPlan.getProvider().getId().equals(currentUser.getId())) {
+        if (!workingPlan.getDoctor().getId().equals(currentUser.getId())) {
             throw new org.springframework.security.access.AccessDeniedException("Unauthorized");
         }
         workingPlan.getDay(dayOfWeek).getBreaks().remove(breakToDelete);
@@ -56,9 +56,9 @@ public class WorkingPlanServiceImpl implements WorkingPlanService {
 
 
     @Override
-    @PreAuthorize("#providerId == principal.id")
-    public WorkingPlan getWorkingPlanByProviderId(int providerId) {
-        return workingPlanRepository.getWorkingPlanByProviderId(providerId);
+    @PreAuthorize("#doctorId == principal.id")
+    public WorkingPlan getWorkingPlanByDoctorId(int doctorId) {
+        return workingPlanRepository.getWorkingPlanByDoctorId(doctorId);
     }
 
 

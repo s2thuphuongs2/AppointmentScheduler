@@ -16,7 +16,7 @@ public interface JwtTokenService {
 
     int getCustomerIdFromToken(String token);
 
-    int getProviderIdFromToken(String token);
+    int getDoctorIdFromToken(String token);
 
     ////
     Date convertLocalDateTimeToDate(LocalDateTime localDateTime);

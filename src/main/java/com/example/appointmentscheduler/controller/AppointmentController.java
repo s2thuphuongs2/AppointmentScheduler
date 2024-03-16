@@ -4,7 +4,6 @@ import com.example.appointmentscheduler.entity.Appointment;
 import com.example.appointmentscheduler.entity.ChatMessage;
 import com.example.appointmentscheduler.security.CustomUserDetails;
 import com.example.appointmentscheduler.service.AppointmentService;
-import com.example.appointmentscheduler.service.ExchangeService;
 import com.example.appointmentscheduler.service.UserService;
 import com.example.appointmentscheduler.service.WorkService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -24,13 +23,12 @@ public class AppointmentController {
     private final WorkService workService;
     private final UserService userService;
     private final AppointmentService appointmentService;
-    private final ExchangeService exchangeService;
 
-    public AppointmentController(WorkService workService, UserService userService, AppointmentService appointmentService, ExchangeService exchangeService) {
+
+    public AppointmentController(WorkService workService, UserService userService, AppointmentService appointmentService) {
         this.workService = workService;
         this.userService = userService;
         this.appointmentService = appointmentService;
-        this.exchangeService = exchangeService;
     }
 
     @GetMapping("/all")
@@ -40,7 +38,7 @@ public class AppointmentController {
         if (currentUser.hasRole("ROLE_CUSTOMER")) {
             model.addAttribute(appointmentsModelName, appointmentService.getAppointmentByCustomerId(currentUser.getId()));
         } else if (currentUser.hasRole("ROLE_PROVIDER")) {
-            model.addAttribute(appointmentsModelName, appointmentService.getAppointmentByProviderId(currentUser.getId()));
+            model.addAttribute(appointmentsModelName, appointmentService.getAppointmentByDoctorId(currentUser.getId()));
         } else if (currentUser.hasRole("ROLE_ADMIN")) {
             model.addAttribute(appointmentsModelName, appointmentService.getAllAppointments());
         }
@@ -53,7 +51,7 @@ public class AppointmentController {
         model.addAttribute("appointment", appointment);
         model.addAttribute("chatMessage", new ChatMessage());
         boolean allowedToRequestRejection = appointmentService.isCustomerAllowedToRejectAppointment(currentUser.getId(), appointmentId);
-        boolean allowedToAcceptRejection = appointmentService.isProviderAllowedToAcceptRejection(currentUser.getId(), appointmentId);
+        boolean allowedToAcceptRejection = appointmentService.isDoctorAllowedToAcceptRejection(currentUser.getId(), appointmentId);
        ////DELETE
 //        boolean allowedToExchange = exchangeService.checkIfEligibleForExchange(currentUser.getId(), appointmentId);
         model.addAttribute("allowedToRequestRejection", allowedToRequestRejection);
@@ -109,30 +107,30 @@ public class AppointmentController {
     }
 
     @GetMapping("/new")
-    public String selectProvider(Model model, @AuthenticationPrincipal CustomUserDetails currentUser) {
+    public String selectDoctor(Model model, @AuthenticationPrincipal CustomUserDetails currentUser) {
         if (currentUser.hasRole("ROLE_CUSTOMER_RETAIL")) {
-            model.addAttribute("providers", userService.getProvidersWithRetailWorks());
+            model.addAttribute("doctors", userService.getDoctorsWithRetailWorks());
         } else if (currentUser.hasRole("ROLE_CUSTOMER_CORPORATE")) {
-            model.addAttribute("providers", userService.getProvidersWithCorporateWorks());
+            model.addAttribute("doctors", userService.getDoctorsWithCorporateWorks());
         }
-        return "appointments/selectProvider";
+        return "appointments/selectDoctor";
     }
 
-    @GetMapping("/new/{providerId}")
-    public String selectService(@PathVariable("providerId") int providerId, Model model, @AuthenticationPrincipal CustomUserDetails currentUser) {
+    @GetMapping("/new/{doctorId}")
+    public String selectService(@PathVariable("doctorId") int doctorId, Model model, @AuthenticationPrincipal CustomUserDetails currentUser) {
         if (currentUser.hasRole("ROLE_CUSTOMER_RETAIL")) {
-            model.addAttribute("works", workService.getWorksForRetailCustomerByProviderId(providerId));
+            model.addAttribute("works", workService.getWorksForRetailCustomerByDoctorId(doctorId));
         } else if (currentUser.hasRole("ROLE_CUSTOMER_CORPORATE")) {
-            model.addAttribute("works", workService.getWorksForCorporateCustomerByProviderId(providerId));
+            model.addAttribute("works", workService.getWorksForCorporateCustomerByDoctorId(doctorId));
         }
-        model.addAttribute(providerId);
+        model.addAttribute(doctorId);
         return "appointments/selectService";
     }
 
-    @GetMapping("/new/{providerId}/{workId}")
-    public String selectDate(@PathVariable("workId") int workId, @PathVariable("providerId") int providerId, Model model, @AuthenticationPrincipal CustomUserDetails currentUser) {
+    @GetMapping("/new/{doctorId}/{workId}")
+    public String selectDate(@PathVariable("workId") int workId, @PathVariable("doctorId") int doctorId, Model model, @AuthenticationPrincipal CustomUserDetails currentUser) {
         if (workService.isWorkForCustomer(workId, currentUser.getId())) {
-            model.addAttribute(providerId);
+            model.addAttribute(doctorId);
             model.addAttribute("workId", workId);
             return "appointments/selectDate";
         } else {
@@ -141,12 +139,12 @@ public class AppointmentController {
 
     }
 
-    @GetMapping("/new/{providerId}/{workId}/{dateTime}")
-    public String showNewAppointmentSummary(@PathVariable("workId") int workId, @PathVariable("providerId") int providerId, @PathVariable("dateTime") String start, Model model, @AuthenticationPrincipal CustomUserDetails currentUser) {
-        if (appointmentService.isAvailable(workId, providerId, currentUser.getId(), LocalDateTime.parse(start))) {
+    @GetMapping("/new/{doctorId}/{workId}/{dateTime}")
+    public String showNewAppointmentSummary(@PathVariable("workId") int workId, @PathVariable("doctorId") int doctorId, @PathVariable("dateTime") String start, Model model, @AuthenticationPrincipal CustomUserDetails currentUser) {
+        if (appointmentService.isAvailable(workId, doctorId, currentUser.getId(), LocalDateTime.parse(start))) {
             model.addAttribute("work", workService.getWorkById(workId));
-            model.addAttribute("provider", userService.getProviderById(providerId).getFirstName() + " " + userService.getProviderById(providerId).getLastName());
-            model.addAttribute(providerId);
+            model.addAttribute("doctor", userService.getDoctorById(doctorId).getFirstName() + " " + userService.getDoctorById(doctorId).getLastName());
+            model.addAttribute(doctorId);
             model.addAttribute("start", LocalDateTime.parse(start));
             model.addAttribute("end", LocalDateTime.parse(start).plusMinutes(workService.getWorkById(workId).getDuration()));
             return "appointments/newAppointmentSummary";
@@ -156,8 +154,8 @@ public class AppointmentController {
     }
 
     @PostMapping("/new")
-    public String bookAppointment(@RequestParam("workId") int workId, @RequestParam("providerId") int providerId, @RequestParam("start") String start, @AuthenticationPrincipal CustomUserDetails currentUser) {
-        appointmentService.createNewAppointment(workId, providerId, currentUser.getId(), LocalDateTime.parse(start));
+    public String bookAppointment(@RequestParam("workId") int workId, @RequestParam("doctorId") int doctorId, @RequestParam("start") String start, @AuthenticationPrincipal CustomUserDetails currentUser) {
+        appointmentService.createNewAppointment(workId, doctorId, currentUser.getId(), LocalDateTime.parse(start));
         return "redirect:/appointments/all";
     }
 

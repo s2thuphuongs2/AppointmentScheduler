@@ -40,9 +40,6 @@ public class User extends BaseEntity {
     @Column(name = "city")
     private String city;
 
-    @Column(name = "postcode")
-    private String postcode;
-
     @OneToMany(mappedBy = "user")
     private List<Notification> notifications;
 
@@ -148,13 +145,7 @@ public class User extends BaseEntity {
         this.city = city;
     }
 
-    public String getPostcode() {
-        return postcode;
-    }
 
-    public void setPostcode(String postcode) {
-        this.postcode = postcode;
-    }
 
     public boolean hasRole(String roleName) {
         for (Role role : roles) {

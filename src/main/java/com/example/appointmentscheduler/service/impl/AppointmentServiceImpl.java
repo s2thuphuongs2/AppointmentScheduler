@@ -6,14 +6,13 @@ import com.example.appointmentscheduler.service.NotificationService;
 import com.example.appointmentscheduler.dao.AppointmentRepository;
 import com.example.appointmentscheduler.dao.ChatMessageRepository;
 import com.example.appointmentscheduler.entity.user.User;
-import com.example.appointmentscheduler.entity.user.provider.Provider;
+import com.example.appointmentscheduler.entity.user.doctor.Doctor;
 import com.example.appointmentscheduler.model.DayPlan;
 import com.example.appointmentscheduler.model.TimePeroid;
 import com.example.appointmentscheduler.service.AppointmentService;
 import com.example.appointmentscheduler.service.UserService;
 import com.example.appointmentscheduler.service.WorkService;
 import com.google.zxing.WriterException;
-import com.google.zxing.oned.Code128Reader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,7 +23,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 
@@ -63,7 +61,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    @PostAuthorize("returnObject.provider.id == principal.id or returnObject.customer.id == principal.id or hasRole('ADMIN') ")
+    @PostAuthorize("returnObject.doctor.id == principal.id or returnObject.customer.id == principal.id or hasRole('ADMIN') ")
     public Appointment getAppointmentByIdWithAuthorization(int id) {
         return getAppointmentById(id);
     }
@@ -87,7 +85,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     /**
      * phuong thuc getAppointmentByCustomerId()
-     * // va getAppointmentByProviderId()
+     * // va getAppointmentByDoctorId()
      * // duoc thuc hien boi nguoi dung co id tuong ung voi id hien tai
      */
     @Override
@@ -97,44 +95,44 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    @PreAuthorize("#providerId == principal.id")
-    public List<Appointment> getAppointmentByProviderId(int providerId) {
-        return appointmentRepository.findByProviderId(providerId);
+    @PreAuthorize("#doctorId == principal.id")
+    public List<Appointment> getAppointmentByDoctorId(int doctorId) {
+        return appointmentRepository.findByDoctorId(doctorId);
     }
 
     @Override
-    public List<Appointment> getAppointmentsByProviderAtDay(int providerId, LocalDate day) {
-        return appointmentRepository.findByProviderIdWithStartInPeroid(providerId, day.atStartOfDay(), day.atStartOfDay().plusDays(1));
+    public List<Appointment> getAppointmentsByDoctorAtDay(int doctorId, LocalDate day) {
+        return appointmentRepository.findByDoctorIdWithStartInPeroid(doctorId, day.atStartOfDay(), day.atStartOfDay().plusDays(1));
     }
 
     @Override
-    public List<Appointment> getAppointmentsByCustomerAtDay(int providerId, LocalDate day) {
-        return appointmentRepository.findByCustomerIdWithStartInPeroid(providerId, day.atStartOfDay(), day.atStartOfDay().plusDays(1));
+    public List<Appointment> getAppointmentsByCustomerAtDay(int doctorId, LocalDate day) {
+        return appointmentRepository.findByCustomerIdWithStartInPeroid(doctorId, day.atStartOfDay(), day.atStartOfDay().plusDays(1));
     }
 
     @Override
-    public List<TimePeroid> getAvailableHours(int providerId, int customerId, int workId, LocalDate date) {
-        Provider p = userService.getProviderById(providerId);
+    public List<TimePeroid> getAvailableHours(int doctorId, int customerId, int workId, LocalDate date) {
+        Doctor p = userService.getDoctorById(doctorId);
         WorkingPlan workingPlan = p.getWorkingPlan();
         DayPlan selectedDay = workingPlan.getDay(date.getDayOfWeek().toString().toLowerCase());
 
-        List<Appointment> providerAppointments = getAppointmentsByProviderAtDay(providerId, date);
+        List<Appointment> doctorAppointments = getAppointmentsByDoctorAtDay(doctorId, date);
         List<Appointment> customerAppointments = getAppointmentsByCustomerAtDay(customerId, date);
 
         List<TimePeroid> availablePeroids = selectedDay.timePeroidsWithBreaksExcluded();
-        availablePeroids = excludeAppointmentsFromTimePeroids(availablePeroids, providerAppointments);
+        availablePeroids = excludeAppointmentsFromTimePeroids(availablePeroids, doctorAppointments);
 
         availablePeroids = excludeAppointmentsFromTimePeroids(availablePeroids, customerAppointments);
         return calculateAvailableHours(availablePeroids, workService.getWorkById(workId));
     }
 
     @Override
-    public void createNewAppointment(int workId, int providerId, int customerId, LocalDateTime start) {
-        if (isAvailable(workId, providerId, customerId, start)) {
+    public void createNewAppointment(int workId, int doctorId, int customerId, LocalDateTime start) {
+        if (isAvailable(workId, doctorId, customerId, start)) {
             Appointment appointment = new Appointment();
             appointment.setStatus(AppointmentStatus.SCHEDULED);
             appointment.setCustomer(userService.getCustomerById(customerId));
-            appointment.setProvider(userService.getProviderById(providerId));
+            appointment.setDoctor(userService.getDoctorById(doctorId));
             Work work = workService.getWorkById(workId);
             appointment.setWork(work);
             appointment.setStart(start);
@@ -167,7 +165,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public void addMessageToAppointmentChat(int appointmentId, int authorId, ChatMessage chatMessage) {
         Appointment appointment = getAppointmentByIdWithAuthorization(appointmentId);
-        if (appointment.getProvider().getId() == authorId || appointment.getCustomer().getId() == authorId) {
+        if (appointment.getDoctor().getId() == authorId || appointment.getCustomer().getId() == authorId) {
             chatMessage.setAuthor(userService.getUserById(authorId));
             chatMessage.setAppointment(appointment);
             chatMessage.setCreatedAt(LocalDateTime.now());
@@ -265,7 +263,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public void cancelUserAppointmentById(int appointmentId, int userId) {
         Appointment appointment = appointmentRepository.getOne(appointmentId);
-        if (appointment.getCustomer().getId() == userId || appointment.getProvider().getId() == userId) {
+        if (appointment.getCustomer().getId() == userId || appointment.getDoctor().getId() == userId) {
             appointment.setStatus(AppointmentStatus.CANCELED);
             User canceler = userService.getUserById(userId);
             appointment.setCanceler(canceler);
@@ -273,8 +271,8 @@ public class AppointmentServiceImpl implements AppointmentService {
             appointmentRepository.save(appointment);
             if (canceler.equals(appointment.getCustomer())) {
                 notificationService.newAppointmentCanceledByCustomerNotification(appointment, true);
-            } else if (canceler.equals(appointment.getProvider())) {
-                notificationService.newAppointmentCanceledByProviderNotification(appointment, true);
+            } else if (canceler.equals(appointment.getDoctor())) {
+                notificationService.newAppointmentCanceledByDoctorNotification(appointment, true);
             }
         } else {
             throw new org.springframework.security.access.AccessDeniedException("Không được phép");
@@ -311,7 +309,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             Appointment appointment = getAppointmentByIdWithAuthorization(appointmentId);
             // set status of appointment to rejection requested
             appointment.setStatus(AppointmentStatus.REJECTION_REQUESTED);
-            // notify provider about rejection request
+            // notify doctor about rejection request
             notificationService.newAppointmentRejectionRequestedNotification(appointment, true);
             // update appointment
             updateAppointment(appointment);
@@ -339,27 +337,27 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     /**
-     * this method is used to check if provider is allowed to accept appointment rejection
-     * @param providerId
+     * this method is used to check if doctor is allowed to accept appointment rejection
+     * @param doctorId
      * @param appointmentId
-     * @return true if provider is allowed to accept appointment rejection, false otherwise
+     * @return true if doctor is allowed to accept appointment rejection, false otherwise
      */
     @Override
-    public boolean isProviderAllowedToAcceptRejection(int providerId, int appointmentId) {
-        User user = userService.getUserById(providerId);
+    public boolean isDoctorAllowedToAcceptRejection(int doctorId, int appointmentId) {
+        User user = userService.getUserById(doctorId);
         Appointment appointment = getAppointmentByIdWithAuthorization(appointmentId);
 
-        return appointment.getProvider().equals(user) && appointment.getStatus().equals(AppointmentStatus.REJECTION_REQUESTED);
+        return appointment.getDoctor().equals(user) && appointment.getStatus().equals(AppointmentStatus.REJECTION_REQUESTED);
     }
     /**
-     * this method is used to accept appointment rejection by provider
+     * this method is used to accept appointment rejection by doctor
      * @param appointmentId
      * @param customerId
      * @return true if request was successful, false otherwise
      */
     @Override
     public boolean acceptRejection(int appointmentId, int customerId) {
-        if (isProviderAllowedToAcceptRejection(customerId, appointmentId)) {
+        if (isDoctorAllowedToAcceptRejection(customerId, appointmentId)) {
             Appointment appointment = getAppointmentByIdWithAuthorization(appointmentId);
             appointment.setStatus(AppointmentStatus.REJECTED);
             updateAppointment(appointment);
@@ -371,7 +369,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     /**
-     * this method use token to get appointment id and provider id
+     * this method use token to get appointment id and doctor id
      * @param token
      * @return true if request was successful, false otherwise
      */
@@ -379,8 +377,8 @@ public class AppointmentServiceImpl implements AppointmentService {
     public boolean acceptRejection(String token) {
         if (jwtTokenService.validateToken(token)) {
             int appointmentId = jwtTokenService.getAppointmentIdFromToken(token);
-            int providerId = jwtTokenService.getProviderIdFromToken(token);
-            return acceptRejection(appointmentId, providerId);
+            int doctorId = jwtTokenService.getDoctorIdFromToken(token);
+            return acceptRejection(appointmentId, doctorId);
         }
         return false;
     }
@@ -394,7 +392,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             return "Chỉ có bác sĩ hoặc bên đặt lịch được phép hủy lịch hẹn";
         }
 
-        if (appointment.getProvider().equals(user)) {
+        if (appointment.getDoctor().equals(user)) {
             if (!appointment.getStatus().equals(AppointmentStatus.SCHEDULED)) {
                 return "Chỉ có thể hủy cuộc hẹn đang ở trạng thái SCHEDULED.";
             } else {
@@ -429,13 +427,13 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public boolean isAvailable(int workId, int providerId, int customerId, LocalDateTime start) {
+    public boolean isAvailable(int workId, int doctorId, int customerId, LocalDateTime start) {
         if (!workService.isWorkForCustomer(workId, customerId)) {
             return false;
         }
         Work work = workService.getWorkById(workId);
         TimePeroid timePeroid = new TimePeroid(start.toLocalTime(), start.toLocalTime().plusMinutes(work.getDuration()));
-        return getAvailableHours(providerId, customerId, workId, start.toLocalDate()).contains(timePeroid);
+        return getAvailableHours(doctorId, customerId, workId, start.toLocalDate()).contains(timePeroid);
     }
 
     @Override

@@ -10,5 +10,5 @@ public interface WorkingPlanService {
 
     void deleteBreakFromWorkingPlan(TimePeroid breakToDelete, int planId, String dayOfWeek);
 
-    WorkingPlan getWorkingPlanByProviderId(int providerId);
+    WorkingPlan getWorkingPlanByDoctorId(int doctorId);
 }

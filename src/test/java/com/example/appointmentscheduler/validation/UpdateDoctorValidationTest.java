@@ -1,7 +1,7 @@
 package com.example.appointmentscheduler.validation;
 
 import com.example.appointmentscheduler.model.UserForm;
-import com.example.appointmentscheduler.validation.groups.UpdateProvider;
+import com.example.appointmentscheduler.validation.groups.UpdateDoctor;
 import com.example.appointmentscheduler.validation.groups.UpdateUser;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +14,7 @@ import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 
-public class UpdateProviderValidationTest {
+public class UpdateDoctorValidationTest {
 
     private ValidatorFactory factory;
     private Validator validator;
@@ -26,9 +26,9 @@ public class UpdateProviderValidationTest {
     }
 
     @Test
-    public void shouldHave9ViolationsForEmptyFormWhenUpdateProvider() {
+    public void shouldHave9ViolationsForEmptyFormWhenUpdateDoctor() {
         UserForm form = new UserForm();
-        Set<ConstraintViolation<UserForm>> violations = validator.validate(form, UpdateUser.class, UpdateProvider.class);
+        Set<ConstraintViolation<UserForm>> violations = validator.validate(form, UpdateUser.class, UpdateDoctor.class);
         assertEquals(violations.size(), 9);
     }
 }

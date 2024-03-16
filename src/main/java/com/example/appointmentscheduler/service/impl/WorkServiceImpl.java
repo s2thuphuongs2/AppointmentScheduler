@@ -73,8 +73,8 @@ public class WorkServiceImpl implements WorkService {
     }
 
     @Override
-    public List<Work> getWorksByProviderId(int providerId) {
-        return workRepository.findByProviderId(providerId);
+    public List<Work> getWorksByDoctorId(int doctorId) {
+        return workRepository.findByDoctorId(doctorId);
     }
 
     @Override
@@ -88,13 +88,13 @@ public class WorkServiceImpl implements WorkService {
     }
 
     @Override
-    public List<Work> getWorksForRetailCustomerByProviderId(int providerId) {
-        return workRepository.findByTargetCustomerAndProviderId("retail", providerId);
+    public List<Work> getWorksForRetailCustomerByDoctorId(int doctorId) {
+        return workRepository.findByTargetCustomerAndDoctorId("retail", doctorId);
     }
 
     @Override
-    public List<Work> getWorksForCorporateCustomerByProviderId(int providerId) {
-        return workRepository.findByTargetCustomerAndProviderId("corporate", providerId);
+    public List<Work> getWorksForCorporateCustomerByDoctorId(int doctorId) {
+        return workRepository.findByTargetCustomerAndDoctorId("corporate", doctorId);
     }
 
 

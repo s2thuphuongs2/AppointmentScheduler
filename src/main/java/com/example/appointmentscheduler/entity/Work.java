@@ -28,8 +28,8 @@ public class Work extends BaseEntity {
     private String targetCustomer;
 
     @ManyToMany
-    @JoinTable(name = "works_providers", joinColumns = @JoinColumn(name = "id_work"), inverseJoinColumns = @JoinColumn(name = "id_user"))
-    private List<User> providers;
+    @JoinTable(name = "works_doctors", joinColumns = @JoinColumn(name = "id_work"), inverseJoinColumns = @JoinColumn(name = "id_user"))
+    private List<User> doctors;
 
     public Work() {
     }
@@ -66,12 +66,12 @@ public class Work extends BaseEntity {
         this.duration = duration;
     }
 
-    public List<User> getProviders() {
-        return providers;
+    public List<User> getDoctors() {
+        return doctors;
     }
 
-    public void setProviders(List<User> providers) {
-        this.providers = providers;
+    public void setDoctors(List<User> doctors) {
+        this.doctors = doctors;
     }
 
     public boolean getEditable() {

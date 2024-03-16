@@ -5,7 +5,7 @@ import com.example.appointmentscheduler.dao.user.UserRepository;
 import com.example.appointmentscheduler.dao.user.customer.CorporateCustomerRepository;
 import com.example.appointmentscheduler.dao.user.customer.CustomerRepository;
 import com.example.appointmentscheduler.dao.user.customer.RetailCustomerRepository;
-import com.example.appointmentscheduler.dao.user.provider.ProviderRepository;
+import com.example.appointmentscheduler.dao.user.doctor.DoctorRepository;
 import com.example.appointmentscheduler.entity.Work;
 import com.example.appointmentscheduler.entity.WorkingPlan;
 import com.example.appointmentscheduler.entity.user.Role;
@@ -13,7 +13,7 @@ import com.example.appointmentscheduler.entity.user.User;
 import com.example.appointmentscheduler.entity.user.customer.CorporateCustomer;
 import com.example.appointmentscheduler.entity.user.customer.Customer;
 import com.example.appointmentscheduler.entity.user.customer.RetailCustomer;
-import com.example.appointmentscheduler.entity.user.provider.Provider;
+import com.example.appointmentscheduler.entity.user.doctor.Doctor;
 import com.example.appointmentscheduler.model.ChangePasswordForm;
 import com.example.appointmentscheduler.model.UserForm;
 import com.example.appointmentscheduler.service.UserService;
@@ -29,7 +29,7 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final ProviderRepository providerRepository;
+    private final DoctorRepository doctorRepository;
     private final CustomerRepository customerRepository;
     private final CorporateCustomerRepository corporateCustomerRepository;
     private final RetailCustomerRepository retailCustomerRepository;
@@ -37,8 +37,8 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(ProviderRepository providerRepository, CustomerRepository customerRepository, CorporateCustomerRepository corporateCustomerRepository, RetailCustomerRepository retailCustomerRepository, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
-        this.providerRepository = providerRepository;
+    public UserServiceImpl(DoctorRepository doctorRepository, CustomerRepository customerRepository, CorporateCustomerRepository corporateCustomerRepository, RetailCustomerRepository retailCustomerRepository, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+        this.doctorRepository = doctorRepository;
         this.customerRepository = customerRepository;
         this.corporateCustomerRepository = corporateCustomerRepository;
         this.retailCustomerRepository = retailCustomerRepository;
@@ -66,8 +66,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Provider getProviderById(int providerId) {
-        return providerRepository.findById(providerId)
+    public Doctor getDoctorById(int doctorId) {
+        return doctorRepository.findById(doctorId)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
     }
 
@@ -88,8 +88,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @PreAuthorize("hasRole('ADMIN')")
-    public List<Provider> getAllProviders() {
-        return providerRepository.findAll();
+    public List<Doctor> getAllDoctors() {
+        return doctorRepository.findAll();
     }
 
     @Override
@@ -126,18 +126,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Provider> getProvidersWithRetailWorks() {
-        return providerRepository.findAllWithRetailWorks();
+    public List<Doctor> getDoctorsWithRetailWorks() {
+        return doctorRepository.findAllWithRetailWorks();
     }
 
     @Override
-    public List<Provider> getProvidersWithCorporateWorks() {
-        return providerRepository.findAllWithCorporateWorks();
+    public List<Doctor> getDoctorsWithCorporateWorks() {
+        return doctorRepository.findAllWithCorporateWorks();
     }
 
     @Override
-    public List<Provider> getProvidersByWork(Work work) {
-        return providerRepository.findByWorks(work);
+    public List<Doctor> getDoctorsByWork(Work work) {
+        return doctorRepository.findByWorks(work);
     }
 
     @Override
@@ -150,10 +150,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @PreAuthorize("#updateData.id == principal.id or hasRole('ADMIN')")
-    public void updateProviderProfile(UserForm updateData) {
-        Provider provider = providerRepository.getOne(updateData.getId());
-        provider.update(updateData);
-        providerRepository.save(provider);
+    public void updateDoctorProfile(UserForm updateData) {
+        Doctor doctor = doctorRepository.getOne(updateData.getId());
+        doctor.update(updateData);
+        doctorRepository.save(doctor);
     }
 
     @Override
@@ -187,10 +187,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveNewProvider(UserForm userForm) {
+    public void saveNewDoctor(UserForm userForm) {
         WorkingPlan workingPlan = WorkingPlan.generateDefaultWorkingPlan();
-        Provider provider = new Provider(userForm, passwordEncoder.encode(userForm.getPassword()), getRolesForProvider(), workingPlan);
-        providerRepository.save(provider);
+        Doctor doctor = new Doctor(userForm, passwordEncoder.encode(userForm.getPassword()), getRolesForDoctor(), workingPlan);
+        doctorRepository.save(doctor);
     }
 
     @Override
@@ -211,7 +211,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Collection<Role> getRolesForProvider() {
+    public Collection<Role> getRolesForDoctor() {
         HashSet<Role> roles = new HashSet();
         roles.add(roleRepository.findByName("ROLE_PROVIDER"));
         return roles;
