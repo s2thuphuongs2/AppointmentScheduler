@@ -1,4 +1,4 @@
-# Mô tả Dự án
+# Ứng dụng Barcode vào Web đặt lịch hẹn
 
 Dự án này là một ứng dụng lịch hẹn được thiết kế để quản lý các cuộc hẹn giữa bác sĩ tư nhân và khách hàng. Nó bao gồm các tính năng cho quản trị viên, bác sĩ và khách hàng để lập lịch, xem và quản lý các cuộc hẹn. Ứng dụng chạy trên IntelliJ IDEA và được container hóa bằng Docker.
 
@@ -48,6 +48,16 @@ Dự án này là một ứng dụng lịch hẹn được thiết kế để qu
     
 5. Build và chạy ứng dụng.
 6. Truy cập ứng dụng trên trình duyệt web: `localhost:8080`
+6. Truy cập ứng dụng trên trình duyệt web: `localhost:8080`
+7. Đăng nhập tài khoản:
+    
+    
+    | Tài khoản | Mật khẩu |
+    | --- | --- |
+    | admin | qwerty123 |
+    | provider | qwerty123 |
+    | customer_r | qwerty123 |
+    | customer_c | qwerty123 |
 
 ## Docker
 
