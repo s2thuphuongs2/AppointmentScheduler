@@ -1,0 +1,62 @@
+# Mô tả Dự án
+
+Dự án này là một ứng dụng lịch hẹn được thiết kế để quản lý các cuộc hẹn giữa bác sĩ tư nhân và khách hàng. Nó bao gồm các tính năng cho quản trị viên, bác sĩ và khách hàng để lập lịch, xem và quản lý các cuộc hẹn. Ứng dụng chạy trên IntelliJ IDEA và được container hóa bằng Docker.
+
+## Loại Tài khoản
+
+Ứng dụng hỗ trợ bốn loại tài khoản:
+
+1. **Admin**: Quản trị viên có quyền truy cập vào tất cả các tính năng và có thể quản lý người dùng, cuộc hẹn và lập hóa đơn.
+2. **Provider**: Bác sĩ cung cấp dịch vụ khám chữa bệnh và có thể xem, điều chỉnh lịch trình của mình, chọn dịch vụ, quản lý hồ sơ cá nhân và chấp nhận lịch hẹn của khách hàng
+3. **Khách hàng (Cá nhân)**: Khách hàng cá nhân có thể lập lịch hẹn với bác sĩ, xem các cuộc hẹn của mình và quản lý hồ sơ cá nhân.
+4. **Khách hàng (Tổ chức)**: Khách hàng doanh nghiệp đại diện cho các công ty/bệnh viện/tập thể và có các tính năng tương tự như khách hàng cá nhân nhưng có thể có các tính năng bổ sung cụ thể cho tài khoản thuộc tổ chức.
+
+## Tính năng
+
+- **Xác thực và Phân quyền**: Người dùng phải đăng nhập để truy cập vào ứng dụng. Các vai trò khác nhau có các quyền khác nhau.
+- **Lập lịch**: Bác sĩ và khách hàng có thể lập lịch hẹn, chỉ định dịch vụ khám/tư vấn, ngày và giờ.
+- **Xem Cuộc hẹn**: Người dùng có thể xem các cuộc hẹn đã lập lịch của mình, bao gồm các chi tiết như dịch vụ, nhà cung cấp và trạng thái cuộc hẹn.
+- **Chat:** Bác sĩ và khách hàng có thể chat trao đổi vấn đề trước khi tới buổi gặp.
+- **Quản lý Cuộc hẹn**: Bác sĩ và khách hàng có thể quản lý các cuộc hẹn của mình, chẳng hạn như từ chối, hủy hoặc xác nhận cuộc hẹn.
+- **Lập Hóa đơn**: Phía nhà quản trị sẽ tạo hóa đơn cho các cuộc hẹn đã hoàn thành, và khách hàng có thể xem và tải xuống hóa đơn của họ.
+- **Quản lý Hồ sơ**: Người dùng có thể quản lý hồ sơ của mình, cập nhật thông tin cá nhân và thay đổi cài đặt tài khoản.
+- **Quét Barcode:** Khách hàng in phiếu thông tin lịch hẹn đem đến địa điểm để nhà quản trị/bác sĩ kiểm tra và xác thực thông tin nhanh chóng.
+
+## Công nghệ Sử dụng
+
+- **Backend**: Java, Spring Boot, Spring Security, Spring Data JPA
+- **Frontend**: HTML, Thymeleaf, CSS
+- **Cơ sở dữ liệu**: MySQL
+- **Containerization**: Docker
+- **IDE**: IntelliJ IDEA
+
+## Thiết bị sử dụng
+
+- Barcode reader Sumicor 1D.
+
+## Cách Chạy
+
+1. Clone dự án vào máy tính cục bộ.
+2. Mở dự án trong IntelliJ IDEA.
+3. Chạy file docker.
+4. Thiết lập kết nối cơ sở dữ liệu.
+    
+    ![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/f74af19a-f980-4dc9-a4dc-3d7fa7884490/3dcfa052-b886-403b-b974-ba3530bda483/Untitled.png)
+    
+    ![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/f74af19a-f980-4dc9-a4dc-3d7fa7884490/07087631-afa4-4ee6-a475-e0213d0af0e4/Untitled.png)
+    
+5. Build và chạy ứng dụng.
+6. Truy cập ứng dụng trên trình duyệt web: `localhost:8080`
+
+## Docker
+
+Ứng dụng có thể được container hóa bằng Docker. Sử dụng Dockerfile cung cấp để xây dựng image Docker và chạy container.
+
+## Người Đóng Góp
+
+- Đỗ Thị Thu Phương
+- Phạm Thị Thùy Dương
+
+## Giấy Phép
+
+Dự án này được cấp phép theo Giấy phép MIT - xem tệp [LICENSE.md](https://github.com/slabiak/AppointmentScheduler/blob/develop/LICENSE.md) để biết chi tiết
