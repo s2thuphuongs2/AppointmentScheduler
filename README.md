@@ -41,9 +41,10 @@ Dự án này là một ứng dụng lịch hẹn được thiết kế để qu
 3. Chạy file docker.
 4. Thiết lập kết nối cơ sở dữ liệu.
     
-    ![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/f74af19a-f980-4dc9-a4dc-3d7fa7884490/3dcfa052-b886-403b-b974-ba3530bda483/Untitled.png)
-    
-    ![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/f74af19a-f980-4dc9-a4dc-3d7fa7884490/07087631-afa4-4ee6-a475-e0213d0af0e4/Untitled.png)
+    ![image](https://github.com/s2thuphuongs2/AppointmentScheduler/assets/76204441/2ba3b96d-8461-4896-9ecb-28767351c4ba)
+
+    ![image](https://github.com/s2thuphuongs2/AppointmentScheduler/assets/76204441/383c092d-9f77-41c0-8323-f112c08aa1df)
+
     
 5. Build và chạy ứng dụng.
 6. Truy cập ứng dụng trên trình duyệt web: `localhost:8080`
