@@ -127,6 +127,21 @@ public class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
+    public void sendAppointment(Appointment appointment) {
+        Context context = new Context();
+        context.setVariable("appointment", appointment);
+        try {
+            File appointmentPdf = pdfGenaratorUtil.generatePdfFromAppointment(appointment);
+            sendEmail(appointment.getCustomer().getEmail(), "Chi tiết cuộc hẹn", "appointmentDetails", context, appointmentPdf);
+        } catch (Exception e) {
+            log.error("Lỗi khi tạo pdf, lỗi là {}", e.getLocalizedMessage());
+        }
+    }
+
+
+
+    @Async
+    @Override
     public void sendAppointmentRejectionAcceptedNotification(Appointment appointment) {
         Context context = new Context();
         context.setVariable("appointment", appointment);

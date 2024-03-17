@@ -23,6 +23,8 @@ public interface EmailService {
 
     void sendInvoice(Invoice invoice);
 
+    void sendAppointment(Appointment appointment);
+
     void sendAppointmentRejectionAcceptedNotification(Appointment appointment);
 
     void sendNewChatMessageNotification(ChatMessage appointment);

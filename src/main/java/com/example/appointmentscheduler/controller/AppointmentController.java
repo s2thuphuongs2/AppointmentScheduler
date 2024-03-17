@@ -3,15 +3,19 @@ package com.example.appointmentscheduler.controller;
 import com.example.appointmentscheduler.entity.Appointment;
 import com.example.appointmentscheduler.entity.ChatMessage;
 import com.example.appointmentscheduler.security.CustomUserDetails;
-import com.example.appointmentscheduler.service.AppointmentService;
-import com.example.appointmentscheduler.service.ExchangeService;
-import com.example.appointmentscheduler.service.UserService;
-import com.example.appointmentscheduler.service.WorkService;
+import com.example.appointmentscheduler.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.*;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
@@ -24,13 +28,11 @@ public class AppointmentController {
     private final WorkService workService;
     private final UserService userService;
     private final AppointmentService appointmentService;
-    private final ExchangeService exchangeService;
 
-    public AppointmentController(WorkService workService, UserService userService, AppointmentService appointmentService, ExchangeService exchangeService) {
+    public AppointmentController(WorkService workService, UserService userService, AppointmentService appointmentService) {
         this.workService = workService;
         this.userService = userService;
         this.appointmentService = appointmentService;
-        this.exchangeService = exchangeService;
     }
 
     @GetMapping("/all")
@@ -54,12 +56,9 @@ public class AppointmentController {
         model.addAttribute("chatMessage", new ChatMessage());
         boolean allowedToRequestRejection = appointmentService.isCustomerAllowedToRejectAppointment(currentUser.getId(), appointmentId);
         boolean allowedToAcceptRejection = appointmentService.isProviderAllowedToAcceptRejection(currentUser.getId(), appointmentId);
-       ////DELETE
-//        boolean allowedToExchange = exchangeService.checkIfEligibleForExchange(currentUser.getId(), appointmentId);
         model.addAttribute("allowedToRequestRejection", allowedToRequestRejection);
         model.addAttribute("allowedToAcceptRejection", allowedToAcceptRejection);
-//        model.addAttribute("allowedToExchange", allowedToExchange);
-        if (allowedToRequestRejection) {
+       if (allowedToRequestRejection) {
             model.addAttribute("remainingTime", formatDuration(Duration.between(LocalDateTime.now(), appointment.getEnd().plusDays(1))));
         }
         String cancelNotAllowedReason = appointmentService.getCancelNotAllowedReason(currentUser.getId(), appointmentId);
@@ -166,6 +165,33 @@ public class AppointmentController {
         appointmentService.cancelUserAppointmentById(appointmentId, currentUser.getId());
         return "redirect:/appointments/all";
     }
+
+
+    @GetMapping("/download/{appointmentId}")
+    public ResponseEntity<InputStreamResource> downloadAppointment(@PathVariable("appointmentId") int appointmentId, @AuthenticationPrincipal UserDetails currentUser) {
+        try {
+            // Lấy tệp PDF cho cuộc hẹn từ AppointmentService
+            File appointmentPdf = appointmentService.generatePdfForAppointment(appointmentId);
+
+            // Thiết lập các header cho response
+            HttpHeaders respHeaders = new HttpHeaders();
+            MediaType mediaType = MediaType.parseMediaType("application/pdf");
+            respHeaders.setContentType(mediaType);
+            respHeaders.setContentLength(appointmentPdf.length());
+            respHeaders.setContentDispositionFormData("attachment", appointmentPdf.getName());
+
+            // Tạo InputStreamResource từ tệp PDF
+            InputStreamResource isr = new InputStreamResource(new FileInputStream(appointmentPdf));
+
+            // Trả về ResponseEntity chứa InputStreamResource và các header đã thiết lập
+            return new ResponseEntity<>(isr, respHeaders, HttpStatus.OK);
+        } catch (FileNotFoundException e) {
+            // Xử lý nếu có lỗi khi tạo PDF
+//            log.error("Lỗi khi tạo PDF để tải xuống, lỗi: {} ", e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
     public static String formatDuration(Duration duration) {
         long s = duration.getSeconds();

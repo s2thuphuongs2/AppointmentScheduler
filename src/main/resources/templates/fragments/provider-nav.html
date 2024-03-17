@@ -16,6 +16,9 @@
             <li class="nav-item" th:classappend="${activeLink} == 'account' ? 'active':''">
                 <a class="nav-link" th:href="@{'/providers/' + ${#authentication.principal.id}}">Tài khoản của tôi</a>
             </li>
+            <li class="nav-item">
+                <a id="barcodeLink" class="nav-link link text-white" href="#">Barcode</a>
+            </li>
         </ul>
     </div>
 </th:block>

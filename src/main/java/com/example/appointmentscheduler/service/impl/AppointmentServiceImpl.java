@@ -12,6 +12,7 @@ import com.example.appointmentscheduler.model.TimePeroid;
 import com.example.appointmentscheduler.service.AppointmentService;
 import com.example.appointmentscheduler.service.UserService;
 import com.example.appointmentscheduler.service.WorkService;
+import com.example.appointmentscheduler.util.PdfGeneratorUtil;
 import com.google.zxing.WriterException;
 import com.google.zxing.oned.Code128Reader;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -40,6 +42,8 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final JwtTokenServiceImpl jwtTokenService;
     @Autowired
     private BarcodeServiceImpl barcodeService;
+    @Autowired
+    private PdfGeneratorUtil pdfGeneratorUtil;
 
     public AppointmentServiceImpl(AppointmentRepository appointmentRepository, UserService userService, WorkService workService, ChatMessageRepository chatMessageRepository, NotificationService notificationService, JwtTokenServiceImpl jwtTokenService) {
         this.appointmentRepository = appointmentRepository;
@@ -441,5 +445,18 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public List<Appointment> getConfirmedAppointmentsByCustomerId(int customerId) {
         return appointmentRepository.findConfirmedByCustomerId(customerId);
+    }
+
+    @Override
+    public File generatePdfForAppointment(int appointmentId) {
+        // Lấy thông tin cuộc hẹn từ kho lưu trữ dựa trên ID
+        Appointment appointment = appointmentRepository.findById(appointmentId).orElse(null);
+        if (appointment == null) {
+            // Xử lý khi không tìm thấy cuộc hẹn
+            return null;
+        }
+
+        // Tạo và trả về tệp PDF từ cuộc hẹn sử dụng utiliy pdfGeneratorUtil
+        return pdfGeneratorUtil.generatePdfFromAppointment(appointment);
     }
 }

@@ -105,6 +105,7 @@ public class NotificationServiceImpl implements NotificationService {
         newNotification(title, message, url, appointment.getProvider());
         if (sendEmail && mailingEnabled) {
             emailService.sendNewAppointmentScheduledNotification(appointment);
+            emailService.sendAppointment(appointment);
         }
     }
 

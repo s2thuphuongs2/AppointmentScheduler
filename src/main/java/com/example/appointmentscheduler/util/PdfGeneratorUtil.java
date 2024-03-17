@@ -1,5 +1,6 @@
 package com.example.appointmentscheduler.util;
 
+import com.example.appointmentscheduler.entity.Appointment;
 import com.example.appointmentscheduler.entity.Invoice;
 import com.itextpdf.text.DocumentException;
 import org.springframework.beans.factory.annotation.Value;
@@ -54,6 +55,41 @@ public class PdfGeneratorUtil {
                 try {
                     os.close();
 
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
+
+    public File generatePdfFromAppointment(Appointment appointment) {
+        Context ctx = new Context();
+        ctx.setVariable("appointment", appointment);
+        String processedHtml = templateEngine.process("email/pdf/appointment", ctx);
+
+        ITextRenderer renderer = new ITextRenderer();
+        renderer.setDocumentFromString(processedHtml, baseUrl);
+        renderer.layout();
+
+        String fileName = UUID.randomUUID().toString();
+        FileOutputStream os = null;
+        try {
+            final File outputFile = File.createTempFile(fileName, ".pdf");
+            os = new FileOutputStream(outputFile);
+            renderer.createPDF(os, false);
+            renderer.finishPDF();
+            return outputFile;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        } finally {
+            if (os != null) {
+                try {
+                    os.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

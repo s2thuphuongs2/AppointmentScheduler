@@ -45,38 +45,6 @@
     </div>
     <!--Menu END-->
 
-    <script th:inline="javascript">
-        // Lắng nghe sự kiện click trên liên kết "Barcode"
-        document.getElementById("barcodeLink").addEventListener("click", function(event) {
-            // Ngăn chặn hành vi mặc định của liên kết
-            event.preventDefault();
-
-            // Mở cửa sổ quét barcode
-            var scannedBarcode = prompt("Vui lòng quét mã barcode:");
-
-            // Kiểm tra nếu có dữ liệu barcode được quét
-            if (scannedBarcode !== null && scannedBarcode !== "") {
-                // Gửi yêu cầu HTTP để xử lý dữ liệu barcode
-                fetch("/scan/" + scannedBarcode)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error("Có lỗi xảy ra khi xử lý barcode.");
-                        }
-                        // Trả về nội dung của response
-                        return response.text();
-                    })
-                    .then(data => {
-                        // Hiển thị kết quả từ server (ví dụ: thông báo thành công hoặc lỗi)
-                        // alert(data);
-                        window.location.href = data;
-                    })
-                    .catch(error => {
-                        // Xử lý lỗi nếu có
-                        console.error("Lỗi: ", error);
-                        alert("Có lỗi xảy ra khi xử lý barcode.");
-                    });
-            }
-        });
-    </script>
+<!--Script BarcodeLink-->
 
 </th:block>

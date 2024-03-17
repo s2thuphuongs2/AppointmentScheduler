@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+<!--    <meta charset="UTF-8">-->
+<!--    <meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+    <title>Chi tiết cuộc hẹn</title>
+    <style>
+        /* Bổ sung CSS của bạn ở đây */
+    </style>
+</head>
+<body>
+<div class="invoice-box">
+    <h2>Chi tiết cuộc hẹn</h2>
+    <table cellpadding="0" cellspacing="0">
+        <tr>
+            <td><b>Trạng thái:</b></td>
+            <td><span th:text="${appointment.status}"></span></td>
+        </tr>
+        <tr th:if="${appointment.status == 'CANCELED'}">
+            <td><b>Hủy bởi:</b></td>
+            <td><span th:text="${appointment.canceler != null ? appointment.canceler.firstName + ' ' + appointment.canceler.lastName : 'Unknown'}"></span></td>
+        </tr>
+        <tr>
+            <td><b>Ngày:</b></td>
+            <td><span th:text="${appointment.start != null ? #temporals.format(appointment.start, 'dd-MM-yyyy') : 'N/A'}"></span></td>
+        </tr>
+        <tr>
+            <td><b>Giờ:</b></td>
+            <td><span th:text="${appointment.start != null ? #temporals.format(appointment.start, 'HH:mm') + ' - ' + #temporals.format(appointment.end, 'HH:mm') : 'N/A'}"></span></td>
+        </tr>
+        <tr>
+            <td><b>Khách hàng:</b></td>
+            <td><span th:text="${appointment.customer != null ? appointment.customer.firstName + ' ' + appointment.customer.lastName : 'Unknown'}"></span></td>
+        </tr>
+        <tr>
+            <td><b>Bác sĩ:</b></td>
+            <td><span th:text="${appointment.provider != null ? appointment.provider.firstName + ' ' + appointment.provider.lastName : 'Unknown'}"></span></td>
+        </tr>
+        <tr>
+            <td><b>Dịch vụ:</b></td>
+            <td><span th:text="${appointment.work != null ? appointment.work.name : 'Unknown'}"></span></td>
+        </tr>
+        <tr>
+            <td><b>Mô tả:</b></td>
+            <td><span th:text="${appointment.work != null ? appointment.work.description : 'Unknown'}"></span></td>
+        </tr>
+        <tr>
+            <td><b>Chi phí:</b></td>
+            <td><span th:text="${appointment.work != null ? appointment.work.price + ' VND' : 'Unknown'}"></span></td>
+        </tr>
+        <tr th:if="${appointment.status == 'INVOICED'}">
+            <td><b>Hóa đơn:</b></td>
+            <td><a th:href="@{'/invoices/download/' + ${appointment.invoice != null ? appointment.invoice.id : 'N/A'}">Download Invoice</a></td>
+        </tr>
+        <tr>
+            <td><b>Mã vạch:</b></td>
+            <td>
+                <img th:src="'/img/barcodes/' + ${appointment.barcodeId} + '.png'" alt="barcode" />
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+
+</html>
