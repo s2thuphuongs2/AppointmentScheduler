@@ -88,8 +88,8 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void newAppointmentRejectionRequestedNotification(Appointment appointment, boolean sendEmail) {
-        String title = "Lịch hẹn bị từ chối";
-        String message = appointment.getCustomer().getFirstName() + " " + appointment.getCustomer().getLastName() + "từ chối một cuộc hẹn. Cần có sự chấp thuận của bạn";
+        String title = "Lịch hẹn được xin phép hủy bỏ";
+        String message = appointment.getCustomer().getFirstName() + " " + appointment.getCustomer().getLastName() + "xin phép hủy bỏ một cuộc hẹn. Cần có sự chấp thuận của bạn";
         String url = "/appointments/" + appointment.getId();
         newNotification(title, message, url, appointment.getProvider());
         if (sendEmail && mailingEnabled) {
@@ -140,44 +140,11 @@ public class NotificationServiceImpl implements NotificationService {
             emailService.sendInvoice(invoice);
         }
     }
-////DELETE: delete exchange request
-//    @Override
-//    public void newExchangeRequestedNotification(Appointment oldAppointment, Appointment newAppointment, boolean sendEmail) {
-//        String title = "Request for exchange";
-//        String message = "One of the users sent you a request to exchange his appointment with your appointment";
-//        String url = "/appointments/" + newAppointment.getId();
-//        newNotification(title, message, url, newAppointment.getCustomer());
-//        if (sendEmail && mailingEnabled) {
-//            emailService.sendNewExchangeRequestedNotification(oldAppointment, newAppointment);
-//        }
-//    }
-
-//    @Override
-//    public void newExchangeAcceptedNotification(ExchangeRequest exchangeRequest, boolean sendEmail) {
-//        String title = "Exchange request accepted";
-//        String message = "Someone accepted your appointment exchange request from " + exchangeRequest.getRequested().getStart() + " to " + exchangeRequest.getRequestor().getStart();
-//        String url = "/appointments/" + exchangeRequest.getRequested();
-//        newNotification(title, message, url, exchangeRequest.getRequested().getCustomer());
-//        if (sendEmail && mailingEnabled) {
-//            emailService.sendExchangeRequestAcceptedNotification(exchangeRequest);
-//        }
-//    }
-
-//    @Override
-//    public void newExchangeRejectedNotification(ExchangeRequest exchangeRequest, boolean sendEmail) {
-//        String title = "Exchange request rejected";
-//        String message = "Someone rejected your appointment exchange request from " + exchangeRequest.getRequestor().getStart() + " to " + exchangeRequest.getRequested().getStart();
-//        String url = "/appointments/" + exchangeRequest.getRequestor();
-//        newNotification(title, message, url, exchangeRequest.getRequestor().getCustomer());
-//        if (sendEmail && mailingEnabled) {
-//            emailService.sendExchangeRequestRejectedNotification(exchangeRequest);
-//        }
-//    }
 
     @Override
     public void newAppointmentRejectionAcceptedNotification(Appointment appointment, boolean sendEmail) {
-        String title = "Yêu cầu từ chối đã được chấp nhận";
-        String message = "Bác sĩ chấp thuận yêu cầu từ chối lịch hẹn của bạn";
+        String title = "Yêu cầu hủy bỏ đã được chấp nhận";
+        String message = "Bác sĩ chấp thuận yêu cầu hủy bỏ lịch hẹn của bạn";
         String url = "/appointments/" + appointment.getId();
         newNotification(title, message, url, appointment.getCustomer());
         if (sendEmail && mailingEnabled) {

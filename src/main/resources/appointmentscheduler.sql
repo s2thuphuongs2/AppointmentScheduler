@@ -325,20 +325,7 @@ ALTER TABLE appointments
 -- Đặt giá trị mặc định là giá trị ngẫu nhiên
 ALTER TABLE appointments
     ALTER COLUMN barcode_id SET DEFAULT 0;
--- Tạo trigger để sinh barcode_id ngẫu nhiên
-# DELIMITER //
-#
-# CREATE TRIGGER before_insert_appointments
-#     BEFORE INSERT ON appointments FOR EACH ROW
-# BEGIN
-#     IF NEW.barcode_id = 0 OR NEW.barcode_id IS NULL THEN
-#         SET NEW.barcode_id = FLOOR(100000000 + RAND() * 900000000);
-#     END IF;
-# END;
-# //
-#
-# DELIMITER ;
--- Thêm cột TEXT để lưu chuỗi Base64 của barcode
+
 ALTER TABLE appointments
     ADD COLUMN barcode_image TEXT;
 
@@ -348,15 +335,7 @@ ALTER TABLE appointments
 #     DROP COLUMN barcode_id;
 INSERT INTO `appointments`
 (`start`, `end`, canceled_at, status, id_canceler, id_provider, id_customer, id_work, id_invoice, barcode_id, barcode_image)
-VALUES ('2024-03-11 04:00:00', '2024-03-11 05:00:00', NULL, 'CONFIRMED', NULL, 2, 3, 1, NULL, 121667259, 'src/main/resources/static/img/barcodes/null.png'),
-
-       ('2024-03-11 03:00:00', '2024-03-11 04:00:00', NULL, 'CONFIRMED', NULL, 2, 3, 1, NULL, 999512313, 'src/main/resources/static/img/barcodes/null.png'),
-       ('2024-03-11 08:00:00', '2024-03-11 09:30:00', NULL, 'CONFIRMED', NULL, 2, 3, 2, NULL, 224156466, 'src/main/resources/static/img/barcodes/null.png'),
-       ('2024-03-11 09:30:00', '2024-03-11 11:00:00', NULL, 'CONFIRMED', NULL, 2, 3, 2, NULL, 253885803, 'src/main/resources/static/img/barcodes/null.png'),
-       ('2024-03-13 06:30:00', '2024-03-13 08:00:00', NULL, 'CONFIRMED', NULL, 2, 3, 2, NULL, 600439328, 'src/main/resources/static/img/barcodes/null.png'),
-       ('2024-03-13 01:00:00', '2024-03-13 02:00:00', NULL, 'CONFIRMED', NULL, 2, 3, 1, NULL, 700848280, 'src/main/resources/static/img/barcodes/null.png'),
-       ('2024-03-14 04:00:00', '2024-03-14 05:00:00', NULL, 'CONFIRMED', NULL, 2, 3, 1, NULL, 657419302, 'src/main/resources/static/img/barcodes/null.png'),
-       ('2024-03-12 05:00:00', '2024-03-12 07:00:00', NULL, 'CONFIRMED', NULL, 2, 4, 3, NULL, 753920410, 'src/main/resources/static/img/barcodes/null.png'),
+VALUES
        ('2024-03-12 03:00:00', '2024-03-12 05:00:00', NULL, 'CONFIRMED', NULL, 2, 4, 3, NULL, 123456789, 'src/main/resources/static/img/barcodes/123456789.png'),
        ('2024-03-12 08:00:00', '2024-03-12 09:00:00', NULL, 'CONFIRMED', NULL, 2, 3, 1, NULL, 19794, 'src/main/resources/static/img/barcodes/19794.png'),
        ('2024-03-14 06:30:00', '2024-03-14 08:00:00', NULL, 'CONFIRMED', NULL, 2, 3, 2, NULL, 673726580, 'src/main/resources/static/img/barcodes/673726580.png'),

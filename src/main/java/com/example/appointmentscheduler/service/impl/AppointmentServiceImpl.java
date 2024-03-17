@@ -256,15 +256,6 @@ public class AppointmentServiceImpl implements AppointmentService {
                     updateAppointment(appointment);
                 });
     }
-////DELETE
-//    @Override
-//    public void updateAppointmentsStatusesWithExpiredExchangeRequest() {
-//        appointmentRepository.findExchangeRequestedWithStartBefore(LocalDateTime.now().plusDays(1))
-//                .forEach(appointment -> {
-//                    appointment.setStatus(AppointmentStatus.SCHEDULED);
-//                    updateAppointment(appointment);
-//                });
-//    }
 
     @Override
     public void cancelUserAppointmentById(int appointmentId, int userId) {
@@ -281,7 +272,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                 notificationService.newAppointmentCanceledByProviderNotification(appointment, true);
             }
         } else {
-            throw new org.springframework.security.access.AccessDeniedException("Không được phép");
+            throw new org.springframework.security.access.AccessDeniedException("Authorization error");
         }
 
 
