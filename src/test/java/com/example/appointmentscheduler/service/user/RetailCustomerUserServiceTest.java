@@ -51,7 +51,6 @@ public class RetailCustomerUserServiceTest {
     private String email;
     private String mobile;
     private String street;
-    private String postcode;
     private String city;
 
     String passwordEncoded;
@@ -76,7 +75,7 @@ public class RetailCustomerUserServiceTest {
         mobile = "123456789";
         // TODO - sửa chung thành address
         street = "street";
-        postcode = "12-345";
+
         city = "city";
 
         passwordEncoded = "xxxx";

@@ -20,7 +20,6 @@ CREATE TABLE IF NOT EXISTS `users` (
 	`mobile` varchar(50),
 	`street` varchar(50),
 	`city` varchar(50),
-	`postcode` varchar(50),
   PRIMARY KEY (`id`)
 )
 	ENGINE = InnoDB

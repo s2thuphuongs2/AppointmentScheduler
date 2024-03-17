@@ -44,10 +44,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
+
 
 		<dependency>
 			<groupId>mysql</groupId>
@@ -167,6 +164,14 @@
 			<artifactId>javase</artifactId>
 			<version>3.4.1</version> <!-- Sử dụng phiên bản mới nhất -->
 		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-resources-plugin -->
+		<dependency>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-resources-plugin</artifactId>
+			<version>3.3.1</version>
+		</dependency>
+
 
 	</dependencies>
 

@@ -8,4 +8,6 @@ public interface BarcodeService {
     byte[] genarateBarcodeImage(Long barcodeContent) throws WriterException, IOException;
 
     String generateBarcodeImageAndSave(Long barcodeContent) throws WriterException, IOException;
+
+    String scanBarcode(String barcodeId);
 }

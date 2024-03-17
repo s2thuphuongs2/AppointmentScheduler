@@ -2,6 +2,7 @@ package com.example.appointmentscheduler.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @Component
 //@Bean
+@ConditionalOnResource(resources = "${spring.info.build.location:classpath:META-INF/build-info.properties}")
 @ConditionalOnMissingBean(BuildProperties.class)
 public class VersionInterceptor extends HandlerInterceptorAdapter {
     @Autowired

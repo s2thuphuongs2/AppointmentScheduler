@@ -1,10 +1,13 @@
 package com.example.appointmentscheduler.service.impl;
 
+import com.example.appointmentscheduler.entity.Appointment;
+import com.example.appointmentscheduler.dao.BarcodeRepository;
 import com.example.appointmentscheduler.service.BarcodeService;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
@@ -14,10 +17,14 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Map;
 import java.util.Random;
 
 @Service
 public class BarcodeServiceImpl implements BarcodeService {
+    @Autowired
+    private BarcodeRepository barcodeRepository;
+
     public byte[] genarateBarcodeImage(Long barcodeId) throws WriterException, IOException {
             String barcodeContent = String.valueOf(barcodeId);
             //Kích thước của hình ảnh mã vạch tính bằng pixels
@@ -63,5 +70,15 @@ public class BarcodeServiceImpl implements BarcodeService {
     public long generate9DigitBarcode() {
         Random random = new Random();
         return 100_000_000L + random.nextInt(900_000_000);
+    }
+    @Override
+    public String scanBarcode(String barcode) {
+        Long barcodeId = Long.parseLong(barcode);
+        Appointment appointment = barcodeRepository.findByBarcodeId(barcodeId);
+        if (appointment != null) {
+            return "appointments/" + appointment.getId();
+        } else {
+            return "Không tìm thấy thông tin liên quan đến mã vạch " + barcodeId;
+        }
     }
 }

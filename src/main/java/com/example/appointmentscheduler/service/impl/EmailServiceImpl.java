@@ -51,7 +51,7 @@ public class EmailServiceImpl implements EmailService {
             String html = templateEngine.process("email/" + templateName, templateContext);
 
             helper.setTo(to);
-            helper.setFrom("appointmentscheduler@gmail.com");
+            helper.setFrom("s2thuphuongs2@gmail.com");
             helper.setSubject(subject);
             helper.setText(html, true);
 
