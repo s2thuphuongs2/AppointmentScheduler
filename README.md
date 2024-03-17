@@ -1,6 +1,6 @@
 # Ứng dụng Barcode vào Web đặt lịch hẹn
 
-Dự án này là một ứng dụng lịch hẹn được thiết kế để quản lý các cuộc hẹn giữa bác sĩ tư nhân và khách hàng. Nó bao gồm các tính năng cho quản trị viên, bác sĩ và khách hàng để lập lịch, xem và quản lý các cuộc hẹn. Ứng dụng chạy trên IntelliJ IDEA và được container hóa bằng Docker.
+Dự án này là một ứng dụng lịch hẹn được thiết kế kết hợp thiết bị IoT để quản lý các cuộc hẹn giữa bác sĩ tư nhân và khách hàng. Nó bao gồm các tính năng cho quản trị viên, bác sĩ và khách hàng để lập lịch, xem và quản lý các cuộc hẹn. Ứng dụng chạy trên IntelliJ IDEA và được container hóa bằng Docker.
 
 ## Loại Tài khoản
 
