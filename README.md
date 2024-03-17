@@ -48,7 +48,6 @@ Dự án này là một ứng dụng lịch hẹn được thiết kế kết h�
     
 5. Build và chạy ứng dụng.
 6. Truy cập ứng dụng trên trình duyệt web: `localhost:8080`
-6. Truy cập ứng dụng trên trình duyệt web: `localhost:8080`
 7. Đăng nhập tài khoản:
     
     
