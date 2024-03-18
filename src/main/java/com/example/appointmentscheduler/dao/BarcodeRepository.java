@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BarcodeRepository extends JpaRepository<Appointment, Long> {
 
-    @Query("SELECT a FROM Appointment a WHERE a.barcodeId = ?1")
+    @Query("select a from Appointment a where a.barcodeId = ?1")
     Appointment findByBarcodeId(@Param("barcodeId") Long barcodeId);
 }

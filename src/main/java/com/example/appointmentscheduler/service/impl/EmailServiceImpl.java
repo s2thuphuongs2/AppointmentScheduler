@@ -2,7 +2,6 @@ package com.example.appointmentscheduler.service.impl;
 
 import com.example.appointmentscheduler.entity.Appointment;
 import com.example.appointmentscheduler.entity.ChatMessage;
-import com.example.appointmentscheduler.entity.ExchangeRequest;
 import com.example.appointmentscheduler.entity.Invoice;
 import com.example.appointmentscheduler.entity.user.User;
 import com.example.appointmentscheduler.service.EmailService;
@@ -132,7 +131,11 @@ public class EmailServiceImpl implements EmailService {
         context.setVariable("appointment", appointment);
         try {
             File appointmentPdf = pdfGenaratorUtil.generatePdfFromAppointment(appointment);
-            sendEmail(appointment.getCustomer().getEmail(), "Chi tiết cuộc hẹn", "appointmentDetails", context, appointmentPdf);
+
+            // Thay đổi tên mẫu thành đường dẫn đến tệp mẫu thực sự
+            String templateName = "pdf/appointment";
+
+            sendEmail(appointment.getCustomer().getEmail(), "Chi tiết cuộc hẹn", templateName, context, appointmentPdf);
         } catch (Exception e) {
             log.error("Lỗi khi tạo pdf, lỗi là {}", e.getLocalizedMessage());
         }

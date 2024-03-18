@@ -2,7 +2,6 @@ package com.example.appointmentscheduler.service;
 
 import com.example.appointmentscheduler.entity.Appointment;
 import com.example.appointmentscheduler.entity.ChatMessage;
-import com.example.appointmentscheduler.entity.ExchangeRequest;
 import com.example.appointmentscheduler.entity.Invoice;
 import org.thymeleaf.context.Context;
 
