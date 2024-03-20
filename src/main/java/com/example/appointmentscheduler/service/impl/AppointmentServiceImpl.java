@@ -1,17 +1,15 @@
 package com.example.appointmentscheduler.service.impl;
 
+import com.example.appointmentscheduler.dao.BarcodeRepository;
 import com.example.appointmentscheduler.entity.*;
 import com.example.appointmentscheduler.exception.AppointmentNotFoundException;
-import com.example.appointmentscheduler.service.NotificationService;
+import com.example.appointmentscheduler.service.*;
 import com.example.appointmentscheduler.dao.AppointmentRepository;
 import com.example.appointmentscheduler.dao.ChatMessageRepository;
 import com.example.appointmentscheduler.entity.user.User;
 import com.example.appointmentscheduler.entity.user.provider.Provider;
 import com.example.appointmentscheduler.model.DayPlan;
 import com.example.appointmentscheduler.model.TimePeroid;
-import com.example.appointmentscheduler.service.AppointmentService;
-import com.example.appointmentscheduler.service.UserService;
-import com.example.appointmentscheduler.service.WorkService;
 import com.example.appointmentscheduler.util.PdfGeneratorUtil;
 import com.google.zxing.WriterException;
 import com.google.zxing.oned.Code128Reader;
@@ -41,9 +39,12 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final NotificationService notificationService;
     private final JwtTokenServiceImpl jwtTokenService;
     @Autowired
-    private BarcodeServiceImpl barcodeService;
+    private BarcodeService barcodeService;
     @Autowired
     private PdfGeneratorUtil pdfGeneratorUtil;
+    @Autowired
+    private BarcodeRepository barcodeRepository;
+
 
     public AppointmentServiceImpl(AppointmentRepository appointmentRepository, UserService userService, WorkService workService, ChatMessageRepository chatMessageRepository, NotificationService notificationService, JwtTokenServiceImpl jwtTokenService) {
         this.appointmentRepository = appointmentRepository;
@@ -449,5 +450,21 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         // Tạo và trả về tệp PDF từ cuộc hẹn sử dụng utiliy pdfGeneratorUtil
         return pdfGeneratorUtil.generatePdfFromAppointment(appointment);
+    }
+
+    @Override
+    public void updateAppointmentStatusAfterBarcodeScan(String barcode) {
+        // Quét mã vạch để lấy thông tin cuộc hẹn
+        Long barcodeId = Long.parseLong(barcode);
+        Appointment appointment = barcodeRepository.findByBarcodeId(barcodeId);
+
+        if (appointment != null) {
+            // Cập nhật trạng thái của cuộc hẹn thành CONFIRMED
+            appointment.setStatus(AppointmentStatus.CONFIRMED);
+            // Lưu cập nhật vào cơ sở dữ liệu
+            appointmentRepository.save(appointment);
+        } else {
+            throw new RuntimeException("Không tìm thấy thông tin liên quan đến mã vạch " + barcodeId);
+        }
     }
 }

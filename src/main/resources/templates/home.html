@@ -61,9 +61,28 @@
                     textColor: 'black'
                     // Màu chữ cho sự kiện
                 }
-            ]
+            ],
+            // Thêm sự kiện click cho mỗi ngày trên lịch
+            dayClick: function(date, jsEvent, view) {
+                // Làm điều gì đó khi người dùng click vào một ngày
+                // Ví dụ: Mở form tạo lịch với ngày đã chọn
+                openAppointmentForm(date);
+            },
+            eventMouseover: function(calEvent, jsEvent) {
+                $(this).css('cursor', 'pointer');
+            },
+            eventMouseout: function(calEvent, jsEvent) {
+                $(this).css('cursor', 'auto');
+            },
+
         })
     });
+
+    function openAppointmentForm(date) {
+        // Xử lý logic để mở form tạo lịch với ngày đã chọn
+        // Ví dụ: Chuyển đến trang tạo lịch và truyền ngày đã chọn
+        window.location.href = "/appointments/new?date=" + date.format();
+    }
 </script>
 <!-- Kết thúc đoạn script JavaScript với Thymeleaf inline -->
 

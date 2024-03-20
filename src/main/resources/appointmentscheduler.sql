@@ -14,8 +14,8 @@ CREATE TABLE IF NOT EXISTS `users` (
                                        `id` int(11) NOT NULL AUTO_INCREMENT,
                                        `username` varchar(50) NOT NULL,
                                        `password` char(80) NOT NULL,
-                                       `first_name` varchar(50),
-                                       `last_name` varchar(50),
+                                       `first_name` nvarchar(50),
+                                       `last_name` nvarchar(50),
                                        `email` varchar(50),
                                        `mobile` varchar(50),
                                        `street` varchar(50),
@@ -47,12 +47,12 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 CREATE TABLE IF NOT EXISTS `works` (
                                        `id` INT(11) NOT NULL AUTO_INCREMENT,
-                                       `name` VARCHAR(256),
+                                       `name` NVARCHAR(256),
                                        `duration` INT(11),
                                        `price` DECIMAL(10, 2),
                                        `editable` BOOLEAN,
                                        `target` VARCHAR(256),
-                                       `description` TEXT,
+                                       `description` NVARCHAR(256),
                                        PRIMARY KEY (`id`)
 )
     ENGINE = InnoDB
@@ -218,8 +218,8 @@ CREATE TABLE IF NOT EXISTS `customers` (
 
 CREATE TABLE IF NOT EXISTS `notifications` (
                                                `id` INT(11) NOT NULL AUTO_INCREMENT,
-                                               `title` VARCHAR(256),
-                                               `message` TEXT,
+                                               `title` NVARCHAR(256),
+                                               `message` NVARCHAR(256),
                                                `created_at` DATETIME,
                                                `url` VARCHAR(256),
                                                `is_read` BOOLEAN,
@@ -235,26 +235,6 @@ CREATE TABLE IF NOT EXISTS `notifications` (
     ENGINE = InnoDB
     DEFAULT CHARSET = utf8;
 
-
-CREATE TABLE IF NOT EXISTS `exchanges` (
-                                           `id` INT(11) NOT NULL AUTO_INCREMENT,
-                                           `exchange_status` VARCHAR(256),
-                                           `id_appointment_requestor` INT(11),
-                                           `id_appointment_requested` INT(11),
-                                           PRIMARY KEY (`id`),
-                                           KEY `id_appointment_requestor` (`id_appointment_requestor`),
-                                           KEY `id_appointment_requested` (`id_appointment_requested`),
-                                           CONSTRAINT `FK_exchange_appointment_requestor` FOREIGN KEY (`id_appointment_requestor`)
-                                               REFERENCES `appointments` (`id`)
-                                               ON DELETE NO ACTION
-                                               ON UPDATE NO ACTION,
-                                           CONSTRAINT `FK_exchange_appointment_requested` FOREIGN KEY (`id_appointment_requested`)
-                                               REFERENCES `appointments` (`id`)
-                                               ON DELETE NO ACTION
-                                               ON UPDATE NO ACTION
-)
-    ENGINE = InnoDB
-    DEFAULT CHARSET = utf8;
 
 -- INSERT available roles
 INSERT INTO `roles` (id,name) VALUES
@@ -304,8 +284,8 @@ INSERT INTO `users_roles` (user_id, role_id)
 VALUES (4, 4);
 
 INSERT INTO `works` (id, name, duration, price, editable, target, description)
-VALUES (1, 'English lesson', 60, 100.00, true, 'retail',
-        'This is english lesson with duration 60 minutes and price 100 VND');
+VALUES (1, 'Khám sức khỏe tổng quát', 60, 100.00, true, 'retail',
+        'Khám sức khỏe tổng quát, đem theo CMND và giấy tờ cần thiết.');
 
 INSERT INTO works_providers
 VALUES (2, 1);

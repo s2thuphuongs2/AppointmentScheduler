@@ -28,11 +28,4 @@ public interface EmailService {
 
     void sendNewChatMessageNotification(ChatMessage appointment);
 
-    //DELETE: xóa trao đổi lịch hẹn
-
-//    void sendNewExchangeRequestedNotification(Appointment oldAppointment, Appointment newAppointment);
-//
-//    void sendExchangeRequestAcceptedNotification(ExchangeRequest exchangeRequest);
-//
-//    void sendExchangeRequestRejectedNotification(ExchangeRequest exchangeRequest);
 }

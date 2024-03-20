@@ -2,6 +2,8 @@ package com.example.appointmentscheduler.service.impl;
 
 import com.example.appointmentscheduler.entity.Appointment;
 import com.example.appointmentscheduler.dao.BarcodeRepository;
+import com.example.appointmentscheduler.entity.AppointmentStatus;
+import com.example.appointmentscheduler.service.AppointmentService;
 import com.example.appointmentscheduler.service.BarcodeService;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
@@ -24,6 +26,8 @@ import java.util.Random;
 public class BarcodeServiceImpl implements BarcodeService {
     @Autowired
     private BarcodeRepository barcodeRepository;
+    @Autowired
+    private AppointmentService appointmentService;
 
     @Override
     public byte[] genarateBarcodeImage(Long barcodeId) throws WriterException, IOException {
@@ -63,7 +67,7 @@ public class BarcodeServiceImpl implements BarcodeService {
         Files.write(Paths.get(imageFile.getAbsolutePath()), imageBytes);
         return imagePath;
     }
-
+@Override
     public long generate9DigitBarcode() {
         Random random = new Random();
         return 100_000_000L + random.nextInt(900_000_000);
@@ -73,6 +77,7 @@ public class BarcodeServiceImpl implements BarcodeService {
         Long barcodeId = Long.parseLong(barcode);
         Appointment appointment = barcodeRepository.findByBarcodeId(barcodeId);
         if (appointment != null) {
+            appointmentService.updateAppointmentStatusAfterBarcodeScan(barcode);
             return "appointments/" + appointment.getId();
         } else {
             return "Không tìm thấy thông tin liên quan đến mã vạch " + barcodeId;

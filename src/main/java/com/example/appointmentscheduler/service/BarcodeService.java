@@ -10,4 +10,6 @@ public interface BarcodeService {
     String generateBarcodeImageAndSave(Long barcodeContent) throws WriterException, IOException;
 
     String scanBarcode(String barcodeId);
+
+    long generate9DigitBarcode();
 }

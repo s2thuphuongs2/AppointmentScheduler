@@ -74,4 +74,6 @@ public interface AppointmentService {
     boolean isAvailable(int workId, int providerId, int customerId, LocalDateTime start);
 
     File generatePdfForAppointment(int appointmentId);
+
+    void updateAppointmentStatusAfterBarcodeScan(String barcode);
 }
