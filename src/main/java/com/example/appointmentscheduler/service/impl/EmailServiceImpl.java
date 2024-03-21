@@ -161,30 +161,5 @@ public class EmailServiceImpl implements EmailService {
         context.setVariable("url", baseUrl + "/appointments/" + chatMessage.getAppointment().getId());
         sendEmail(recipent.getEmail(), "Tin nhắn mới", "newChatMessage", context, null);
     }
-/////////====DELETE Xóa trao đổi lịch hẹn ======/////////
-//    @Async
-//    @Override
-//    public void sendNewExchangeRequestedNotification(Appointment oldAppointment, Appointment newAppointment) {
-//        Context context = new Context();
-//        context.setVariable("oldAppointment", oldAppointment);
-//        context.setVariable("newAppointment", newAppointment);
-//        context.setVariable("url", baseUrl + "/appointments/" + newAppointment.getId());
-//        sendEmail(newAppointment.getCustomer().getEmail(), "Yêu cầu trao đổi cuộc hẹn mới", "newExchangeRequest", context, null);
-//    }
-//
-//    @Override
-//    public void sendExchangeRequestAcceptedNotification(ExchangeRequest exchangeRequest) {
-//        Context context = new Context();
-//        context.setVariable("exchangeRequest", exchangeRequest);
-//        context.setVariable("url", baseUrl + "/appointments/" + exchangeRequest.getRequested().getId());
-//        sendEmail(exchangeRequest.getRequested().getCustomer().getEmail(), "Exchange request accepted", "exchangeRequestAccepted", context, null);
-//    }
-//
-//    @Override
-//    public void sendExchangeRequestRejectedNotification(ExchangeRequest exchangeRequest) {
-//        Context context = new Context();
-//        context.setVariable("exchangeRequest", exchangeRequest);
-//        context.setVariable("url", baseUrl + "/appointments/" + exchangeRequest.getRequestor().getId());
-//        sendEmail(exchangeRequest.getRequestor().getCustomer().getEmail(), "Exchange request rejected", "exchangeRequestRejected", context, null);
-//    }
+
 }

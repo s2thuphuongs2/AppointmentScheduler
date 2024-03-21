@@ -2,7 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'home','Trang chủ')}">
 <!-- Đoạn mã HTML sử dụng Thymeleaf, thay thế nội dung của trang bằng template "layout" với các tham số -->
 
-
+<style>
+    #calendar a{
+        color: #ccccff;
+    }
+</style>
 <body>
 <!-- Thân trang web -->
 
@@ -51,6 +55,8 @@
             timeFormat: 'H:mm', // uppercase H for 24-hour clock
             // Định dạng hiển thị thời gian
             firstDay: 1,
+            dayHeaderFormat: 'DD/MM/YYYY',
+            titleFormat: 'DD/MM/YYYY',
             // Đặt ngày bắt đầu là thứ hai
             eventSources: [
                 {
@@ -58,22 +64,17 @@
                     // Đường dẫn API để lấy dữ liệu sự kiện
                     color: 'yellow',
                     // Màu nền cho sự kiện
-                    textColor: 'black'
+                    textColor: 'white'
                     // Màu chữ cho sự kiện
                 }
             ],
-            // Thêm sự kiện click cho mỗi ngày trên lịch
-            dayClick: function(date, jsEvent, view) {
-                // Làm điều gì đó khi người dùng click vào một ngày
-                // Ví dụ: Mở form tạo lịch với ngày đã chọn
-                openAppointmentForm(date);
-            },
-            eventMouseover: function(calEvent, jsEvent) {
-                $(this).css('cursor', 'pointer');
-            },
-            eventMouseout: function(calEvent, jsEvent) {
-                $(this).css('cursor', 'auto');
-            },
+            // // Thêm sự kiện click cho mỗi ngày trên lịch
+            // dayClick: function(date, jsEvent, view) {
+            //     // Làm điều gì đó khi người dùng click vào một ngày
+            //     // Ví dụ: Mở form tạo lịch với ngày đã chọn
+            //     openAppointmentForm(date);
+            // },
+
 
         })
     });

@@ -7,7 +7,7 @@
 <div class="row align-items-center justify-content-center" style="margin-top: 50px">
     <!-- chuyển đến trang tạo lịch hẹn mới -->
     <div th:fragment="customerAppointments">
-        <table id="appointments" class="table text-center shadow border-radius-6">
+        <table id="appointments" class="table text-center shadow">
                         <thead class="thead-primary" style="background-color: #e3f2fd;">
                         <tr>
                             <th> Nội dung</th>
@@ -24,7 +24,7 @@
                             <td colspan="2"> Không có lịch hẹn nào </td>
                         </tr>
                         <tr th:each="appointment : ${appointments}"
-                            th:classappend="${appointment.status.name() == 'CANCELED' || appointment.status.name()  == 'FINISHED' || appointment.status.name()  == 'INVOICED' || appointment.status.name()  == 'REJECTION_REQUESTED' || appointment.status.name()  == 'REJECTED'} ? table-secondary : table-success">
+                            th:classappend="${appointment.status.name() == 'CANCELED' || appointment.status.name()  == 'FINISHED' || appointment.status.name()  == 'INVOICED' || appointment.status.name()  == 'REJECTION_REQUESTED' || appointment.status.name()  == 'REJECTED'} ? table-secondary : table">
                             <td><span th:text="${appointment.work.name}"> Nội dung </span></td>
                             <td><span th:text="${appointment.status}"> scheduled </span></td>
                             <td><span th:text="${#temporals.format(appointment.start, 'yyyy-MM-dd HH:mm')}"> 21-01-2019 15:00</span>

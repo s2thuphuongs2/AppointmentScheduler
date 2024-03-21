@@ -2,11 +2,13 @@ package com.example.appointmentscheduler.util;
 
 import com.example.appointmentscheduler.entity.Appointment;
 import com.example.appointmentscheduler.entity.Invoice;
-import com.itextpdf.text.DocumentException;
+
+import com.itextpdf.text.pdf.BaseFont;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
+import com.itextpdf.text.DocumentException;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import java.io.File;
@@ -33,6 +35,7 @@ public class PdfGeneratorUtil {
         String processedHtml = templateEngine.process("email/pdf/invoice", ctx);
 
         ITextRenderer renderer = new ITextRenderer();
+
         renderer.setDocumentFromString(processedHtml, baseUrl);
         renderer.layout();
 

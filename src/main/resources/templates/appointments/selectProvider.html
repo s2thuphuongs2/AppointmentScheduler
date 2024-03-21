@@ -10,8 +10,8 @@
         <div class="card" style="width: 18rem;">
             <img class="card-img-top" src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="Card image cap">
             <div class="card-body text-center">
-                <h5 class="card-title"><span th:text="${provider.firstName +' ' +provider.lastName}"> Name
-                            Lastname</span></h5>
+                <h5 class="card-title"><span th:text="${provider.lastName +' ' +provider.firstName}"> Họ và tên</span></h5>
+
                 <p sec:authorize="hasRole('ROLE_CUSTOMER_RETAIL')"
                    th:text="${'Nội dung hẹn có sẵn: '+ provider.getRetailWorks().size()}">Nội dung hẹn có sẵn: 3</p>
                 <p sec:authorize="hasRole('ROLE_CUSTOMER_CORPORATE')"

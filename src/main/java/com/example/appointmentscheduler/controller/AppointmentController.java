@@ -144,7 +144,7 @@ public class AppointmentController {
     public String showNewAppointmentSummary(@PathVariable("workId") int workId, @PathVariable("providerId") int providerId, @PathVariable("dateTime") String start, Model model, @AuthenticationPrincipal CustomUserDetails currentUser) {
         if (appointmentService.isAvailable(workId, providerId, currentUser.getId(), LocalDateTime.parse(start))) {
             model.addAttribute("work", workService.getWorkById(workId));
-            model.addAttribute("provider", userService.getProviderById(providerId).getFirstName() + " " + userService.getProviderById(providerId).getLastName());
+            model.addAttribute("provider", userService.getProviderById(providerId).getLastName() + " " + userService.getProviderById(providerId).getFirstName());
             model.addAttribute(providerId);
             model.addAttribute("start", LocalDateTime.parse(start));
             model.addAttribute("end", LocalDateTime.parse(start).plusMinutes(workService.getWorkById(workId).getDuration()));

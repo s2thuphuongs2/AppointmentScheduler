@@ -9,6 +9,7 @@ import com.example.appointmentscheduler.service.UserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -155,7 +156,7 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public void newChatMessageNotification(ChatMessage chatMessage, boolean sendEmail) {
         String title = "Có tin nhắn mới";
-        String message = "Bạn có tin nhắn mới từ " + chatMessage.getAuthor().getFirstName() + " về cuộc hẹn đã được lên lịch vào lúc " + chatMessage.getAppointment().getStart();
+        String message = "Bạn có tin nhắn mới từ " + chatMessage.getAuthor().getFirstName() + " về cuộc hẹn đã được lên lịch vào lúc " + chatMessage.getAppointment().getStart().format(DateTimeFormatter.ofPattern("HH:mm"));
         String url = "/appointments/" + chatMessage.getAppointment().getId();
         newNotification(title, message, url, chatMessage.getAuthor() == chatMessage.getAppointment().getProvider() ? chatMessage.getAppointment().getCustomer() : chatMessage.getAppointment().getProvider());
         if (sendEmail && mailingEnabled) {

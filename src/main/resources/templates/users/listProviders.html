@@ -7,7 +7,7 @@
 
 <div class="row align-items-center justify-content-center" style="margin-top: 50px">
     <div>
-        <table id="providers" class="table shadow table-striped text-center  border-radius-6">
+        <table id="providers" class="table shadow table-striped text-center ">
             <thead class="thead-primary" style="background-color: #e3f2fd;">
             <tr>
                 <th> Tên</th>
@@ -22,7 +22,7 @@
                 <td colspan="4"> Không có bác sĩ nào.</td>
             </tr>
             <tr th:each="provider : ${providers}">
-                <td><span th:text="${provider.firstName +' ' + provider.lastName}"> Họ và tên </span></td>
+                <td><span th:text="${provider.lastName +' ' + provider.firstName}"> Họ và tên </span></td>
                 <td><span th:text="${provider.email }"> email </span></td>
                 <td><span th:text="${provider.appointments.size() }"> 3 </span></td>
                 <td><span th:text="${provider.works.size() }"> 2 </span></td>

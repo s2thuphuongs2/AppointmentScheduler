@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'customers','Danh sách người đặt lích')}"
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'customers','Danh sách người đặt  ịch')}"
       xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <body>
@@ -7,7 +7,7 @@
 
 <div class="row align-items-center justify-content-center" style="margin-top: 50px">
     <div>
-        <table id="customers" class="table table-striped text-center shadow border-radius-6">
+        <table id="customers" class="table table-striped text-center shadow">
 <!--            // TODO: change colors-->
             <thead class="thead-primary" style="background-color: #e3f2fd;">
             <tr>
@@ -20,10 +20,10 @@
             </thead>
             <tbody>
             <tr th:if="${customers == null}">
-                <td colspan="4"> Không có bác sĩ nào.</td>
+                <td colspan="4"> Không có khách hàng nào.</td>
             </tr>
-            <tr th:each="customer : ${customers}" th:classappend="${customer.getType()=='retail' ? 'table-primary' : 'table-info'}">
-                <td><span th:text="${customer.firstName +' ' + customer.lastName}"> Họ và Tên </span></td>
+            <tr th:each="customer : ${customers}" th:classappend="${customer.getType()=='retail' ? 'table' : 'table-info'}">
+                <td><span th:text="${customer.lastName +' ' + customer.firstName}"> Họ và Tên </span></td>
                 <td><span th:text="${customer.getType() == 'retail'? 'retail':'corporate'}"> retail </span></td>
                 <td><span th:text="${customer.email }"> email </span></td>
                 <td><span th:text="${customer.appointments.size() }"> 3 </span></td>

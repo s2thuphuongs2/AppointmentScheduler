@@ -2,9 +2,7 @@
 <html lang="vi">
 
 <head>
-<!--    <meta charset="UTF-8">-->
-<!--    <meta http-equiv="X-UA-Compatible" content="IE=edge">-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+
     <title>Chi tiết cuộc hẹn</title>
     <style>
         /* Bổ sung CSS của bạn ở đây */
@@ -32,11 +30,11 @@
         </tr>
         <tr>
             <td><b>Khách hàng:</b></td>
-            <td><span th:text="${appointment.customer != null ? appointment.customer.firstName + ' ' + appointment.customer.lastName : 'Unknown'}"></span></td>
+            <td><span th:text="${appointment.customer != null ? appointment.customer.lastName + ' ' + appointment.customer.firstName : 'Unknown'}"></span></td>
         </tr>
         <tr>
             <td><b>Bác sĩ:</b></td>
-            <td><span th:text="${appointment.provider != null ? appointment.provider.firstName + ' ' + appointment.provider.lastName : 'Unknown'}"></span></td>
+            <td><span th:text="${appointment.provider != null ? appointment.provider.lastName + ' ' + appointment.provider.firstName : 'Unknown'}"></span></td>
         </tr>
         <tr>
             <td><b>Dịch vụ:</b></td>
