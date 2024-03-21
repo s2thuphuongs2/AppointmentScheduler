@@ -54,7 +54,7 @@ Dự án này là một ứng dụng lịch hẹn được thiết kế kết h�
     | Tài khoản | Mật khẩu |
     | --- | --- |
     | admin | qwerty123 |
-    | provider | qwerty123 |
+    | doctor | qwerty123 |
     | customer_r | qwerty123 |
     | customer_c | qwerty123 |
 
