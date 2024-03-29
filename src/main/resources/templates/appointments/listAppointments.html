@@ -30,11 +30,11 @@
                             <td><span th:text="${#temporals.format(appointment.start, 'yyyy-MM-dd HH:mm')}"> 21-01-2019 15:00</span>
                             </td>
                             <td sec:authorize="!hasRole('ROLE_PROVIDER')"><span
-                                    th:text="${appointment.provider.firstName + ' ' + appointment.provider.lastName}">
+                                    th:text="${appointment.provider.lastName + ' ' + appointment.provider.firstName}">
                                 Người tạo lịch </span>
                             </td>
                             <td sec:authorize="!hasRole('ROLE_CUSTOMER')"><span
-                                    th:text="${appointment.customer.firstName + ' ' + appointment.customer.lastName}">
+                                    th:text="${appointment.customer.lastName + ' ' + appointment.customer.firstName}">
                                 Người đặt lịch </span>
                             </td>
                             <td><span th:text="${appointment.work.duration + ' phút'}"> 60 phút </span></td>
