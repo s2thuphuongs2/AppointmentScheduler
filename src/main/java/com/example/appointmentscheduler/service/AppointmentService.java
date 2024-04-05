@@ -4,8 +4,10 @@ import com.example.appointmentscheduler.entity.Appointment;
 import com.example.appointmentscheduler.entity.ChatMessage;
 import com.example.appointmentscheduler.entity.Work;
 import com.example.appointmentscheduler.model.TimePeroid;
+import com.itextpdf.text.DocumentException;
 
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -73,7 +75,7 @@ public interface AppointmentService {
 
     boolean isAvailable(int workId, int providerId, int customerId, LocalDateTime start);
 
-    File generatePdfForAppointment(int appointmentId);
+    File generatePdfForAppointment(int appointmentId) throws DocumentException;
 
     void updateAppointmentStatusAfterBarcodeScan(String barcode);
 }

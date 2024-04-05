@@ -13,6 +13,7 @@ import com.example.appointmentscheduler.model.TimePeroid;
 import com.example.appointmentscheduler.util.PdfGeneratorUtil;
 import com.google.zxing.WriterException;
 import com.google.zxing.oned.Code128Reader;
+import com.itextpdf.text.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -147,7 +148,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 //            appointment.setBarcodeId(123456789L);
             // Generate 9-digit barcode ID based on the number of days
             // Generate a random 9-digit barcode ID
-            long randomBarcodeId = barcodeService.generate9DigitBarcode();
+//            long randomBarcodeId = barcodeService.generate9DigitBarcode();
+            long randomBarcodeId = System.currentTimeMillis();
             appointment.setBarcodeId(randomBarcodeId);
 
 //            appointmentRepository.save(appointment);
@@ -440,7 +442,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public File generatePdfForAppointment(int appointmentId) {
+    public File generatePdfForAppointment(int appointmentId) throws DocumentException {
         // Lấy thông tin cuộc hẹn từ kho lưu trữ dựa trên ID
         Appointment appointment = appointmentRepository.findById(appointmentId).orElse(null);
         if (appointment == null) {
@@ -458,13 +460,18 @@ public class AppointmentServiceImpl implements AppointmentService {
         Long barcodeId = Long.parseLong(barcode);
         Appointment appointment = barcodeRepository.findByBarcodeId(barcodeId);
 
-        if (appointment != null) {
-            // Cập nhật trạng thái của cuộc hẹn thành CONFIRMED
-            appointment.setStatus(AppointmentStatus.CONFIRMED);
-            // Lưu cập nhật vào cơ sở dữ liệu
-            appointmentRepository.save(appointment);
+        if (appointment != null ) {
+            if(appointment.getStatus() == AppointmentStatus.SCHEDULED){
+                // Cập nhật trạng thái của cuộc hẹn thành CONFIRMED
+                appointment.setStatus(AppointmentStatus.CONFIRMED);
+                // Lưu cập nhật vào cơ sở dữ liệu
+                appointmentRepository.save(appointment);
+            } else {
+                System.out.println("Cuộc hẹn đã được xác nhận hoặc đã bị hủy");
+            }
         } else {
             throw new RuntimeException("Không tìm thấy thông tin liên quan đến mã vạch " + barcodeId);
         }
+
     }
 }

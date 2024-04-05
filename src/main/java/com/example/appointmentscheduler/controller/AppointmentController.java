@@ -4,6 +4,7 @@ import com.example.appointmentscheduler.entity.Appointment;
 import com.example.appointmentscheduler.entity.ChatMessage;
 import com.example.appointmentscheduler.security.CustomUserDetails;
 import com.example.appointmentscheduler.service.*;
+import com.itextpdf.text.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.*;
@@ -189,6 +190,8 @@ public class AppointmentController {
             // Xử lý nếu có lỗi khi tạo PDF
 //            log.error("Lỗi khi tạo PDF để tải xuống, lỗi: {} ", e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (DocumentException e) {
+            throw new RuntimeException(e);
         }
     }
 

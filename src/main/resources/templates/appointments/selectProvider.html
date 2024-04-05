@@ -12,10 +12,20 @@
             <div class="card-body text-center">
                 <h5 class="card-title"><span th:text="${provider.lastName +' ' +provider.firstName}"> Họ và tên</span></h5>
 
-                <p sec:authorize="hasRole('ROLE_CUSTOMER_RETAIL')"
-                   th:text="${'Nội dung hẹn có sẵn: '+ provider.getRetailWorks().size()}">Nội dung hẹn có sẵn: 3</p>
-                <p sec:authorize="hasRole('ROLE_CUSTOMER_CORPORATE')"
-                   th:text="${'Nội dung hẹn có sẵn: '+ provider.getCorporateWorks().size()}">Nội dung hẹn có sẵn: 3</p>
+                <p sec:authorize="hasRole('ROLE_CUSTOMER_RETAIL')" th:each="work : ${provider.getRetailWorks()}" th:text="${work.getName()}">
+<!--                   th:text="${'Dịch vụ khám: '+'\n'+ provider.getRetailWorks()}">Nội dung hẹn có sẵn: 3-->
+<!--                Tư nhân:-->
+
+
+
+                </p>
+                <p sec:authorize="hasRole('ROLE_CUSTOMER_CORPORATE')" th:each="work : ${provider.getCorporateWorks()}" th:text="${work.getName()}">
+<!--                   th:text="${'Dịch vụ khám: '+'\n'+ provider.getCorporateWorks()}">Nội dung hẹn có sẵn: 3-->
+<!--                Doanh nghiệp:-->
+
+
+<!--                    <div th:each="work : ${provider.getCorporateWorks()}" th:text="${work.getName()}"></div>-->
+                </p>
                 <a th:href="@{'/appointments/new/'+${provider.id}}" class="btn btn-primary">Select</a>
 
             </div>

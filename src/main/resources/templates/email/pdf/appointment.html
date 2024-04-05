@@ -6,12 +6,31 @@
     <title>Chi tiết cuộc hẹn</title>
     <style>
         /* Bổ sung CSS của bạn ở đây */
+        body {
+            font-family: 'Times New Roman', serif;
+        }
     </style>
 </head>
 <body>
 <div class="invoice-box">
     <h2>Chi tiết cuộc hẹn</h2>
-    <table cellpadding="0" cellspacing="0">
+    <table>
+        <tr class="top">
+            <td colspan="2">
+                <table>
+                    <tr>
+                        <td class="title">
+                            <img src="/img/logo.jpg" style="width:100%; max-width:300px;" />
+                        </td>
+
+                        <td>
+                            <span th:text="${appointment.getBarcodeId()}" id="number">Barcode ID</span><br />
+                            Ngày đăng ký: <span th:text="${#temporals.format(appointment.getStart(), 'dd-MM-yyyy')}">Xuất: 01-03-2019</span><br/>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
         <tr>
             <td><b>Trạng thái:</b></td>
             <td><span th:text="${appointment.status}"></span></td>

@@ -21,8 +21,8 @@
                 </tr>
                 <tr th:each="work : ${works}">
                     <td><span th:text="${work.name}"> work name </span></td>
-                    <td><span th:text="${work.duration }"> 30 phút </span></td>
-                    <td><span th:text="${work.price}"> 3 </span></td>
+                    <td><span th:text="${work.duration} + ' phút'"> 30 phút </span></td>
+                    <td><span th:text="${work.price} + ' VND'"> 3 </span></td>
                     <td><a class="btn btn-primary"
                            th:href="@{'/appointments/new/'+${providerId} +'/'+ ${work.id}}"
                            role="button">Chọn</a>
