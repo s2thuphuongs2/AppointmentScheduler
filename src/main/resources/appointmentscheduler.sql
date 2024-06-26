@@ -394,3 +394,6 @@ VALUES
        ('2024-03-12 23:00:00', '2024-03-13 00:00:00', NULL, 'CONFIRMED', NULL, 2, 6, 1, NULL, 8858741713411, 'src/main/resources/static/img/barcodes/813643756.png');
 #
 # DROP DATABASE `appointmentscheduler`;
+
+ALTER TABLE invoices ADD COLUMN qr_code_data TEXT;
+ALTER TABLE invoices ADD COLUMN qr_code_path TEXT;

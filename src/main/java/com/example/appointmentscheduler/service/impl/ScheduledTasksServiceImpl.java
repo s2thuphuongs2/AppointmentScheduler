@@ -22,8 +22,6 @@ public class ScheduledTasksServiceImpl implements ScheduledTasksService {
     @Scheduled(fixedDelay = 30 * 60 * 1000)
     @Override
     public void updateAllAppointmentsStatuses() {
-        ////DELETE
-//        appointmentService.updateAppointmentsStatusesWithExpiredExchangeRequest();
         appointmentService.updateAllAppointmentsStatuses();
     }
 

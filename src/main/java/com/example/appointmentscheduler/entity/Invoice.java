@@ -32,6 +32,12 @@ public class Invoice extends BaseEntity {
     @OneToMany(mappedBy = "invoice")
     private List<Appointment> appointments;
 
+    @Column(name = "qr_code_path")
+    private String qrCodePath;
+
+    @Column(name = "qr_code_data")
+    private String qrCodeData;
+
     public Invoice() {
     }
 
@@ -86,4 +92,21 @@ public class Invoice extends BaseEntity {
     public void setAppointments(List<Appointment> appointments) {
         this.appointments = appointments;
     }
+
+    public String getQrCodePath() {
+        return qrCodePath;
+    }
+
+    public void setQrCodePath(String qrCodePath) {
+        this.qrCodePath = qrCodePath;
+    }
+
+    public String getQrCodeData() {
+        return qrCodeData;
+    }
+
+    public void setQrCodeData(String qrCodeData) {
+        this.qrCodeData = qrCodeData;
+    }
+
 }

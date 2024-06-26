@@ -1,24 +1,24 @@
 package com.example.appointmentscheduler.service.impl;
 
 import com.example.appointmentscheduler.security.CustomUserDetails;
-import com.example.appointmentscheduler.service.NotificationService;
+import com.example.appointmentscheduler.service.*;
 import com.example.appointmentscheduler.dao.InvoiceRepository;
 import com.example.appointmentscheduler.entity.Appointment;
 import com.example.appointmentscheduler.entity.AppointmentStatus;
 import com.example.appointmentscheduler.entity.Invoice;
 import com.example.appointmentscheduler.entity.user.customer.Customer;
-import com.example.appointmentscheduler.service.AppointmentService;
-import com.example.appointmentscheduler.service.InvoiceService;
-import com.example.appointmentscheduler.service.UserService;
 import com.example.appointmentscheduler.util.PdfGeneratorUtil;
+import com.google.zxing.WriterException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
@@ -30,13 +30,15 @@ public class InvoiceServiceImpl implements InvoiceService {
     private final UserService userService;
     private final AppointmentService appointmentService;
     private final NotificationService notificationService;
+    private final QRCodeService qrCodeService;
 
-    public InvoiceServiceImpl(InvoiceRepository invoiceRepository, PdfGeneratorUtil pdfGeneratorUtil, UserService userService, AppointmentService appointmentService, NotificationService notificationService) {
+    public InvoiceServiceImpl(InvoiceRepository invoiceRepository, PdfGeneratorUtil pdfGeneratorUtil, UserService userService, AppointmentService appointmentService, NotificationService notificationService, QRCodeService qrCodeService) {
         this.invoiceRepository = invoiceRepository;
         this.pdfGeneratorUtil = pdfGeneratorUtil;
         this.userService = userService;
         this.appointmentService = appointmentService;
         this.notificationService = notificationService;
+        this.qrCodeService = qrCodeService;
     }
 
     /**
@@ -139,6 +141,8 @@ public class InvoiceServiceImpl implements InvoiceService {
     public void changeInvoiceStatusToPaid(int invoiceId) {
         Invoice invoice = invoiceRepository.getOne(invoiceId);
         invoice.setStatus("paid");
+        // TODO: delete QR code for invoice
+//        qrCodeService.deleteQRCodeForInvoice(invoice);
         invoiceRepository.save(invoice);
     }
     /**
@@ -155,16 +159,57 @@ public class InvoiceServiceImpl implements InvoiceService {
             if (!appointmentsToIssueInvoice.isEmpty()) { //if there are any confirmed appointments
                 //change status of all appointments to invoiced
                 for (Appointment a : appointmentsToIssueInvoice) {
-                    //TODO: maybe change this to batch update
-                    //set appointment status to invoiced
+                    // TODO: maybe change this to batch update
+                    // set appointment status to invoiced
                     a.setStatus(AppointmentStatus.INVOICED);
                     appointmentService.updateAppointment(a);
                 }
                 Invoice invoice = new Invoice(generateInvoiceNumber(), "issued", LocalDateTime.now(), appointmentsToIssueInvoice);
                 invoiceRepository.save(invoice);
+                // TODO: Add QR code generation
+//                try {
+//                    updateQRCodeForInvoice(invoice.getId()); // add and save QR code to invoice
+//                } catch (WriterException | IOException e) {
+//                    e.printStackTrace();
+//                }
                 notificationService.newInvoice(invoice, true);
             }
 
         }
     }
+    /**
+     * Generates QR code for invoice and updates the invoice with the QR code data.
+     */
+    @Override
+    public void updateQRCodeForInvoice(int invoiceId) throws WriterException, IOException {
+        Invoice invoice = getInvoiceById(invoiceId);
+        // generate QR code for invoice
+        String qrCodeData = qrCodeService.createInvoiceQRCode(invoice);
+        // save QR code image to file and get the path
+        String qrImagePath = qrCodeService.generateQRCodeImageAndSave(qrCodeData);
+        // update invoice with QR code path and data
+        invoice.setQrCodeData(qrCodeData);
+        invoice.setQrCodePath(qrImagePath);
+        invoiceRepository.save(invoice);
+    }
+
+    public String generateInvoiceData(Invoice invoice) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm");
+        StringBuilder sb = new StringBuilder();
+        sb.append("InvoiceID:").append(invoice.getId()).append("\n");
+        sb.append("InvoiceNumber:").append(invoice.getNumber()).append("\n");
+        sb.append("Status:").append(invoice.getStatus()).append("\n");
+        sb.append("TotalAmount:").append(invoice.getTotalAmount()).append("\n");
+        sb.append("IssuedDate:").append(invoice.getIssued().format(formatter)).append("\n");
+        sb.append("Appointments:");
+        for (Appointment appointment : invoice.getAppointments()) {
+            sb.append("AppointmentID:").append(appointment.getId())
+                    .append(", WorkPrice:").append(appointment.getWork().getPrice()).append("; ");
+        }
+        sb.append("\n");
+        sb.append("URL:https://localhost:8080/invoice/").append(invoice.getId());
+        return sb.toString();
+    }
+
+
 }
