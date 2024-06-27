@@ -85,9 +85,24 @@
                     </tr>
                     <tr th:if="${appointment.status.name()=='INVOICED'}">
                         <td><b>Hóa đơn</b></td>
-                        <td><a th:href="@{'/invoices/download/'+${appointment.invoice.id}}">
+                        <td>
+
+                            <a th:href="@{'/invoices/download/'+${appointment.invoice.id}}">
                             <button class="btn btn-secondary">Tải hóa đơn</button>
-                        </a></td>
+                            </a>
+                            <a th:href="@{'/payment/momo/'+${appointment.invoice.id}}">
+                                <button class="btn btn-primary-outline">Thanh toán</button>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr th:if="${appointment.status.name()=='PAID'}">
+                        <td><b>Hóa đơn</b></td>
+                        <td>
+                            <span id="payment-status">Thanh toán thành công. Xin cảm ơn!</span>
+                            <a th:href="@{'/invoices/download/'+${appointment.invoice.id}}">
+                                <button class="btn btn-secondary">Tải hóa đơn</button>
+                            </a>
+                        </td>
                     </tr>
 
                     <tr>
@@ -175,4 +190,15 @@
 </div>
 </body>
 
+<script>
+    function checkPaymentStatus(invoiceId) {
+        fetch(`/invoices/payment-success?invoiceId=${invoiceId}`, {
+            method: 'POST'
+        }).then(response => {
+            if (response.ok) {
+                document.getElementById('payment-status').innerText = "Thanh toán thành công. Xin cảm ơn!";
+            }
+        });
+    }
+</script>
 </html>

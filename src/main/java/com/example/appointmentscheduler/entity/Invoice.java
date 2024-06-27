@@ -72,6 +72,9 @@ public class Invoice extends BaseEntity {
     public String getNumber() {
         return number;
     }
+    public String getNumberTrim() {
+        return number.replaceAll("[^a-zA-Z0-9]", "");
+    }
 
     public void setNumber(String number) {
         this.number = number;

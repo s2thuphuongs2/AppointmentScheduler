@@ -8,6 +8,9 @@ import java.io.IOException;
 public interface QRCodeService {
     byte[] generateQRCodeImage(String invoiceData) throws WriterException, IOException;
     String generateQRCodeImageAndSave(String invoiceData) throws WriterException, IOException;
+
+    String saveImageToFile(String sanitizedInvoiceNumber, byte[] imageBytes) throws IOException;
+
     String createInvoiceQRCode(Invoice invoice) throws WriterException, IOException;
     void createInvoiceQRCodeForAllInvoices() throws WriterException, IOException;
     void updateSpecificInvoiceQRCode(int invoiceId);

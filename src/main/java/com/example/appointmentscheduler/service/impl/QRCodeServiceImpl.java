@@ -43,12 +43,15 @@ public class QRCodeServiceImpl implements QRCodeService {
     @Override
     public String generateQRCodeImageAndSave(String invoiceData) throws WriterException, IOException {
         byte[] qrCodeImageBytes = generateQRCodeImage(invoiceData);
-        String imagePath = saveImageToFile(invoiceData.hashCode(), qrCodeImageBytes);
+        String extractedInvoiceNumber = invoiceData.substring(invoiceData.indexOf("InvoiceNumber:") + 14, invoiceData.indexOf("Status:"));
+        String sanitizedInvoiceNumber = extractedInvoiceNumber.replaceAll("[^a-zA-Z0-9]", "");
+        String imagePath = saveImageToFile(sanitizedInvoiceNumber, qrCodeImageBytes);
         return imagePath;
     }
 
-    private String saveImageToFile(int dataHash, byte[] imageBytes) throws IOException {
-        String imagePath = "src/main/resources/static/img/qrcodes/" + dataHash + ".png";
+    @Override
+    public String saveImageToFile(String sanitizedInvoiceNumber, byte[] imageBytes) throws IOException {
+        String imagePath = "src/main/resources/static/img/qrcodes/" + sanitizedInvoiceNumber + ".png";
         File imageFile = new File(imagePath);
         Files.write(Paths.get(imageFile.getAbsolutePath()), imageBytes);
         return imagePath;
