@@ -1,6 +1,7 @@
 package com.example.appointmentscheduler.service.impl;
 
 import com.example.appointmentscheduler.dao.InvoiceRepository;
+import com.example.appointmentscheduler.dao.user.UserRepository;
 import com.example.appointmentscheduler.entity.Invoice;
 import com.example.appointmentscheduler.service.QRCodeService;
 import com.google.zxing.BarcodeFormat;
@@ -25,6 +26,8 @@ import java.util.stream.Collectors;
 public class QRCodeServiceImpl implements QRCodeService {
     @Autowired
     private InvoiceRepository invoiceRepository;
+    @Autowired
+    private UserRepository userRepository;
     @Override
     public byte[] generateQRCodeImage(String invoiceData) throws WriterException, IOException {
         int width = 300;
@@ -50,8 +53,18 @@ public class QRCodeServiceImpl implements QRCodeService {
     }
 
     @Override
-    public String saveImageToFile(String sanitizedInvoiceNumber, byte[] imageBytes) throws IOException {
-        String imagePath = "src/main/resources/static/img/qrcodes/" + sanitizedInvoiceNumber + ".png";
+    public String generateQRCodeFromToken(String token) throws WriterException, IOException {
+        byte[] qrCodeImageBytes = generateQRCodeImage(token);
+        String subToken = token.replaceAll("[^a-zA-Z0-9]", "_"); //token.substring(token.indexOf("Token:") + 6, token.indexOf("URL:"));
+        // Băm token để tạo chuỗi ngắn hơn và an toàn hơn cho tên file
+        String sanitizedToken = Integer.toHexString(subToken.hashCode());
+        String imagePath = saveImageToFile(sanitizedToken, qrCodeImageBytes);
+        return imagePath;
+    }
+
+    @Override
+    public String saveImageToFile(String nameFile, byte[] imageBytes) throws IOException {
+        String imagePath = "src/main/resources/static/img/qrcodes/" + nameFile + ".png";
         File imageFile = new File(imagePath);
         Files.write(Paths.get(imageFile.getAbsolutePath()), imageBytes);
         return imagePath;

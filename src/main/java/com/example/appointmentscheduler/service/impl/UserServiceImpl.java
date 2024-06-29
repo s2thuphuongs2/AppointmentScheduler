@@ -16,12 +16,17 @@ import com.example.appointmentscheduler.entity.user.customer.RetailCustomer;
 import com.example.appointmentscheduler.entity.user.provider.Provider;
 import com.example.appointmentscheduler.model.ChangePasswordForm;
 import com.example.appointmentscheduler.model.UserForm;
+import com.example.appointmentscheduler.service.JwtTokenService;
+import com.example.appointmentscheduler.service.QRCodeService;
 import com.example.appointmentscheduler.service.UserService;
+import com.google.zxing.WriterException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -37,7 +42,11 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(ProviderRepository providerRepository, CustomerRepository customerRepository, CorporateCustomerRepository corporateCustomerRepository, RetailCustomerRepository retailCustomerRepository, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    private final QRCodeService qrCodeService;
+
+    private final JwtTokenService jwtTokenService;
+
+    public UserServiceImpl(ProviderRepository providerRepository, CustomerRepository customerRepository, CorporateCustomerRepository corporateCustomerRepository, RetailCustomerRepository retailCustomerRepository, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, QRCodeService qrCodeService, JwtTokenService jwtTokenService) {
         this.providerRepository = providerRepository;
         this.customerRepository = customerRepository;
         this.corporateCustomerRepository = corporateCustomerRepository;
@@ -45,6 +54,8 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.qrCodeService = qrCodeService;
+        this.jwtTokenService = jwtTokenService;
     }
 
     @Override
@@ -175,15 +186,33 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveNewRetailCustomer(UserForm userForm) {
+    public void saveNewRetailCustomer(UserForm userForm) throws IOException, WriterException {
         RetailCustomer retailCustomer = new RetailCustomer(userForm, passwordEncoder.encode(userForm.getPassword()), getRolesForRetailCustomer());
+
+        // Tao ma token cho nguoi dung moi
+        String token = jwtTokenService.generateCustomerToken(retailCustomer);
+        String qrCodePath = qrCodeService.generateQRCodeFromToken(token).replaceAll("src/main/resources/static/", "");
+        // Lưu đường dẫn mã QR vào cơ sở dữ liệu
+        retailCustomer.setQrCodePath(qrCodePath);
         retailCustomerRepository.save(retailCustomer);
+//        generateAndSaveQRCode(retailCustomer);
     }
+//    private void generateAndSaveQRCode(User user) throws IOException, WriterException {
+//        String token = jwtTokenService.generateCustomerToken(user);
+//        String qrCodePath = qrCodeService.generateQRCodeFromToken(token);
+//        user.setQrCodePath(qrCodePath);
+//        userRepository.save(user);
+//    }
 
     @Override
-    public void saveNewCorporateCustomer(UserForm userForm) {
+    public void saveNewCorporateCustomer(UserForm userForm) throws IOException, WriterException {
         CorporateCustomer corporateCustomer = new CorporateCustomer(userForm, passwordEncoder.encode(userForm.getPassword()), getRoleForCorporateCustomers());
-        corporateCustomerRepository.save(corporateCustomer);
+//        // Tao ma token cho nguoi dung moi
+//        String token = jwtTokenService.generateUserToken(corporateCustomer);
+//        String qrCodePath = qrCodeService.generateQRCodeFromToken(token);
+//        // Lưu đường dẫn mã QR vào cơ sở dữ liệu
+//        corporateCustomer.setQrCodePath(qrCodePath);
+//        corporateCustomerRepository.save(corporateCustomer);
     }
 
     @Override
@@ -216,7 +245,5 @@ public class UserServiceImpl implements UserService {
         roles.add(roleRepository.findByName("ROLE_PROVIDER"));
         return roles;
     }
-
-
 }
 

@@ -10,6 +10,7 @@ import com.example.appointmentscheduler.validation.groups.CreateCorporateCustome
 import com.example.appointmentscheduler.validation.groups.CreateUser;
 import com.example.appointmentscheduler.validation.groups.UpdateCorporateCustomer;
 import com.example.appointmentscheduler.validation.groups.UpdateUser;
+import com.google.zxing.WriterException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/customers")
@@ -106,18 +108,18 @@ public class CustomerController {
 
 
     @PostMapping("/new/retail")
-    public String processRetailCustomerRegistration(@Validated({CreateUser.class}) @ModelAttribute("user") UserForm userForm, BindingResult bindingResult, Model model) {
+    public String processRetailCustomerRegistration(@Validated({CreateUser.class}) @ModelAttribute("user") UserForm userForm, BindingResult bindingResult, Model model) throws IOException, WriterException {
         if (bindingResult.hasErrors()) {
             populateModel(model, userForm, "customer_retail", "/customers/new/retail", null);
             return "users/createUserForm";
         }
         userService.saveNewRetailCustomer(userForm);
         model.addAttribute("createdUserName", userForm.getUserName());
-        return "users/login";
+        return "redirect:/login";
     }
 
     @PostMapping("/new/corporate")
-    public String processCorporateCustomerRegistration(@Validated({CreateUser.class, CreateCorporateCustomer.class}) @ModelAttribute("user") UserForm userForm, BindingResult bindingResult, Model model) {
+    public String processCorporateCustomerRegistration(@Validated({CreateUser.class, CreateCorporateCustomer.class}) @ModelAttribute("user") UserForm userForm, BindingResult bindingResult, Model model) throws IOException, WriterException {
         if (bindingResult.hasErrors()) {
             populateModel(model, userForm, "customer_corporate", "/customers/new/corporate", null);
             return "users/createUserForm";

@@ -399,3 +399,7 @@ ALTER TABLE invoices ADD COLUMN qr_code_data TEXT;
 ALTER TABLE invoices ADD COLUMN qr_code_path TEXT;
 
 INSERT INTO invoices (number, status, total_amount, issued) VALUES ('HD/2024/06/001', 'issued', 250.0, '2024-06-26 23:27:00');
+
+AlTER TABLE users ADD COLUMN  qr_code_path TEXT;
+
+#AlTER TABLE users DROP COLUMN  qr_code_name;

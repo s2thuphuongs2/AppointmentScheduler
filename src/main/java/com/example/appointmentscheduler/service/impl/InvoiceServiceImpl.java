@@ -193,23 +193,5 @@ public class InvoiceServiceImpl implements InvoiceService {
         invoiceRepository.save(invoice);
     }
 
-    public String generateInvoiceData(Invoice invoice) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm");
-        StringBuilder sb = new StringBuilder();
-        sb.append("InvoiceID:").append(invoice.getId()).append("\n");
-        sb.append("InvoiceNumber:").append(invoice.getNumber()).append("\n");
-        sb.append("Status:").append(invoice.getStatus()).append("\n");
-        sb.append("TotalAmount:").append(invoice.getTotalAmount()).append("\n");
-        sb.append("IssuedDate:").append(invoice.getIssued().format(formatter)).append("\n");
-        sb.append("Appointments:");
-        for (Appointment appointment : invoice.getAppointments()) {
-            sb.append("AppointmentID:").append(appointment.getId())
-                    .append(", WorkPrice:").append(appointment.getWork().getPrice()).append("; ");
-        }
-        sb.append("\n");
-        sb.append("URL:https://localhost:8080/invoice/").append(invoice.getId());
-        return sb.toString();
-    }
-
 
 }

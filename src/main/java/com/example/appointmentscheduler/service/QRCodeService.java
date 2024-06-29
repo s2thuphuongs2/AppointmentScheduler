@@ -9,6 +9,8 @@ public interface QRCodeService {
     byte[] generateQRCodeImage(String invoiceData) throws WriterException, IOException;
     String generateQRCodeImageAndSave(String invoiceData) throws WriterException, IOException;
 
+    String generateQRCodeFromToken(String token) throws WriterException, IOException;
+
     String saveImageToFile(String sanitizedInvoiceNumber, byte[] imageBytes) throws IOException;
 
     String createInvoiceQRCode(Invoice invoice) throws WriterException, IOException;

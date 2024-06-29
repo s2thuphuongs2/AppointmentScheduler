@@ -47,6 +47,11 @@ public class User extends BaseEntity {
     @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<Role> roles;
 
+
+
+    @Column(name = "qr_code_path")
+    private String qrCodePath;
+
     public User() {
     }
 
@@ -145,6 +150,13 @@ public class User extends BaseEntity {
         this.city = city;
     }
 
+    public String getQrCodePath() {
+        return qrCodePath;
+    }
+
+    public void setQrCodePath(String qrCodePath) {
+        this.qrCodePath = qrCodePath;
+    }
 
     public boolean hasRole(String roleName) {
         for (Role role : roles) {

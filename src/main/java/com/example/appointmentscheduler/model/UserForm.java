@@ -66,6 +66,8 @@ public class UserForm {
 //    @NotBlank(groups = {CreateCorporateCustomer.class, UpdateCorporateCustomer.class}, message = "Mẫ số VAT không được để trống")
     private String vatNumber;
 
+    private String qrCodePath;
+
     /*
      * Provider only:
      * */
@@ -94,6 +96,7 @@ public class UserForm {
 
     public UserForm(RetailCustomer retailCustomer) {
         this((User) retailCustomer);
+        this.setQrCodePath(retailCustomer.getQrCodePath());
     }
 
     public UserForm(CorporateCustomer corporateCustomer) {
@@ -204,6 +207,14 @@ public class UserForm {
 
     public void setWorks(List<Work> works) {
         this.works = works;
+    }
+
+    public String getQrCodePath() {
+        return qrCodePath;
+    }
+
+    public void setQrCodePath(String qrCodePath) {
+        this.qrCodePath = qrCodePath;
     }
 
 }

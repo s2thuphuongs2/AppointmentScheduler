@@ -10,7 +10,9 @@ import com.example.appointmentscheduler.entity.user.customer.RetailCustomer;
 import com.example.appointmentscheduler.entity.user.provider.Provider;
 import com.example.appointmentscheduler.model.ChangePasswordForm;
 import com.example.appointmentscheduler.model.UserForm;
+import com.google.zxing.WriterException;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
@@ -63,7 +65,7 @@ public interface UserService {
      * */
     RetailCustomer getRetailCustomerById(int retailCustomerId);
 
-    void saveNewRetailCustomer(UserForm userForm);
+    void saveNewRetailCustomer(UserForm userForm) throws IOException, WriterException;
 
     void updateRetailCustomerProfile(UserForm updateData);
 
@@ -76,7 +78,7 @@ public interface UserService {
 
     List<RetailCustomer> getAllRetailCustomers();
 
-    void saveNewCorporateCustomer(UserForm userForm);
+    void saveNewCorporateCustomer(UserForm userForm) throws IOException, WriterException;
 
     void updateCorporateCustomerProfile(UserForm updateData);
 

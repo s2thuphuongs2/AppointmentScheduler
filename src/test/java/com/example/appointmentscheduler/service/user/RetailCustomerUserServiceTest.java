@@ -6,6 +6,7 @@ import com.example.appointmentscheduler.entity.user.Role;
 import com.example.appointmentscheduler.entity.user.customer.RetailCustomer;
 import com.example.appointmentscheduler.model.UserForm;
 import com.example.appointmentscheduler.service.impl.UserServiceImpl;
+import com.google.zxing.WriterException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +17,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
@@ -107,18 +109,18 @@ public class RetailCustomerUserServiceTest {
      * Test for saving new retail customer
      */
     @Test
-    public void shouldSaveNewRetailCustomer() {
+    public void shouldSaveNewRetailCustomer() throws WriterException, IOException {
         ArgumentCaptor<RetailCustomer> argumentCaptor = ArgumentCaptor.forClass(RetailCustomer.class);
-        userService.saveNewRetailCustomer(retailUserForm);
+       userService.saveNewRetailCustomer(retailUserForm);
         // verify that save method was called once and capture the argument
-        verify(retailCustomerRepository, times(1)).save(argumentCaptor.capture());
+       verify(retailCustomerRepository, times(1)).save(argumentCaptor.capture());
     }
 
     /**
      * Test for ecoding password for new retail customer
      */
     @Test
-    public void shouldEncodePasswordWhenForNewRetailCustomer() {
+    public void shouldEncodePasswordWhenForNewRetailCustomer() throws IOException, WriterException {
         when(passwordEncoder.encode(password)).thenReturn(passwordEncoded);
         // Khởi tạo một đối tượng ArgumentCaptor để bắt đối tượng RetailCustomer được truyền vào phương thức save()
         ArgumentCaptor<RetailCustomer> argumentCaptor = ArgumentCaptor.forClass(RetailCustomer.class);
@@ -131,7 +133,7 @@ public class RetailCustomerUserServiceTest {
     }
 
     @Test
-    public void userFormDataShouldMatchRetailCustomerObject() {
+    public void userFormDataShouldMatchRetailCustomerObject() throws IOException, WriterException {
 
         ArgumentCaptor<RetailCustomer> argumentCaptor = ArgumentCaptor.forClass(RetailCustomer.class);
         userService.saveNewRetailCustomer(retailUserForm);
@@ -148,7 +150,7 @@ public class RetailCustomerUserServiceTest {
     }
 
     @Test
-    public void shouldAssignTwoRolesForRetailCustomer() {
+    public void shouldAssignTwoRolesForRetailCustomer() throws IOException, WriterException {
         doReturn(roleRetailCustomer).when(roleRepository).findByName(roleNameRetailCustomer);
         doReturn(roleCustomer).when(roleRepository).findByName(roleNameCustomer);
 
@@ -160,7 +162,7 @@ public class RetailCustomerUserServiceTest {
     }
 
     @Test
-    public void shouldAssignCorrectRolesForRetailCustomer() {
+    public void shouldAssignCorrectRolesForRetailCustomer() throws IOException, WriterException{
         doReturn(roleRetailCustomer).when(roleRepository).findByName(roleNameRetailCustomer);
         doReturn(roleCustomer).when(roleRepository).findByName(roleNameCustomer);
 

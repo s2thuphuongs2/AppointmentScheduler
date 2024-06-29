@@ -1,6 +1,8 @@
 package com.example.appointmentscheduler.service;
 
 import com.example.appointmentscheduler.entity.Appointment;
+import com.example.appointmentscheduler.entity.user.User;
+import com.example.appointmentscheduler.entity.user.customer.RetailCustomer;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -18,6 +20,7 @@ public interface JwtTokenService {
 
     int getProviderIdFromToken(String token);
 
-    ////
     Date convertLocalDateTimeToDate(LocalDateTime localDateTime);
+
+    String generateCustomerToken(User user);
 }

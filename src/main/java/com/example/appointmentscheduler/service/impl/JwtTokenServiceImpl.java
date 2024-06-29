@@ -1,6 +1,7 @@
 package com.example.appointmentscheduler.service.impl;
 
 import com.example.appointmentscheduler.entity.Appointment;
+import com.example.appointmentscheduler.entity.user.User;
 import com.example.appointmentscheduler.service.JwtTokenService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -14,6 +15,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 @Slf4j
@@ -102,4 +104,15 @@ public class JwtTokenServiceImpl implements JwtTokenService {
         Instant instant = localDateTime.toInstant(zoneOffSet);
         return Date.from(instant);
     }
+
+    @Override
+    public String generateCustomerToken(User user) {
+        Date expiryDate = Date.from(Instant.now().plus(30, ChronoUnit.DAYS));
+        return Jwts.builder()
+                .claim("customerId", user.getId())
+                .setExpiration(expiryDate)
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .compact();
+    }
+
 }
