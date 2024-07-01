@@ -105,6 +105,10 @@ public class CustomUserDetails implements UserDetails {
         return false;
     }
 
+    public String getAuthority() {
+        return authorities.stream().findFirst().get().getAuthority();
+    }
+
     public boolean equals(Object object) {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;

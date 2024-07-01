@@ -188,7 +188,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void saveNewRetailCustomer(UserForm userForm) throws IOException, WriterException {
         RetailCustomer retailCustomer = new RetailCustomer(userForm, passwordEncoder.encode(userForm.getPassword()), getRolesForRetailCustomer());
-
+        retailCustomerRepository.save(retailCustomer); // Luu nguoi dung truoc moi co id tao token
         // Tao ma token cho nguoi dung moi
         String token = jwtTokenService.generateCustomerToken(retailCustomer);
         String qrCodePath = qrCodeService.generateQRCodeFromToken(token).replaceAll("src/main/resources/static/", "");

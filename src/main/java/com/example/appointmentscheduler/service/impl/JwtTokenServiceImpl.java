@@ -1,7 +1,7 @@
 package com.example.appointmentscheduler.service.impl;
 
 import com.example.appointmentscheduler.entity.Appointment;
-import com.example.appointmentscheduler.entity.user.User;
+import com.example.appointmentscheduler.entity.user.customer.Customer;
 import com.example.appointmentscheduler.service.JwtTokenService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -85,7 +85,12 @@ public class JwtTokenServiceImpl implements JwtTokenService {
                 .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)
                 .getBody();
-        return (int) claims.get("customerId");
+        Integer customerId = claims.get("customerId", Integer.class);
+        if (customerId == null) {
+            throw new IllegalArgumentException("Token does not contain customerId claim");
+        }
+        return customerId;
+        //return (int) claims.get("customerId");
     }
 
     @Override
@@ -106,10 +111,10 @@ public class JwtTokenServiceImpl implements JwtTokenService {
     }
 
     @Override
-    public String generateCustomerToken(User user) {
+    public String generateCustomerToken(Customer customer) {
         Date expiryDate = Date.from(Instant.now().plus(30, ChronoUnit.DAYS));
         return Jwts.builder()
-                .claim("customerId", user.getId())
+                .claim("customerId", customer.getId())
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();

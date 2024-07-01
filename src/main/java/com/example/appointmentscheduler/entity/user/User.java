@@ -3,6 +3,7 @@ package com.example.appointmentscheduler.entity.user;
 import com.example.appointmentscheduler.entity.BaseEntity;
 import com.example.appointmentscheduler.entity.Notification;
 import com.example.appointmentscheduler.model.UserForm;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -187,4 +188,5 @@ public class User extends BaseEntity {
     public void setNotifications(List<Notification> notifications) {
         this.notifications = notifications;
     }
+
 }

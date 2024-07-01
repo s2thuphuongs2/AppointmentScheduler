@@ -128,4 +128,12 @@ public class QRCodeServiceImpl implements QRCodeService {
         invoice.setQrCodeData(null);
         invoiceRepository.save(invoice);
     }
+    @Override
+    public void deleteQRCode(String path) {
+        try {
+            Files.deleteIfExists(Paths.get(path));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
