@@ -20,7 +20,7 @@
                             <div class="card-body">
                                 <div class="d-flex align-items-center justify-content-between m-b-30">
                                     <img class="img-fluid" alt="" th:src="@{/assets/images/logo/logo.png}">
-                                    <h2 class="m-b-0">Sign In</h2>
+                                    <h2 class="m-b-0">Đăng nhập</h2>
                                 </div>
 
                                 <!-- Form đăng nhập truyền thống -->
@@ -29,7 +29,7 @@
                                         Tên đăng nhập hoặc mật khẩu không đúng!
                                     </div>
                                     <div th:if="${createdUserName != null}" class="alert alert-success">
-                                        <p>User <span th:text="${createdUserName}"></span> added!</p>
+                                        <p>Người dùng <span th:text="${createdUserName}"></span> đã được tạo!</p>
                                     </div>
                                     <div th:if="${param.logout != null}" class="alert alert-success">
                                         <p>Đăng xuất thành công.</p>
@@ -67,15 +67,18 @@
 
                                 <!-- Form đăng nhập bằng QR code -->
                                 <form id="qr-login-form" style="display: none;">
-                                    <h3>QR Code Login</h3>
-                                    <label for="qr-code-input">Scan your QR code:</label>
-                                    <input type="text" id="qr-code-input" name="qrCode" autofocus>
-                                    <button type="submit">Login</button>
+                                    <h3>Đăng nhập bằng QR Code</h3>
+                                    <label class="font-weight-semibold" for="qr-code-input">Quét QR code:</label>
+                                    <div class="input-affix">
+                                        <input class="" type="text" id="qr-code-input" name="qrCode" autofocus>
+                                    </div>
+
+                                    <button type="submit">Đăng nhập</button>
                                     <p id="error-message" style="color: red;"></p>
                                 </form>
 
                                 <!-- Nút chuyển đổi -->
-                                <button id="toggle-button">Login with QR Code</button>
+                                <button class="btn btn-secondary" id="toggle-button">Đăng nhập bằng QR Code</button>
                             </div>
                         </div>
                     </div>
