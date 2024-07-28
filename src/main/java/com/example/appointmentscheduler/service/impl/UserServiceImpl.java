@@ -17,10 +17,12 @@ import com.example.appointmentscheduler.entity.user.provider.Provider;
 import com.example.appointmentscheduler.model.ChangePasswordForm;
 import com.example.appointmentscheduler.model.UserForm;
 import com.example.appointmentscheduler.service.JwtTokenService;
+import com.example.appointmentscheduler.service.OTPService;
 import com.example.appointmentscheduler.service.QRCodeService;
 import com.example.appointmentscheduler.service.UserService;
 import com.google.zxing.WriterException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,6 +32,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -45,6 +48,11 @@ public class UserServiceImpl implements UserService {
     private final QRCodeService qrCodeService;
 
     private final JwtTokenService jwtTokenService;
+
+    @Autowired
+    private OTPService otpService;
+    @Autowired
+    private RedisTemplate<String, UserForm> redisTemplate;
 
     public UserServiceImpl(ProviderRepository providerRepository, CustomerRepository customerRepository, CorporateCustomerRepository corporateCustomerRepository, RetailCustomerRepository retailCustomerRepository, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, QRCodeService qrCodeService, JwtTokenService jwtTokenService) {
         this.providerRepository = providerRepository;
@@ -212,7 +220,7 @@ public class UserServiceImpl implements UserService {
 //        String qrCodePath = qrCodeService.generateQRCodeFromToken(token);
 //        // Lưu đường dẫn mã QR vào cơ sở dữ liệu
 //        corporateCustomer.setQrCodePath(qrCodePath);
-//        corporateCustomerRepository.save(corporateCustomer);
+        corporateCustomerRepository.save(corporateCustomer);
     }
 
     @Override
@@ -221,7 +229,18 @@ public class UserServiceImpl implements UserService {
         Provider provider = new Provider(userForm, passwordEncoder.encode(userForm.getPassword()), getRolesForProvider(), workingPlan);
         providerRepository.save(provider);
     }
+    // Tao methods luu tam thoi de luu thong tin nguoi dung vao Redis truoc khi xac nhan OTP
+    @Override
+    public void saveTemporaryUser(UserForm userForm) {
+        redisTemplate.opsForValue().set(userForm.getEmail(), userForm, 10, TimeUnit.MINUTES); // Lưu thông tin người dùng tạm thời trong 10 phút
+    }
 
+    @Override
+    public UserForm getTemporaryUser(String email) {
+        return redisTemplate.opsForValue().get(email);
+    }
+
+    // Tao methods lay cac role cho nguoi dung
     @Override
     public Collection<Role> getRolesForRetailCustomer() {
         HashSet<Role> roles = new HashSet();
@@ -229,7 +248,6 @@ public class UserServiceImpl implements UserService {
         roles.add(roleRepository.findByName("ROLE_CUSTOMER"));
         return roles;
     }
-
 
     @Override
     public Collection<Role> getRoleForCorporateCustomers() {

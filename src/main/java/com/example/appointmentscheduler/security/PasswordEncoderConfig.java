@@ -11,12 +11,12 @@ import java.security.NoSuchAlgorithmException;
 @Configuration
 public class PasswordEncoderConfig {
 
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-    @Bean
-    public PasswordEncoder passwordEncoderSHA() {
         return new SHA256PasswordEncoder();
     }
     private static class SHA256PasswordEncoder implements PasswordEncoder {

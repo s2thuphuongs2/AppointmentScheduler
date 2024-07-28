@@ -84,6 +84,6 @@ public class InvoiceController {
     @PostMapping("/payment-success")
     public ResponseEntity<String> handlePaymentSuccess(@RequestParam("invoiceId") int invoiceId) {
         invoiceService.changeInvoiceStatusToPaid(invoiceId);
-        return ResponseEntity.ok("Payment successful. Thank you!");
+        return ResponseEntity.ok("Đã thanh toán thành công. Cảm ơn bạn!");
     }
 }

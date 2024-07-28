@@ -5,12 +5,14 @@ import com.example.appointmentscheduler.model.ChangePasswordForm;
 import com.example.appointmentscheduler.model.UserForm;
 import com.example.appointmentscheduler.security.CustomUserDetails;
 import com.example.appointmentscheduler.service.AppointmentService;
+import com.example.appointmentscheduler.service.OTPService;
 import com.example.appointmentscheduler.service.UserService;
 import com.example.appointmentscheduler.validation.groups.CreateCorporateCustomer;
 import com.example.appointmentscheduler.validation.groups.CreateUser;
 import com.example.appointmentscheduler.validation.groups.UpdateCorporateCustomer;
 import com.example.appointmentscheduler.validation.groups.UpdateUser;
 import com.google.zxing.WriterException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,10 +30,12 @@ public class CustomerController {
 
     private final UserService userService;
     private final AppointmentService appointmentService;
+    private final OTPService otpService;
 
-    public CustomerController(UserService userService, AppointmentService appointmentService) {
+    public CustomerController(UserService userService, AppointmentService appointmentService, OTPService otpService) {
         this.userService = userService;
         this.appointmentService = appointmentService;
+        this.otpService = otpService;
     }
 
     @GetMapping("/all")
@@ -113,9 +117,11 @@ public class CustomerController {
             populateModel(model, userForm, "customer_retail", "/customers/new/retail", null);
             return "users/createUserForm";
         }
-        userService.saveNewRetailCustomer(userForm);
-        model.addAttribute("createdUserName", userForm.getUserName());
-        return "redirect:/login";
+        userService.saveTemporaryUser(userForm);
+        // Gui OTP va luu thong tin nguoi dung tam thoi
+        otpService.generateAndSendOTP(userForm.getEmail());
+        // TODO Luu thong tin nguoi dung tam thoi vao Redis hoac noi luu tru tam thoi khac
+        return "users/confirmOtpForm";
     }
 
     @PostMapping("/new/corporate")
@@ -124,9 +130,10 @@ public class CustomerController {
             populateModel(model, userForm, "customer_corporate", "/customers/new/corporate", null);
             return "users/createUserForm";
         }
-        userService.saveNewCorporateCustomer(userForm);
-        model.addAttribute("createdUserName", userForm.getUserName());
-        return "users/login";
+        // TODO Luu thong tin nguoi dung tam thoi
+        userService.saveTemporaryUser(userForm);
+        otpService.generateAndSendOTP(userForm.getEmail());
+        return "users/confirmOtpForm";
     }
 
 

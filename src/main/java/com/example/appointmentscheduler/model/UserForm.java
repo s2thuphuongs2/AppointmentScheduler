@@ -1,5 +1,6 @@
 package com.example.appointmentscheduler.model;
 
+import com.example.appointmentscheduler.entity.user.Role;
 import com.example.appointmentscheduler.entity.user.User;
 import com.example.appointmentscheduler.entity.user.customer.CorporateCustomer;
 import com.example.appointmentscheduler.entity.user.customer.RetailCustomer;
@@ -67,6 +68,10 @@ public class UserForm {
     private String vatNumber;
 
     private String qrCodePath;
+
+    private String otp;
+
+
 
     /*
      * Provider only:
@@ -217,4 +222,11 @@ public class UserForm {
         this.qrCodePath = qrCodePath;
     }
 
+    public String getOtp() {
+        return otp;
+    }
+
+    public void setOtp(String otp) {
+        this.otp = otp;
+    }
 }

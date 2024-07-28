@@ -69,6 +69,10 @@ public interface UserService {
 
     void updateRetailCustomerProfile(UserForm updateData);
 
+    void saveTemporaryUser(UserForm userForm);
+
+    UserForm getTemporaryUser(String email);
+
     Collection<Role> getRolesForRetailCustomer();
 
     /*
