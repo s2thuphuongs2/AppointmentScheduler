@@ -25,12 +25,24 @@ public class OTPServiceImpl implements OTPService {
 
     @Override
     public String generateAndSendOTP(String email) {
+
+        UserForm userForm = redisTemplate.opsForValue().get(email);
+
+        if (userForm == null) {
+            userForm = new UserForm();
+            userForm.setEmail(email);
+        }
+
+        // Tạo OTP
         String otp = String.valueOf(new Random().nextInt(900000) + 100000); // Tạo mã OTP 6 chữ số
-        UserForm userForm = new UserForm();
         userForm.setOtp(otp);
-        userForm.setEmail(email);
+
+        // Lưu OTP vào Redis
         redisTemplate.opsForValue().set(email, userForm, 5, TimeUnit.MINUTES); // Lưu OTP trong Redis với thời hạn 5 phút
+
+        // Gửi OTP qua email
         sendOTPEmail(email, otp);
+
         return otp;
     }
     @Override

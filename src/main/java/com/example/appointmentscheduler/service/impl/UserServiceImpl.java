@@ -20,7 +20,10 @@ import com.example.appointmentscheduler.service.JwtTokenService;
 import com.example.appointmentscheduler.service.OTPService;
 import com.example.appointmentscheduler.service.QRCodeService;
 import com.example.appointmentscheduler.service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.zxing.WriterException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -48,6 +51,9 @@ public class UserServiceImpl implements UserService {
     private final QRCodeService qrCodeService;
 
     private final JwtTokenService jwtTokenService;
+
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     private OTPService otpService;
@@ -232,14 +238,26 @@ public class UserServiceImpl implements UserService {
     // Tao methods luu tam thoi de luu thong tin nguoi dung vao Redis truoc khi xac nhan OTP
     @Override
     public void saveTemporaryUser(UserForm userForm) {
-        redisTemplate.opsForValue().set(userForm.getEmail(), userForm, 10, TimeUnit.MINUTES); // Lưu thông tin người dùng tạm thời trong 10 phút
+        try {
+            String userFormJson = objectMapper.writeValueAsString(userForm);
+            logger.info("Lưu UserForm vào Redis: {}", userFormJson);
+            redisTemplate.opsForValue().set(userForm.getEmail(), userForm, 10, TimeUnit.MINUTES);
+        } catch (Exception e) {
+            logger.error("Lỗi khi tuần tự hóa UserForm", e);
+        }
     }
 
     @Override
     public UserForm getTemporaryUser(String email) {
-        return redisTemplate.opsForValue().get(email);
+        UserForm userForm = redisTemplate.opsForValue().get(email);
+        try {
+            String userFormJson = objectMapper.writeValueAsString(userForm);
+            logger.info("Truy xuất biểu mẫu người dùng từ Redis: {}", userFormJson);
+        } catch (Exception e) {
+            logger.error("Lỗi khi tuần tự hóa UserForm", e);
+        }
+        return userForm;
     }
-
     // Tao methods lay cac role cho nguoi dung
     @Override
     public Collection<Role> getRolesForRetailCustomer() {
