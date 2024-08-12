@@ -8,11 +8,15 @@ WORKDIR /app
 COPY pom.xml .
 COPY mvnw .
 COPY .mvn .mvn
+
+#RUN set MAVEN_OPTS=-Dmaven.repo.local=.m2/repository
+#RUN set MAVEN_CLI_OPTS=--batch-mode
+#RUN unset MAVEN_CONFIG
 # Cấp quyền thực thi cho mvnw
 RUN chmod +x ./mvnw
-
+#RUN ./mvnw clean verify
 # Tải các dependencies xuống trước để cache chúng
-RUN ./mvnw dependency:go-offline -B
+#RUN ./mvnw dependency:go-offline -B
 
 # Sao chép mã nguồn vào trong container
 COPY src ./src
