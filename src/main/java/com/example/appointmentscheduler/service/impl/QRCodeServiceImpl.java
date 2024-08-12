@@ -29,10 +29,10 @@ public class QRCodeServiceImpl implements QRCodeService {
     @Autowired
     private UserRepository userRepository;
     @Override
-    public byte[] generateQRCodeImage(String invoiceData) throws WriterException, IOException {
+    public byte[] generateQRCodeImage(String inputData) throws WriterException, IOException {
         int width = 300;
         int height = 300;
-        BitMatrix matrix = new MultiFormatWriter().encode(invoiceData, BarcodeFormat.QR_CODE, width, height);
+        BitMatrix matrix = new MultiFormatWriter().encode(inputData, BarcodeFormat.QR_CODE, width, height);
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
@@ -44,9 +44,9 @@ public class QRCodeServiceImpl implements QRCodeService {
         return baos.toByteArray();
     }
     @Override
-    public String generateQRCodeImageAndSave(String invoiceData) throws WriterException, IOException {
-        byte[] qrCodeImageBytes = generateQRCodeImage(invoiceData);
-        String extractedInvoiceNumber = invoiceData.substring(invoiceData.indexOf("InvoiceNumber:") + 14, invoiceData.indexOf("Status:"));
+    public String generateQRCodeImageAndSave(String inputData) throws WriterException, IOException {
+        byte[] qrCodeImageBytes = generateQRCodeImage(inputData);
+        String extractedInvoiceNumber = inputData.substring(inputData.indexOf("InvoiceNumber:") + 14, inputData.indexOf("Status:"));
         String sanitizedInvoiceNumber = extractedInvoiceNumber.replaceAll("[^a-zA-Z0-9]", "");
         String imagePath = saveImageToFile(sanitizedInvoiceNumber, qrCodeImageBytes);
         return imagePath;
