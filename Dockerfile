@@ -15,11 +15,12 @@ RUN printenv
 
 #RUN set MAVEN_OPTS=-Dmaven.repo.local=.m2/repository
 #RUN set MAVEN_CLI_OPTS=--batch-mode
-#RUN set MAVEN_CONFIG = /PT/.m2
 # Cấp quyền thực thi cho mvnw
+RUN chmod +x ./mvnw
 
-RUN chmod +x ./mvnw && ENV MAVEN_CONFIG=
-#RUN ./mvnw clean verify
+# Bỏ biến MAVEN_CONFIG nếu có
+ENV MAVEN_CONFIG=
+
 # Tải các dependencies xuống trước để cache chúng
 RUN ./mvnw dependency:go-offline -B
 
