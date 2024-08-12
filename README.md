@@ -13,7 +13,9 @@ Dự án này là một ứng dụng lịch hẹn được thiết kế kết h�
 
 ## Tính năng
 
-- **Xác thực và Phân quyền**: Người dùng phải đăng nhập để truy cập vào ứng dụng. Các vai trò khác nhau có các quyền khác nhau.
+- **Xác thực và Phân quyền**: Người dùng đăng ký phải xác thực OTP qua mail. Người dùng phải đăng nhập để truy cập vào ứng dụng. Các vai trò khác nhau có các quyền khác nhau.
+- **Đăng nhập bằng mã QR**: Khách hàng có thể đăng nhập bằng mã QR ngay tại cơ sở khám bệnh, mã QR được gửi qua email khi khách hàng đăng ký tài khoản hoặc khi token thay đổi.
+  (Điều kiện token thay đổi khi khách hàng đăng nhập từ thiết bị khác)
 - **JWT (JSON Web Token)**: tiêu chuẩn mã nguồn mở (RFC 7519) dùng để truyền tải thông tin an toàn, gọn nhẹ và khép kín giữa các bên tham gia dưới format JSON.
 - **Lập lịch**: Bác sĩ và khách hàng có thể lập lịch hẹn, chỉ định dịch vụ khám/tư vấn, ngày và giờ.
 - **Xem Cuộc hẹn**: Người dùng có thể xem các cuộc hẹn đã lập lịch của mình, bao gồm các chi tiết như dịch vụ, nhà cung cấp và trạng thái cuộc hẹn.
@@ -22,7 +24,6 @@ Dự án này là một ứng dụng lịch hẹn được thiết kế kết h�
 - **Lập Hóa đơn**: Phía nhà quản trị sẽ tạo hóa đơn cho các cuộc hẹn đã hoàn thành, và khách hàng có thể xem và tải xuống hóa đơn của họ.
 - **Quản lý Hồ sơ**: Người dùng có thể quản lý hồ sơ của mình, cập nhật thông tin cá nhân và thay đổi cài đặt tài khoản.
 - **Quét Barcode xác nhận:** Khách hàng in phiếu thông tin lịch hẹn đem đến địa điểm để nhà quản trị/bác sĩ kiểm tra và xác thực thông tin nhanh chóng.
-
 ## Công nghệ Sử dụng
 
 - **Backend**: Java, Spring Boot, Spring Security, Spring Data JPA
@@ -33,7 +34,8 @@ Dự án này là một ứng dụng lịch hẹn được thiết kế kết h�
 
 ## Thiết bị sử dụng
 
-- Barcode reader Sumicor 1D.
+- Điện thoại (Phần mềm Barcode to PC)
+- Laptop (Phần mềm Barcode to PC Server)
 
 ## Cách Chạy
 
@@ -72,11 +74,13 @@ Dự án này là một ứng dụng lịch hẹn được thiết kế kết h�
 
     | Tài khoản | Mật khẩu |
     | --- | --- |
-    | admin | qwerty123 |
-    | doctor | qwerty123 |
-    | customer_r | qwerty123 |
-    | customer_c | qwerty123 |
-
+    | admin | admin123 |
+    | doctor | doctor123 |
+    | doctor1 | doctor1123 |
+    | doctor2 | doctor2123 |
+    | doctor3 | doctor3123 |
+    | customer_r | customer@r123 |
+    | customer_c | customer@c123 |
 ## Docker
 
 Ứng dụng có thể được container hóa bằng Docker. Sử dụng Dockerfile cung cấp để xây dựng image Docker và chạy container.
