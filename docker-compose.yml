@@ -10,10 +10,11 @@ services:
     ports:
       - "8090:8090"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/appointmentscheduler?useSSL=false&serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
+      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/appointmentscheduler?useSSL=false&serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
       - SPRING_DATASOURCE_USERNAME=user
       - SPRING_DATASOURCE_PASSWORD=password
       - REDIS_HOST=redis
+      - REDIS_PASSWORD=thuphuong123
     restart: always
     depends_on:
       - appointmentscheduler_db
@@ -36,13 +37,22 @@ services:
       - ./src/main/resources:/docker-entrypoint-initdb.d
     networks:
       - appointmentscheduler_network
+
   redis:
-    image: redis:latest
-    command: redis-server /redis.yml
+    image: docker.io/bitnami/redis:7.2
+    environment:
+      - REDIS_PASSWORD=thuphuong123
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+    ports:
+      - '6379:6379'
     volumes:
-      - ./redis.yml:/redis.yml
+      - redis_data:/bitnami/redis/data
+    networks:
+      - appointmentscheduler_network
+
 volumes:
   appointmentscheduler_volume:
+  redis_data:
 
 networks:
   appointmentscheduler_network:
