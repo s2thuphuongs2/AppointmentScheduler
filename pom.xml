@@ -2,13 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<!-- Thêm kho lưu trữ Maven Centre -->
+
 	<repositories>
 		<repository>
 			<id>central</id>
 			<url>https://repo.maven.apache.org/maven2</url>
 		</repository>
-		<!-- Additional repositories can be added if needed -->
+		<!-- Thêm các kho lưu trữ khác nếu cần -->
 	</repositories>
 
 	<parent>
@@ -17,6 +17,7 @@
 		<version>2.2.6.RELEASE</version>
 		<relativePath/>
 	</parent>
+
 	<groupId>com.example</groupId>
 	<artifactId>appointmentscheduler</artifactId>
 	<version>1.0.5</version>
@@ -45,17 +46,16 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
-
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.boot</groupId>-->
-<!--			<artifactId>spring-boot-starter-test</artifactId>-->
-<!--			<scope>test</scope>-->
-<!--		</dependency>-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
@@ -116,7 +116,7 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>LATEST</version>
+			<version>1.18.24</version> <!-- Cập nhật phiên bản cụ thể -->
 			<scope>provided</scope>
 		</dependency>
 
@@ -152,38 +152,28 @@
 			<version>3.141.59</version>
 		</dependency>
 
-		<!-- ... Barcode ... -->
-
 		<dependency>
 			<groupId>com.google.zxing</groupId>
 			<artifactId>core</artifactId>
-			<version>3.4.1</version> <!-- Sử dụng phiên bản mới nhất -->
+			<version>3.4.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.zxing</groupId>
 			<artifactId>javase</artifactId>
-			<version>3.4.1</version> <!-- Sử dụng phiên bản mới nhất -->
+			<version>3.4.1</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-resources-plugin -->
-		<dependency>
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-resources-plugin</artifactId>
-			<version>3.3.1</version>
-		</dependency>
-		<!--Them Redis de luu tru OTP-->
-		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-redis -->
+		<!-- Thêm Redis để lưu trữ OTP -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-redis</artifactId>
-			<version>LATEST</version>
+			<version>2.2.6.RELEASE</version> <!-- Cập nhật phiên bản -->
 		</dependency>
 		<dependency>
 			<groupId>org.redisson</groupId>
 			<artifactId>redisson</artifactId>
 			<version>3.24.2</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.redisson</groupId>
 			<artifactId>redisson-spring-data-27</artifactId>
@@ -192,21 +182,23 @@
 		<dependency>
 			<groupId>io.lettuce</groupId>
 			<artifactId>lettuce-core</artifactId>
-
+			<version>6.1.5.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
+			<version>2.15.0</version> <!-- Cập nhật phiên bản -->
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
+			<version>2.15.0</version> <!-- Cập nhật phiên bản -->
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-annotations</artifactId>
+			<version>2.15.0</version> <!-- Cập nhật phiên bản -->
 		</dependency>
-
 
 	</dependencies>
 
@@ -233,7 +225,7 @@
 				<version>3.0.0-M4</version>
 				<configuration>
 					<testFailureIgnore>true</testFailureIgnore>
-					<shutdown>kill</shutdown> <!-- Use it if required-->
+					<shutdown>kill</shutdown>
 				</configuration>
 			</plugin>
 
@@ -262,9 +254,6 @@
 				<artifactId>jib-maven-plugin</artifactId>
 				<version>1.8.0</version>
 				<configuration>
-					<from>
-						<image>openjdk</image>
-					</from>
 					<to>
 						<image>docker.io/slabiak/appointmentscheduler:${project.version}</image>
 					</to>
@@ -281,8 +270,6 @@
 				</configuration>
 			</plugin>
 		</plugins>
-
-
 	</build>
 
 </project>
