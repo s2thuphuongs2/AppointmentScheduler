@@ -3,12 +3,21 @@ version: '3.7'
 services:
 
   backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
     image: slabiak/appointmentscheduler:0.0.1-SNAPSHOT
     ports:
       - "8090:8090"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/appointmentscheduler?useSSL=false&serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
+      - SPRING_DATASOURCE_USERNAME=user
+      - SPRING_DATASOURCE_PASSWORD=password
+      - REDIS_HOST=redis
     restart: always
     depends_on:
       - appointmentscheduler_db
+      - redis
     networks:
       - appointmentscheduler_network
 
@@ -27,7 +36,11 @@ services:
       - ./src/main/resources:/docker-entrypoint-initdb.d
     networks:
       - appointmentscheduler_network
-
+  redis:
+    image: redis:latest
+    command: redis-server /redis.yml
+    volumes:
+      - ./redis.yml:/redis.yml
 volumes:
   appointmentscheduler_volume:
 
