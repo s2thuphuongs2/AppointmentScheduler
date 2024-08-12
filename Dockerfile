@@ -8,6 +8,8 @@ WORKDIR /app
 COPY pom.xml .
 COPY mvnw .
 COPY .mvn .mvn
+# Cấp quyền thực thi cho mvnw
+RUN chmod +x ./mvnw
 
 # Tải các dependencies xuống trước để cache chúng
 RUN ./mvnw dependency:go-offline -B
