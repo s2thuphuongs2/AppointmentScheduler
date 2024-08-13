@@ -10,9 +10,9 @@ services:
     ports:
       - "8090:8090"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/appointmentscheduler?useSSL=false&serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
-      - SPRING_DATASOURCE_USERNAME=user
-      - SPRING_DATASOURCE_PASSWORD=password
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-b6347f-s2thuphuongs2.k.aivencloud.com:18910/appointmentscheduler?ssl-mode=REQUIRED
+      - SPRING_DATASOURCE_USERNAME=avnadmin
+      - SPRING_DATASOURCE_PASSWORD=DATABASE_PASSWORD
       - REDIS_HOST=redis
       - REDIS_PASSWORD=thuphuong123
     restart: always
@@ -29,8 +29,8 @@ services:
     restart: always
     environment:
       MYSQL_DATABASE: appointmentscheduler
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
+      MYSQL_USER: avnadmin
+      MYSQL_PASSWORD: DATABASE_PASSWORD
       MYSQL_ROOT_PASSWORD: root_pass
     volumes:
       - appointmentscheduler_volume:/var/lib/mysql
@@ -42,7 +42,7 @@ services:
     image: docker.io/bitnami/redis:7.2
     environment:
       - REDIS_PASSWORD=thuphuong123
-      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+#      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
     ports:
       - '6379:6379'
     volumes:
