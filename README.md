@@ -93,4 +93,3 @@ Dự án này là một ứng dụng lịch hẹn được thiết kế kết h�
 ## Giấy Phép
 
 Dự án này được cấp phép theo Giấy phép MIT - xem tệp [LICENSE.md](https://github.com/slabiak/AppointmentScheduler/blob/develop/LICENSE.md) để biết chi tiết
-
