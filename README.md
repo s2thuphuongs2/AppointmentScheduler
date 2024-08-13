@@ -14,7 +14,7 @@ Dự án này là một ứng dụng lịch hẹn được thiết kế kết h�
 ## Tính năng
 
 - **Xác thực và Phân quyền**: Người dùng đăng ký phải xác thực OTP qua mail. Người dùng phải đăng nhập để truy cập vào ứng dụng. Các vai trò khác nhau có các quyền khác nhau.
-- **Đăng nhập bằng mã QR**: Khách hàng có thể đăng nhập bằng mã QR ngay tại cơ sở khám bệnh, mã QR được gửi qua email khi khách hàng đăng ký tài khoản hoặc khi token thay đổi.
+- **Đăng nhập bằng mã QR**: Khách hàng có thể đăng nhập bằng mã QR ngay tại cơ sở khám bệnh, mã QR được gửi qua email khi khách hàng đăng ký tài khoản hoặc 1 ngày trước lịch hẹn gần nhất.
   (Điều kiện token thay đổi khi khách hàng đăng nhập từ thiết bị khác)
 - **JWT (JSON Web Token)**: tiêu chuẩn mã nguồn mở (RFC 7519) dùng để truyền tải thông tin an toàn, gọn nhẹ và khép kín giữa các bên tham gia dưới format JSON.
 - **Lập lịch**: Bác sĩ và khách hàng có thể lập lịch hẹn, chỉ định dịch vụ khám/tư vấn, ngày và giờ.
