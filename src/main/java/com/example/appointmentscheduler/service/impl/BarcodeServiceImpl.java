@@ -1,10 +1,12 @@
 package com.example.appointmentscheduler.service.impl;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.example.appointmentscheduler.entity.Appointment;
 import com.example.appointmentscheduler.dao.BarcodeRepository;
-import com.example.appointmentscheduler.entity.AppointmentStatus;
 import com.example.appointmentscheduler.service.AppointmentService;
 import com.example.appointmentscheduler.service.BarcodeService;
+import com.example.appointmentscheduler.service.CloudinaryService;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
@@ -14,11 +16,9 @@ import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Random;
 
@@ -28,7 +28,10 @@ public class BarcodeServiceImpl implements BarcodeService {
     private BarcodeRepository barcodeRepository;
     @Autowired
     private AppointmentService appointmentService;
-
+    @Autowired
+    private Cloudinary cloudinary;
+    @Autowired
+    private CloudinaryService cloudinaryService;
     @Override
     public byte[] genarateBarcodeImage(Long barcodeId) throws WriterException, IOException {
             String barcodeContent = String.valueOf(barcodeId);
@@ -46,26 +49,20 @@ public class BarcodeServiceImpl implements BarcodeService {
                     image.setRGB(x, y, matrix.get(x, y) ? 0 : 0xFFFFFF);
                 }
             }
+            // MANUAL: fix bug ảnh không hiện lần đầu
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             System.out.println("image: " + image);
             ImageIO.write(image, "png", baos);
             return baos.toByteArray();
     }
+
+
     @Override
-    public String generateBarcodeImageAndSave(Long barcodeIdNum) throws WriterException, IOException {
-        byte[] barcodeImageBytes = genarateBarcodeImage(barcodeIdNum);
-        String imagePath = saveImageToFile(barcodeIdNum, barcodeImageBytes);
-        return imagePath;
-    }
-    private String saveImageToFile(Long barcodeIdNum, byte[] imageBytes) throws IOException {
-        String barcodeId = String.valueOf(barcodeIdNum);
-        String imagePath = "src/main/resources/static/img/barcodes/" + barcodeId + ".png";
-        // Lưu byte array vào file ảnh
-        // (Bạn có thể sử dụng java.nio.file.Files hoặc các thư viện hỗ trợ để thực hiện việc này)
-        // Ví dụ: Files.write(Paths.get(imagePath), imageBytes);
-        File imageFile = new File(imagePath);
-        Files.write(Paths.get(imageFile.getAbsolutePath()), imageBytes);
-        return imagePath;
+    public String generateBarcodeImageAndSave(byte[] barcodeImageBytes, Long barcodeId) throws WriterException, IOException {
+        // Tải ảnh mã vạch lên Cloudinary và lấy URL
+        Map<String, Object> uploadResult = cloudinaryService.uploadBarcodeImage(barcodeImageBytes, barcodeId);
+        String barcodeImageUrl = (String) uploadResult.get("url");
+        return barcodeImageUrl;
     }
 @Override
     public long generate9DigitBarcode() {

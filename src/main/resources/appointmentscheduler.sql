@@ -240,7 +240,7 @@ INSERT INTO `roles` (id,name) VALUES
 
 -- INSERT admin account with username: 'admin' and password 'qwerty123'
 INSERT INTO `users` (id, username, password)
-VALUES (1, 'admin', '$2a$10$EqKcp1WFKVQISheBxkQJoOqFbsWDzGJXRz/tjkGq85IZKJJ1IipYi');
+VALUES (1, 'admin', '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9');
 INSERT INTO `users_roles` (user_id, role_id)
 VALUES (1, 1);
 
@@ -251,10 +251,10 @@ VALUES (1, 1);
 -- INSERT provider account with username: 'doctor' and password 'qwerty123' BCrypt
 INSERT INTO appointmentscheduler.users
 (id, username, password, first_name, last_name, email, mobile, street, city)
-VALUES(2, 'doctor', '$2a$10$EqKcp1WFKVQISheBxkQJoOqFbsWDzGJXRz/tjkGq85IZKJJ1IipYi', 'Phương', 'Đỗ', 'hoasinhi2015@gmail.com', '0123456789', 'Le Van Luong', 'HCM'),
-(3, 'doctor1', '$2a$10$EqKcp1WFKVQISheBxkQJoOqFbsWDzGJXRz/tjkGq85IZKJJ1IipYi', 'Dương', 'Phạm', 'hoasinhi2015@gmail.com', '0987654321', 'Le Van Luong', 'HCM'),
-(4, 'doctor2', '$2a$10$EqKcp1WFKVQISheBxkQJoOqFbsWDzGJXRz/tjkGq85IZKJJ1IipYi', 'Huy', 'Nguyễn', 'hoasinhi2015@gmail.com', '01234567899', 'Hẻm 210 Trần Văn Lợi', 'Đồng Nai'),
-(5, 'doctor3', '$2a$10$EqKcp1WFKVQISheBxkQJoOqFbsWDzGJXRz/tjkGq85IZKJJ1IipYi', 'Đạt', 'Nguyễn',  'hoasinhi2015@gmail.com', '01234567899', 'Hẻm 210 Trần Văn Lợi', 'Đồng Nai');
+VALUES(2, 'doctor', 'f348d5628621f3d8f59c8cabda0f8eb0aa7e0514a90be7571020b1336f26c113', 'Phương', 'Đỗ', 'hoasinhi2015@gmail.com', '0123456789', 'Le Van Luong', 'HCM'),
+(3, 'doctor1', '5412804bf2c4dd02f074c7f5a4eb8318dbf1e6b6c80e6f5695dc37a8db240f8d', 'Dương', 'Phạm', 'hoasinhi2015@gmail.com', '0987654321', 'Le Van Luong', 'HCM'),
+(4, 'doctor2', '3f9d11346ef48c2396b529121f998974435af49aa389d13f10de96fa2c948a0e', 'Huy', 'Nguyễn', 'hoasinhi2015@gmail.com', '01234567899', 'Hẻm 210 Trần Văn Lợi', 'Đồng Nai'),
+(5, 'doctor3', 'f26bf2a3f40b77dba4ebb0c2e756e1c03e8c81df8a84a8047b967d6bd785bc6a', 'Đạt', 'Nguyễn',  'hoasinhi2015@gmail.com', '01234567899', 'Hẻm 210 Trần Văn Lợi', 'Đồng Nai');
 
 INSERT INTO `providers` (id_provider)
 VALUES (2),
@@ -270,7 +270,7 @@ VALUES (2, 2),
 
 -- INSERT retail customer account with username: 'customer_r' and password 'qwerty123'
 INSERT INTO `users` (id, username, password)
-VALUES (6, 'customer_r', '$2a$10$EqKcp1WFKVQISheBxkQJoOqFbsWDzGJXRz/tjkGq85IZKJJ1IipYi');
+VALUES (6, 'customer_r', 'b36052e22c99f0da130583a6c8b7cb73a88fd928d2ebcff62c8497f2e7f0901b');
 INSERT INTO `customers` (id_customer)
 VALUES (6);
 INSERT INTO `retail_customers` (id_customer)
@@ -282,7 +282,7 @@ VALUES (6, 5);
 
 -- INSERT corporate customer account with username: 'customer_c' and password 'qwerty123'
 INSERT INTO `users` (id, username, password)
-VALUES (7, 'customer_c', '$2a$10$EqKcp1WFKVQISheBxkQJoOqFbsWDzGJXRz/tjkGq85IZKJJ1IipYi');
+VALUES (7, 'customer_c', '781f006488f311986c4047daff6d84c368a5f041976215f711b3fc5d7a485d16');
 INSERT INTO `customers` (id_customer)
 VALUES (7);
 INSERT INTO `corporate_customers` (id_customer, vat_number, company_name)
@@ -377,21 +377,21 @@ ALTER TABLE appointments
 INSERT INTO `appointments`
 (`start`, `end`, canceled_at, status, id_canceler, id_provider, id_customer, id_work, id_invoice, barcode_id, barcode_image)
 VALUES
-       ('2024-03-12 03:00:00', '2024-03-12 05:00:00', NULL, 'CONFIRMED', NULL, 2, 7, 3, NULL, 123456789, 'src/main/resources/static/img/barcodes/123456789.png'),
-       ('2024-03-12 08:00:00', '2024-03-12 09:00:00', NULL, 'CONFIRMED', NULL, 2, 6, 1, NULL, 19794, 'src/main/resources/static/img/barcodes/19794.png'),
-       ('2024-03-14 06:30:00', '2024-03-14 08:00:00', NULL, 'CONFIRMED', NULL, 2, 6, 2, NULL, 673726580, 'src/main/resources/static/img/barcodes/673726580.png'),
-       ('2024-03-13 09:30:00', '2024-03-13 11:00:00', NULL, 'CONFIRMED', NULL, 2, 6, 2, NULL, 531111044, 'src/main/resources/static/img/barcodes/531111044.png'),
-       ('2024-03-13 08:00:00', '2024-03-13 09:00:00', NULL, 'CONFIRMED', NULL, 2, 6, 1, NULL, 586107094, 'src/main/resources/static/img/barcodes/586107094.png'),
-       ('2024-03-12 09:00:00', '2024-03-12 10:00:00', NULL, 'CONFIRMED', NULL, 2, 6, 1, NULL, 824082625, 'src/main/resources/static/img/barcodes/824082625.png'),
-       ('2024-03-14 23:00:00', '2024-03-15 00:00:00', NULL, 'FINISHED', NULL, 2, 6, 1, NULL, 782169823, 'src/main/resources/static/img/barcodes/782169823.png'),
-       ('2024-03-15 02:00:00', '2024-03-15 03:00:00', NULL, 'FINISHED', NULL, 2, 6, 1, NULL, 763108761, 'src/main/resources/static/img/barcodes/763108761.png'),
-       ('2024-03-16 00:30:00', '2024-03-16 02:00:00', NULL, 'SCHEDULED', NULL, 2, 6, 2, NULL, 108003337, 'src/main/resources/static/img/barcodes/108003337.png'),
-       ('2024-03-14 08:00:00', '2024-03-14 09:30:00', NULL, 'CONFIRMED', NULL, 2, 6, 2, NULL, 596450663, 'src/main/resources/static/img/barcodes/596450663.png'),
-       ('2024-03-19 09:00:00', '2024-03-19 10:30:00', NULL, 'SCHEDULED', NULL, 2, 6, 2, NULL, 937801552, 'src/main/resources/static/img/barcodes/937801552.png'),
-       ('2024-03-15 01:00:00', '2024-03-15 02:00:00', NULL, 'FINISHED', NULL, 2, 6, 1, NULL, 733196436, 'src/main/resources/static/img/barcodes/733196436.png'),
-       ('2024-03-15 04:30:00', '2024-03-15 06:00:00', NULL, 'FINISHED', NULL, 2, 6, 2, NULL, 363074563, 'src/main/resources/static/img/barcodes/363074563.png'),
-       ('2024-03-15 03:00:00', '2024-03-15 04:00:00', NULL, 'FINISHED', NULL, 2, 6, 1, NULL, 252542459, 'src/main/resources/static/img/barcodes/252542459.png'),
-       ('2024-03-12 23:00:00', '2024-03-13 00:00:00', NULL, 'CONFIRMED', NULL, 2, 6, 1, NULL, 8858741713411, 'src/main/resources/static/img/barcodes/813643756.png');
+       ('2024-08-12 03:00:00', '2024-08-12 05:00:00', NULL, 'CONFIRMED', NULL, 2, 7, 3, NULL, 123456789, 'src/main/resources/static/img/barcodes/123456789.png'),
+       ('2024-08-12 08:00:00', '2024-08-12 09:00:00', NULL, 'CONFIRMED', NULL, 2, 6, 1, NULL, 19794, 'src/main/resources/static/img/barcodes/19794.png'),
+       ('2024-08-14 06:30:00', '2024-08-14 08:00:00', NULL, 'CONFIRMED', NULL, 2, 6, 2, NULL, 673726580, 'src/main/resources/static/img/barcodes/673726580.png'),
+       ('2024-08-13 09:30:00', '2024-08-13 11:00:00', NULL, 'CONFIRMED', NULL, 2, 6, 2, NULL, 531111044, 'src/main/resources/static/img/barcodes/531111044.png'),
+       ('2024-08-13 08:00:00', '2024-08-13 09:00:00', NULL, 'CONFIRMED', NULL, 2, 6, 1, NULL, 586107094, 'src/main/resources/static/img/barcodes/586107094.png'),
+       ('2024-08-12 09:00:00', '2024-08-12 10:00:00', NULL, 'CONFIRMED', NULL, 2, 6, 1, NULL, 824082625, 'src/main/resources/static/img/barcodes/824082625.png'),
+       ('2024-08-14 23:00:00', '2024-08-15 00:00:00', NULL, 'FINISHED', NULL, 2, 6, 1, NULL, 782169823, 'src/main/resources/static/img/barcodes/782169823.png'),
+       ('2024-08-15 02:00:00', '2024-08-15 03:00:00', NULL, 'FINISHED', NULL, 2, 6, 1, NULL, 763108761, 'src/main/resources/static/img/barcodes/763108761.png'),
+       ('2024-08-16 00:30:00', '2024-08-16 02:00:00', NULL, 'SCHEDULED', NULL, 2, 6, 2, NULL, 108003337, 'src/main/resources/static/img/barcodes/108003337.png'),
+       ('2024-08-14 08:00:00', '2024-08-14 09:30:00', NULL, 'CONFIRMED', NULL, 2, 6, 2, NULL, 596450663, 'src/main/resources/static/img/barcodes/596450663.png'),
+       ('2024-08-19 09:00:00', '2024-08-19 10:30:00', NULL, 'SCHEDULED', NULL, 2, 6, 2, NULL, 937801552, 'src/main/resources/static/img/barcodes/937801552.png'),
+       ('2024-08-15 01:00:00', '2024-08-15 02:00:00', NULL, 'FINISHED', NULL, 2, 6, 1, NULL, 733196436, 'src/main/resources/static/img/barcodes/733196436.png'),
+       ('2024-08-15 04:30:00', '2024-08-15 06:00:00', NULL, 'FINISHED', NULL, 2, 6, 2, NULL, 363074563, 'src/main/resources/static/img/barcodes/363074563.png'),
+       ('2024-08-15 03:00:00', '2024-08-15 04:00:00', NULL, 'FINISHED', NULL, 2, 6, 1, NULL, 252542459, 'src/main/resources/static/img/barcodes/252542459.png'),
+       ('2024-08-12 23:00:00', '2024-08-13 00:00:00', NULL, 'CONFIRMED', NULL, 2, 6, 1, NULL, 8858741713411, 'src/main/resources/static/img/barcodes/813643756.png');
 #
 # DROP DATABASE `appointmentscheduler`;
 

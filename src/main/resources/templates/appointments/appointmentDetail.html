@@ -109,7 +109,9 @@
                         <td><b>Mã vạch</b></td>
                         <td>
 
-                            <img th:src="@{'/img/barcodes/'+${appointment.barcodeId}+'.png'}" alt="barcode"/>
+                            <!--<img th:src="@{'/img/barcodes/'+${appointment.barcodeId}+'.png'}" alt="barcode"/>-->
+                            <img th:src="@{${appointment.getBarcodeImage()}}"
+                                 alt="barcode"/>
                         </td>
                     </tr>
 

@@ -24,10 +24,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class AppointmentServiceImpl implements AppointmentService {
@@ -45,6 +42,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     private PdfGeneratorUtil pdfGeneratorUtil;
     @Autowired
     private BarcodeRepository barcodeRepository;
+
 
 
     public AppointmentServiceImpl(AppointmentRepository appointmentRepository, UserService userService, WorkService workService, ChatMessageRepository chatMessageRepository, NotificationService notificationService, JwtTokenServiceImpl jwtTokenService) {
@@ -145,30 +143,28 @@ public class AppointmentServiceImpl implements AppointmentService {
             appointment.setWork(work);
             appointment.setStart(start);
             appointment.setEnd(start.plusMinutes(work.getDuration()));
-//            appointment.setBarcodeId(123456789L);
-            // Generate 9-digit barcode ID based on the number of days
-            // Generate a random 9-digit barcode ID
-//            long randomBarcodeId = barcodeService.generate9DigitBarcode();
+
             long randomBarcodeId = System.currentTimeMillis();
             appointment.setBarcodeId(randomBarcodeId);
 
-//            appointmentRepository.save(appointment);
-            // Chuyển đổi barcode_id thành hình ảnh và lưu vào file
             try {
-                barcodeService.genarateBarcodeImage(appointment.getBarcodeId());
-                String barcodeImagePath = barcodeService.generateBarcodeImageAndSave(appointment.getBarcodeId());
-                // Lưu đường dẫn vào cột barcode_image
-                appointment.setBarcodeImage(barcodeImagePath);
-            } catch (IOException | WriterException e) {
-                throw new RuntimeException("Error generating and saving barcode image", e);
-            }
-            // Save the appointment to with the updated barcode image to the database
-            appointmentRepository.save(appointment);
-            notificationService.newNewAppointmentScheduledNotification(appointment, true);
-        } else {
-            throw new RuntimeException();
-        }
+                // Tạo byte ảnh mã vạch
+                byte[] barcodeImageBytes = barcodeService.genarateBarcodeImage(appointment.getBarcodeId());
 
+                String barcodeImageUrl = barcodeService.generateBarcodeImageAndSave(barcodeImageBytes, appointment.getBarcodeId());
+
+                // Đặt URL trong đối tượng lịch hẹn
+                appointment.setBarcodeImage(barcodeImageUrl);
+
+                // Lưu lịch hẹn và gửi thông báo
+                appointmentRepository.save(appointment);
+                notificationService.newNewAppointmentScheduledNotification(appointment, true);
+            } catch (IOException | WriterException e) {
+                throw new RuntimeException("Lỗi tạo và lưu mã vạch", e);
+            }
+        } else {
+            throw new RuntimeException("Khung thời gian hẹn không có sẵn");
+        }
     }
 
     @Override

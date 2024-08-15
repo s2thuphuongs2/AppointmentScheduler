@@ -20,7 +20,7 @@
                 <table>
                     <tr>
                         <td class="title">
-                            <img src="/img/logo.jpg" style="width:100%; max-width:300px;" />
+                            <img src="https://res.cloudinary.com/deuesd4oe/image/upload/v1723763308/logo_bsn9qu.jpg" style="width:100%; max-width:300px;" />
                         </td>
 
                         <td>
@@ -69,12 +69,17 @@
         </tr>
         <tr th:if="${appointment.status == 'INVOICED'}">
             <td><b>Hóa đơn:</b></td>
-            <td><a th:href="@{'/invoices/download/' + ${appointment.invoice != null ? appointment.invoice.id : 'N/A'}">Download Invoice</a></td>
+            <td><a th:href="@{'/invoices/download/' + ${appointment.invoice != null ? appointment.invoice.id : 'N/A'}}">Download Invoice</a></td>
         </tr>
         <tr>
-            <td><b>Mã vạch:</b></td>
             <td>
-                <img th:src="'/img/barcodes/' + ${appointment.barcodeId} + '.png'" alt="barcode" />
+                <b>Mã vạch:</b>
+            </td>
+            <td>
+                <!--TODO: sửa lại link trên Cloudinary-->
+                <!--<img th:src="'/img/barcodes/' + ${appointment.barcodeId} + '.png'" alt="barcode" />-->
+                <img th:src="${appointment.getBarcodeImage()}" alt="barcode" />
+                (Vui lòng xuất trình email và mã vạch này khi đến khám)
             </td>
         </tr>
     </table>

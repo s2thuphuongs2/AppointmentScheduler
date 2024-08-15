@@ -88,7 +88,7 @@
                         <label th:if="${account_type =='customer_corporate'}" for="lastName">Họ người liên hệ</label>
                         <label th:if="${account_type =='customer_retail' or account_type =='provider'}"
                                for="lastName">Họ và tên lót</label>
-                        <input type="text" class="form-control" th:classappend="${#fields.hasErrors('lastName') ? 'is-invalid' :''}" th:field="*{lastName}" placeholder="Kowalski">
+                        <input type="text" class="form-control" th:classappend="${#fields.hasErrors('lastName') ? 'is-invalid' :''}" th:field="*{lastName}" placeholder="Đỗ Thị Thu">
                         <div th:if="${#fields.hasErrors('lastName')}" class="invalid-feedback">
                             <p th:errors="*{lastName}"></p>
                         </div>
@@ -126,7 +126,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-8">
                             <label for="city">Thành phố</label>
-                            <input type="text" class="form-control" th:classappend="${#fields.hasErrors('city') ? 'is-invalid' :''}" th:field="*{city}" placeholder="Poznan">
+                            <input type="text" class="form-control" th:classappend="${#fields.hasErrors('city') ? 'is-invalid' :''}" th:field="*{city}" placeholder="Hồ Chí Minh">
                             <div th:if="${#fields.hasErrors('city')}" class="invalid-feedback">
                                 <p th:errors="*{city}"></p>
                             </div>
