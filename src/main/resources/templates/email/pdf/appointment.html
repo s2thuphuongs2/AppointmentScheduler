@@ -3,85 +3,132 @@
 
 <head>
 
-    <title>Chi tiết cuộc hẹn</title>
+    <title style="text-align: center">Chi tiết cuộc hẹn</title>
     <style>
         /* Bổ sung CSS của bạn ở đây */
         body {
             font-family: 'Times New Roman', serif;
         }
+        .invoice-box {
+            width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #eee;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body>
 <div class="invoice-box">
-    <h2>Chi tiết cuộc hẹn</h2>
-    <table>
+    <h2 style="padding-left: 250px;">CHI TIẾT CUỘC HẸN</h2>
+    <table style="padding-left: 50px;">
         <tr class="top">
             <td colspan="2">
                 <table>
                     <tr>
                         <td class="title">
-                            <img src="https://res.cloudinary.com/deuesd4oe/image/upload/v1723763308/logo_bsn9qu.jpg" style="width:100%; max-width:300px;" />
+                            <img src="https://res.cloudinary.com/deuesd4oe/image/upload/v1723763308/logo_bsn9qu.jpg"
+                                 style="width:100%; max-width:300px;"/>
                         </td>
-
+                        <!--MANUAL: Fix lôi khi tạo pdf-->
+                        <!--MANUAL: format text-->
+                        <td style="text-align: right">
+                            Tài khoản: <strong><span th:text="${appointment.customer.userName}" id="number">hello</span></strong><br/>
+                            Ngày hẹn khám: <span th:text="${#temporals.format(appointment.getStart(), 'dd-MM-yyyy')}">Xuất: 01-03-2019</span><br/>
+                        </td>
                         <td>
-                            <span th:text="${appointment.getBarcodeId()}" id="number">Barcode ID</span><br />
-                            Ngày đăng ký: <span th:text="${#temporals.format(appointment.getStart(), 'dd-MM-yyyy')}">Xuất: 01-03-2019</span><br/>
+                            <img style="width: 180px; height: 180px; float:right" th:src="${appointment.customer.getQrCodePath()}"
+                                 alt="QR đăng nhập nằm trong pdf"/>
                         </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>(QR Đăng nhập sử dụng 1 lần)</td>
                     </tr>
                 </table>
             </td>
         </tr>
+    </table>
+    <table style="padding:50px 50px 50px 80px;">
+        <thead>
+        <tr>
+            <th style="width:150px;"></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+
         <tr>
             <td><b>Trạng thái:</b></td>
             <td><span th:text="${appointment.status}"></span></td>
         </tr>
         <tr th:if="${appointment.status == 'CANCELED'}">
             <td><b>Hủy bởi:</b></td>
-            <td><span th:text="${appointment.canceler != null ? appointment.canceler.firstName + ' ' + appointment.canceler.lastName : 'Unknown'}"></span></td>
+            <td><span
+                    th:text="${appointment.canceler != null ? appointment.canceler.firstName + ' ' + appointment.canceler.lastName : 'Unknown'}"></span>
+            </td>
         </tr>
         <tr>
             <td><b>Ngày:</b></td>
-            <td><span th:text="${appointment.start != null ? #temporals.format(appointment.start, 'dd-MM-yyyy') : 'N/A'}"></span></td>
+            <td><span
+                    th:text="${appointment.start != null ? #temporals.format(appointment.start, 'dd-MM-yyyy') : 'N/A'}"></span>
+            </td>
         </tr>
         <tr>
             <td><b>Giờ:</b></td>
-            <td><span th:text="${appointment.start != null ? #temporals.format(appointment.start, 'HH:mm') + ' - ' + #temporals.format(appointment.end, 'HH:mm') : 'N/A'}"></span></td>
+            <td><span
+                    th:text="${appointment.start != null ? #temporals.format(appointment.start, 'HH:mm') + ' - ' + #temporals.format(appointment.end, 'HH:mm') : 'N/A'}"></span>
+            </td>
         </tr>
         <tr>
             <td><b>Khách hàng:</b></td>
-            <td><span th:text="${appointment.customer != null ? appointment.customer.lastName + ' ' + appointment.customer.firstName : 'Unknown'}"></span></td>
+            <td><span
+                    th:text="${appointment.customer != null ? appointment.customer.lastName + ' ' + appointment.customer.firstName : 'Unknown'}"></span>
+            </td>
         </tr>
         <tr>
             <td><b>Bác sĩ:</b></td>
-            <td><span th:text="${appointment.provider != null ? appointment.provider.lastName + ' ' + appointment.provider.firstName : 'Unknown'}"></span></td>
+            <td><span
+                    th:text="${appointment.provider != null ? appointment.provider.lastName + ' ' + appointment.provider.firstName : 'Unknown'}"></span>
+            </td>
         </tr>
         <tr>
             <td><b>Dịch vụ:</b></td>
-            <td><span th:text="${appointment.work != null ? appointment.work.name : 'Unknown'}"></span></td>
+            <td><span
+                    th:text="${appointment.work != null ? appointment.work.name : 'Unknown'}"></span></td>
         </tr>
         <tr>
             <td><b>Mô tả:</b></td>
-            <td><span th:text="${appointment.work != null ? appointment.work.description : 'Unknown'}"></span></td>
+            <td><span
+                    th:text="${appointment.work != null ? appointment.work.description : 'Unknown'}"></span></td>
         </tr>
         <tr>
             <td><b>Chi phí:</b></td>
-            <td><span th:text="${appointment.work != null ? appointment.work.price + ' VND' : 'Unknown'}"></span></td>
+            <td><span
+                    th:text="${appointment.work != null ? appointment.work.price + ' VND' : 'Unknown'}"></span></td>
         </tr>
         <tr th:if="${appointment.status == 'INVOICED'}">
             <td><b>Hóa đơn:</b></td>
-            <td><a th:href="@{'/invoices/download/' + ${appointment.invoice != null ? appointment.invoice.id : 'N/A'}}">Download Invoice</a></td>
+            <td><a
+                    th:href="@{'/invoices/download/' + ${appointment.invoice != null ? appointment.invoice.id : 'N/A'}}">Tải
+                hóa đơn</a></td>
         </tr>
         <tr>
             <td>
                 <b>Mã vạch:</b>
             </td>
             <td>
-                <!--TODO: sửa lại link trên Cloudinary-->
+                <!--MANUAL: sửa lại link trên Cloudinary-->
                 <!--<img th:src="'/img/barcodes/' + ${appointment.barcodeId} + '.png'" alt="barcode" />-->
-                <img th:src="${appointment.getBarcodeImage()}" alt="barcode" />
-                (Vui lòng xuất trình email và mã vạch này khi đến khám)
+                <img th:src="${appointment.getBarcodeImage()}" alt="barcode"/>
             </td>
         </tr>
+        <tr>
+            <td></td>
+            <td>(Vui lòng xuất trình email và mã vạch này khi đến khám)</td>
+        </tr>
+        </tbody>
     </table>
 </div>
 </body>

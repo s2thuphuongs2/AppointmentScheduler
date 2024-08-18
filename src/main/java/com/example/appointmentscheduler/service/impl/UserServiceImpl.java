@@ -203,19 +203,21 @@ public class UserServiceImpl implements UserService {
         RetailCustomer retailCustomer = new RetailCustomer(userForm, passwordEncoder.encode(userForm.getPassword()), getRolesForRetailCustomer());
         retailCustomerRepository.save(retailCustomer); // Luu nguoi dung truoc moi co id tao token
         // Tao ma token cho nguoi dung moi
-        String token = jwtTokenService.generateCustomerToken(retailCustomer);
-        String qrCodePath = qrCodeService.generateQRCodeFromToken(token).replaceAll("src/main/resources/static/", "");
+//        String token = jwtTokenService.generateCustomerToken(retailCustomer);
+        // MANUAL: Bo tinh nang tao token khi tao retail customer moi --> khong can thiet
+//        String qrCodePath = qrCodeService.generateQRCodeFromToken(token);
         // Lưu đường dẫn mã QR vào cơ sở dữ liệu
-        retailCustomer.setQrCodePath(qrCodePath);
-        retailCustomerRepository.save(retailCustomer);
+//        retailCustomer.setQrCodePath(qrCodePath);
+//        retailCustomerRepository.save(retailCustomer);
 //        generateAndSaveQRCode(retailCustomer);
     }
-//    private void generateAndSaveQRCode(User user) throws IOException, WriterException {
-//        String token = jwtTokenService.generateCustomerToken(user);
-//        String qrCodePath = qrCodeService.generateQRCodeFromToken(token);
-//        user.setQrCodePath(qrCodePath);
-//        userRepository.save(user);
-//    }
+    @Override
+    public void generateAndSaveQRCode(Customer customer) throws IOException, WriterException {
+        String token = jwtTokenService.generateCustomerToken(customer);
+        String qrCodePath = qrCodeService.generateQRCodeFromToken(token);
+        customer.setQrCodePath(qrCodePath);
+        userRepository.save(customer);
+    }
 
     @Override
     public void saveNewCorporateCustomer(UserForm userForm) throws IOException, WriterException {

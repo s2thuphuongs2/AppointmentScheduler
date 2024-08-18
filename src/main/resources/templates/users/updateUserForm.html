@@ -211,7 +211,11 @@
 
                     <div class="tab-pane fade pt-3 shadow-lg" id="qrCode" role="tabpanel" aria-labelledby="qrCode-tab">
                         <div class="container">
-                            <img th:src="@{ '/'+ ${user.getQrCodePath()}}" alt="MoMo QR Code"/>
+                            <!--MANUAL: Fix lại link Cloudinary, lưu ý dùng link giới hạn thời gian-->
+                            <!-- Dùng Hidden input để lưu customerId -->
+                            <input type="hidden" id="customerId" th:value="${user.id}"/>
+                            <button id="generate-qr-btn" class="btn-primary-outline">Tạo QrCode đăng nhập</button>
+                            <img id="qr-code-img" src="" alt="MoMo QR Code" style="display:none;"/>
                         </div>
                     </div>
 
@@ -227,5 +231,18 @@
 
 
 </div>
+
 </body>
 </html>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#generate-qr-btn').click(function() {
+            const customerId = $('#customerId').val(); // Lấy customerId từ hidden input
+            $.post("/api/auth/generate-qrcode", {customerId: customerId}, function(data) {
+                $('#qr-code-img').attr('src', data).show();
+            });
+        });
+    });
+</script>

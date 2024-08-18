@@ -16,7 +16,4 @@ public interface QRCodeService {
     String createInvoiceQRCode(Invoice invoice) throws WriterException, IOException;
     void createInvoiceQRCodeForAllInvoices() throws WriterException, IOException;
     void updateSpecificInvoiceQRCode(int invoiceId);
-    void deleteQRCodeForInvoice(Invoice invoice);
-
-    void deleteQRCode(String s);
 }

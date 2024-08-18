@@ -60,7 +60,8 @@ public class BarcodeServiceImpl implements BarcodeService {
     @Override
     public String generateBarcodeImageAndSave(byte[] barcodeImageBytes, Long barcodeId) throws WriterException, IOException {
         // Tải ảnh mã vạch lên Cloudinary và lấy URL
-        Map<String, Object> uploadResult = cloudinaryService.uploadBarcodeImage(barcodeImageBytes, barcodeId);
+        String barcodeIdString = String.valueOf(barcodeId);
+        Map<String, Object> uploadResult = cloudinaryService.uploadBarcodeImage(barcodeImageBytes, barcodeIdString);
         String barcodeImageUrl = (String) uploadResult.get("url");
         return barcodeImageUrl;
     }

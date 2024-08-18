@@ -82,6 +82,8 @@ public interface UserService {
 
     List<RetailCustomer> getAllRetailCustomers();
 
+    void generateAndSaveQRCode(Customer customer) throws IOException, WriterException;
+
     void saveNewCorporateCustomer(UserForm userForm) throws IOException, WriterException;
 
     void updateCorporateCustomerProfile(UserForm updateData);

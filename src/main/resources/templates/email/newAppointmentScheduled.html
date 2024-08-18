@@ -17,7 +17,12 @@
 <!-- MANUAL: fix bug không hiện ảnh lần đầu -->
 <!--<img th:src="@{img/barcodes/${appointment.barcodeId}.png}" alt="barcode"/>-->
 <img th:src="@{${appointment.getBarcodeImage()}}" alt="barcode"/>
-<!--TODO: thêm QR Code-->
+
+<!--MANUAL: thêm QR Code -Reject- Bác sĩ không được phép xem QR code đăng nhập của khách hàng-->
+<p>-----------------------------------------</p>
+<p>Cảm ơn đã sử dụng dịch vụ PDuong của chúng tôi!</p>
+<img src="https://res.cloudinary.com/deuesd4oe/image/upload/v1723763308/logo_bsn9qu.jpg"
+     style="width:100%; max-width:300px;" alt="Logo PDuong"/>
 
 </body>
 </html>

@@ -3,6 +3,7 @@ package com.example.appointmentscheduler.service.impl;
 import com.example.appointmentscheduler.dao.InvoiceRepository;
 import com.example.appointmentscheduler.dao.user.UserRepository;
 import com.example.appointmentscheduler.entity.Invoice;
+import com.example.appointmentscheduler.service.CloudinaryService;
 import com.example.appointmentscheduler.service.QRCodeService;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
@@ -20,6 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,6 +30,8 @@ public class QRCodeServiceImpl implements QRCodeService {
     private InvoiceRepository invoiceRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    CloudinaryService cloudinaryService;
     @Override
     public byte[] generateQRCodeImage(String inputData) throws WriterException, IOException {
         int width = 300;
@@ -61,13 +65,13 @@ public class QRCodeServiceImpl implements QRCodeService {
         String imagePath = saveImageToFile(sanitizedToken, qrCodeImageBytes);
         return imagePath;
     }
-
+    // MANUAL: Sửa lại dùng Cloudinary, đặt giới hạn thời gian hiện QRCode
     @Override
     public String saveImageToFile(String nameFile, byte[] imageBytes) throws IOException {
-        String imagePath = "src/main/resources/static/img/qrcodes/" + nameFile + ".png";
-        File imageFile = new File(imagePath);
-        Files.write(Paths.get(imageFile.getAbsolutePath()), imageBytes);
-        return imagePath;
+        // Tải ảnh mã lên Cloudinary và lấy URL
+        Map<String, Object> uploadResult = cloudinaryService.uploadQRCodeImage(imageBytes, nameFile);
+        String barcodeImageUrl = (String) uploadResult.get("url");
+        return barcodeImageUrl;
     }
     @Override
     public String createInvoiceQRCode(Invoice invoice) throws WriterException, IOException {
@@ -116,24 +120,5 @@ public class QRCodeServiceImpl implements QRCodeService {
         invoice.setQrCodeData(qrCodeData);
         invoice.setQrCodePath(qrImagePath);
         invoiceRepository.save(invoice);
-    }
-    @Override
-    public void deleteQRCodeForInvoice(Invoice invoice) {
-        try {
-            Files.deleteIfExists(Paths.get(invoice.getQrCodePath()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        invoice.setQrCodePath(null);
-        invoice.setQrCodeData(null);
-        invoiceRepository.save(invoice);
-    }
-    @Override
-    public void deleteQRCode(String path) {
-        try {
-            Files.deleteIfExists(Paths.get(path));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

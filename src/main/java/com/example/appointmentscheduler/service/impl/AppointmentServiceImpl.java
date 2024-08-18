@@ -1,7 +1,9 @@
 package com.example.appointmentscheduler.service.impl;
 
 import com.example.appointmentscheduler.dao.BarcodeRepository;
+import com.example.appointmentscheduler.dao.user.customer.CustomerRepository;
 import com.example.appointmentscheduler.entity.*;
+import com.example.appointmentscheduler.entity.user.customer.Customer;
 import com.example.appointmentscheduler.exception.AppointmentNotFoundException;
 import com.example.appointmentscheduler.service.*;
 import com.example.appointmentscheduler.dao.AppointmentRepository;
@@ -155,12 +157,13 @@ public class AppointmentServiceImpl implements AppointmentService {
 
                 // Đặt URL trong đối tượng lịch hẹn
                 appointment.setBarcodeImage(barcodeImageUrl);
-
+                // MANUAL: Tạo token và QR đăng nhập mới
+                userService.generateAndSaveQRCode(userService.getCustomerById(customerId));
                 // Lưu lịch hẹn và gửi thông báo
                 appointmentRepository.save(appointment);
                 notificationService.newNewAppointmentScheduledNotification(appointment, true);
             } catch (IOException | WriterException e) {
-                throw new RuntimeException("Lỗi tạo và lưu mã vạch", e);
+                throw new RuntimeException("Lỗi tạo và lưu mã vạch & QR", e);
             }
         } else {
             throw new RuntimeException("Khung thời gian hẹn không có sẵn");

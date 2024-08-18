@@ -78,7 +78,7 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public void newAppointmentFinishedNotification(Appointment appointment, boolean sendEmail) {
         String title = "Lịch hẹn kết thúc";
-        String message = "Cuộc hẹn đã kết thúc, bạn có thể từ chối rằng nó đã diễn ra cho đến khi đủ " + appointment.getEnd().plusHours(24).toString();
+        String message = "Cuộc hẹn đã kết thúc, báo cáo nếu cuộc hẹn không diễn ra cho đến khi đủ " + appointment.getEnd().plusHours(24).toString();
         String url = "/appointments/" + appointment.getId();
         newNotification(title, message, url, appointment.getCustomer());
         if (sendEmail && mailingEnabled) {
