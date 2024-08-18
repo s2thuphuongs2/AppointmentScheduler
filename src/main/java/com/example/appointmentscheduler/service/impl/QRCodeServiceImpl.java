@@ -121,4 +121,5 @@ public class QRCodeServiceImpl implements QRCodeService {
         invoice.setQrCodePath(qrImagePath);
         invoiceRepository.save(invoice);
     }
+
 }
