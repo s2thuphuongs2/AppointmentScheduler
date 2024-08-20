@@ -59,9 +59,6 @@ public class AuthController {
                 userDetails, null, userDetails.getAuthorities());
 
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-
-        //qrCodeService.deleteQRCode("src/main/resources/static/" + customer.getQrCodePath()); // Delete old QR code
-
         String jwt = jwtTokenService.generateCustomerToken(customer); // Generating new token
         String qrCodePath = qrCodeService.generateQRCodeFromToken(jwt);
         // TODO: Thông báo qua email: Bạn vừa đăng nhập bằng QR Code và QrCode sẽ thay đổi. Xác nhận có phải bạn.
@@ -78,10 +75,10 @@ public class AuthController {
             String jwt = jwtTokenService.generateCustomerToken(customer); // Generating new token
             String qrCodePath = qrCodeService.generateQRCodeFromToken(jwt);
 
-            // Lưu đường dẫn mã QR vào cơ sở dữ liệu
             customer.setQrCodePath(qrCodePath);
             customerRepository.save(customer);
             // TODO: Gửi mail thông báo vừa tạo QR đăng nhập mới
+
             return qrCodePath;
         }
 }
