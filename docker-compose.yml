@@ -60,6 +60,7 @@ services:
 #    networks:
 #      - appointmentscheduler_network
 
+
 volumes:
   appointmentscheduler_volume:
   redis_data:
