@@ -10,18 +10,21 @@ services:
     ports:
       - "8090:8090"
     environment:
-#      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-b6347f-s2thuphuongs2.k.aivencloud.com:18910/appointmentscheduler?ssl-mode=REQUIRED
-      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/appointmentscheduler?useSSL=false&serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
-#      - SPRING_DATASOURCE_USERNAME=avnadmin
-#      - SPRING_DATASOURCE_PASSWORD=AVNS_rgZ-CxbcBz8dK7uLcUr
-      - SPRING_DATASOURCE_USERNAME=user
-      - SPRING_DATASOURCE_PASSWORD=password
-      - REDIS_HOST=redis
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-b6347f-s2thuphuongs2.k.aivencloud.com:18910/appointmentscheduler?ssl-mode=REQUIRED
+#      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/appointmentscheduler?useSSL=false&serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
+      - SPRING_DATASOURCE_USERNAME=avnadmin
+      - SPRING_DATASOURCE_PASSWORD=AVNS_rgZ-CxbcBz8dK7uLcUr
+#      - SPRING_DATASOURCE_USERNAME=user
+#      - SPRING_DATASOURCE_PASSWORD=password
+#      - REDIS_HOST=redis
+      - REDIS_HOST=appointmentscheduler-ba05.onrender.com
       - REDIS_PASSWORD=thuphuong123
     restart: always
     depends_on:
       - appointmentscheduler_db
-      - redis
+#      - redis
+      - appointmentscheduler-ba05.onrender.com
+
     networks:
       - appointmentscheduler_network
 
@@ -32,10 +35,10 @@ services:
     restart: always
     environment:
       MYSQL_DATABASE: appointmentscheduler
-#      MYSQL_USER: avnadmin
-#      MYSQL_PASSWORD: AVNS_rgZ-CxbcBz8dK7uLcUr
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
+      MYSQL_USER: avnadmin
+      MYSQL_PASSWORD: AVNS_rgZ-CxbcBz8dK7uLcUr
+#      MYSQL_USER: user
+#      MYSQL_PASSWORD: password
       MYSQL_ROOT_PASSWORD: root_pass
     volumes:
       - appointmentscheduler_volume:/var/lib/mysql
@@ -46,8 +49,8 @@ services:
   redis:
     image: docker.io/bitnami/redis:7.2
     environment:
-#      - REDIS_HOST=redis
-#      - REDIS_PORT=6379
+      - REDIS_HOST=appointmentscheduler-ba05.onrender.com
+      - REDIS_PORT=6379
       - REDIS_PASSWORD=thuphuong123
       - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
     ports:

@@ -120,7 +120,7 @@ public class CustomerController {
         userService.saveTemporaryUser(userForm);
         // Gui OTP va luu thong tin nguoi dung tam thoi
         otpService.generateAndSendOTP(userForm.getEmail());
-        // TODO Luu thong tin nguoi dung tam thoi vao Redis hoac noi luu tru tam thoi khac
+        // MANUAL Luu thong tin nguoi dung tam thoi vao Redis hoac noi luu tru tam thoi khac
         return "users/confirmOtpForm";
     }
 
@@ -130,7 +130,7 @@ public class CustomerController {
             populateModel(model, userForm, "customer_corporate", "/customers/new/corporate", null);
             return "users/createUserForm";
         }
-        // TODO Luu thong tin nguoi dung tam thoi
+        // MANUAL Luu thong tin nguoi dung tam thoi
         userService.saveTemporaryUser(userForm);
         otpService.generateAndSendOTP(userForm.getEmail());
         return "users/confirmOtpForm";
