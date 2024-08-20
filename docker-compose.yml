@@ -17,13 +17,13 @@ services:
 #      - SPRING_DATASOURCE_USERNAME=user
 #      - SPRING_DATASOURCE_PASSWORD=password
 #      - REDIS_HOST=redis
-      - REDIS_HOST=appointmentscheduler-ba05.onrender.com
+      - REDIS_HOST=localhost
       - REDIS_PASSWORD=thuphuong123
     restart: always
     depends_on:
       - appointmentscheduler_db
 #      - redis
-      - appointmentscheduler-ba05.onrender.com
+#      - appointmentscheduler-ba05.onrender.com
 
     networks:
       - appointmentscheduler_network
@@ -49,8 +49,8 @@ services:
   redis:
     image: docker.io/bitnami/redis:7.2
     environment:
-      - REDIS_HOST=appointmentscheduler-ba05.onrender.com
-      - REDIS_PORT=6379
+#      - REDIS_HOST=appointmentscheduler-ba05.onrender.com
+#      - REDIS_PORT=6379
       - REDIS_PASSWORD=thuphuong123
       - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
     ports:
